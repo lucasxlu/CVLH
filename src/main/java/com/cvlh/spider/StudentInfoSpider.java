@@ -71,7 +71,7 @@ public class StudentInfoSpider {
                 System.out.println(o.toString());
             });*/
 
-            String cookie = "; varPartWitMis_ChoiceCourseAdd.aspx=10;" + closeableHttpResponse.getFirstHeader("Set-Cookie").getValue().split(";")[0];
+            String cookie = "varPartWitMis_ChoiceCourseAdd.aspx=10; " + closeableHttpResponse.getFirstHeader("Set-Cookie").getValue().split(";")[0];
             System.out.println(cookie);
             CloseableHttpClient closeableHttpClient1 = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(StudentInfoSpider.LOGIN_URL + "admin.aspx?type=Login");
