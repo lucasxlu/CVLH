@@ -21,4 +21,9 @@ public class StudentInfoSpiderTest {
         System.out.println(pngPath);
     }
 
+    @Test
+    public void testDownloadAvatar() throws IOException {
+        new StudentInfoSpider().downloadAvatar(2016, 317, 28 + "", "D:/");
+    }
+
 }

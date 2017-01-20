@@ -1,6 +1,7 @@
 package com.cvlh.spider;
 
 import com.cvlh.util.Constant;
+import com.cvlh.util.MathUtil;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -34,6 +35,7 @@ import java.util.List;
 public class StudentInfoSpider {
 
     private static final String LOGIN_URL = "http://211.69.132.96/";
+    private static final String AVATAR_URL_PREFIX = "http://211.69.132.96/Uploadfiles/UserPhoto/PostGraduate/";
     private static final Logger logger = LogManager.getLogger();
     private static final int[] loginBtnSize = new int[]{87, 23};
 
@@ -145,12 +147,46 @@ public class StudentInfoSpider {
         return file.getAbsolutePath();
     }
 
+
+    /**
+     * @param year
+     * @param collegeId
+     * @param studentId
+     * @param directory the directory to save all images
+     * @throws IOException
+     * @Note: if the user did not upload his or her avatar, the default avatar is <b>malem.png</b> for male, and <b>femalem.png</b> for female
+     */
+    public void downloadAvatar(int year, int collegeId, String studentId, String directory) throws IOException {
+        if (!Files.exists(Paths.get(directory))) {
+            Files.createDirectories(Paths.get(directory));
+        }
+
+        String requestUrl = StudentInfoSpider.AVATAR_URL_PREFIX + "_" + String.valueOf(year) + String.valueOf(collegeId) + "1100" + studentId + ".jpg";
+        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(requestUrl);
+        logger.debug("The URL is " + requestUrl);
+        httpGet.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        httpGet.addHeader("User-Agent", Constant.BROWSER_USER_AGENT);
+        CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(httpGet);
+        if (200 == closeableHttpResponse.getStatusLine().getStatusCode()) {
+            FileUtils.copyURLToFile(new URL(requestUrl), new File(directory + String.valueOf(year + "" + collegeId + "1100" + studentId + ".jpg")));
+        } else if (413 == closeableHttpResponse.getStatusLine().getStatusCode()) {
+            logger.error("Request forbidden!");
+        } else {
+            logger.debug(closeableHttpResponse.getStatusLine());
+        }
+
+    }
+
     public static void main(String[] args) {
         StudentInfoSpider studentInfoSpider = new StudentInfoSpider();
         try {
             String captcha = studentInfoSpider.deCaptcha(studentInfoSpider.getJPGImg());
             logger.info("captcha is " + captcha);
-            studentInfoSpider.login("2016317110028", "19930620", captcha);
+//            studentInfoSpider.login("2016317110028", "19930620", captcha);
+            for (int i = 1; i < 60; i++) {
+                studentInfoSpider.downloadAvatar(2016, 317, MathUtil.formatNumber(i), "D:/hzau/");
+            }
         } catch (TesseractException e) {
             e.printStackTrace();
         } catch (IOException e) {
