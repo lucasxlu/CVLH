@@ -23,7 +23,7 @@ public class StudentInfoSpiderTest {
 
     @Test
     public void testDownloadAvatar() throws IOException {
-        new StudentInfoSpider().downloadAvatar(2016, 317, 28 + "", "D:/");
+        new StudentInfoSpider().downloadAvatar(2016, 317, "317", 28 + "", "D:/");
     }
 
 }
