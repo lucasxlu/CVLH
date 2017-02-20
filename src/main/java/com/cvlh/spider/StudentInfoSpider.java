@@ -1,7 +1,6 @@
 package com.cvlh.spider;
 
 import com.cvlh.util.Constant;
-import com.cvlh.util.MathUtil;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * a spider to crawl students' personal info
+ * a spider to crawl students' personal info of <b>HZAU</b>
  * Created by 29140 on 2017/1/6.
  */
 public class StudentInfoSpider {
@@ -183,13 +182,14 @@ public class StudentInfoSpider {
         try {
             String captcha = studentInfoSpider.deCaptcha(studentInfoSpider.getJPGImg());
             logger.info("captcha is " + captcha);
-//            studentInfoSpider.login("2016317110028", "19930620", captcha);
-            String[] typeIds = new String[]{"0100", "1100", "1200"};
+            studentInfoSpider.login("2016317110028", "19930620", captcha);
+
+           /* String[] typeIds = new String[]{"0100", "1100", "1200"};
             for (int i = 0; i < typeIds.length; i++) {
                 for (int j = 1; j < 100; j++) {
-                    studentInfoSpider.downloadAvatar(2016, 316, typeIds[i], j + "", "D:/hzau/max/");
+                    studentInfoSpider.downloadAvatar(2015, 317, typeIds[i], j + "", "D:/hzau/coi/");
                 }
-            }
+            }*/
         } catch (TesseractException e) {
             e.printStackTrace();
         } catch (IOException e) {
