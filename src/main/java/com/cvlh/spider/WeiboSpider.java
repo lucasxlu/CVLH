@@ -57,10 +57,7 @@ public class WeiboSpider {
 
         CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).setConnectionManager(cm).build();
         String[] urisToGet = {
-                "https://weibo.cn/comment/EvsBXBh9D?page=1",
-                "https://weibo.cn/comment/EvsBXBh9D?page=2",
-                "https://weibo.cn/comment/EvsBXBh9D?page=3",
-                "https://weibo.cn/comment/EvsBXBh9D?page=4"
+                "https://weibo.cn/comment/EvsBXBh9D?page=1"
         };
 
         // create a thread for each URI
@@ -97,10 +94,11 @@ public class WeiboSpider {
         }
     }
 
-    private static void extractInfoFromHtml(String html) {
+    protected static void extractInfoFromHtml(String html) {
         Document document = Jsoup.parse(html);
         document.getElementsByAttributeValue("class", "c").forEach(element -> {
-            System.out.println(element.toString());
+            String username = element.getElementsByTag("a").text();
+            System.out.println(username);
         });
     }
 }
@@ -125,12 +123,7 @@ class GetThread extends Thread {
             try {
                 HttpEntity httpEntity = response.getEntity();
                 String html = EntityUtils.toString(httpEntity);
-                Document document = Jsoup.parse(html);
-                document.getElementsByAttributeValue("class", "c").forEach(element -> {
-                    if (element.hasAttr("id")) {
-                        System.out.println(element.toString());
-                    }
-                });
+                WeiboSpider.extractInfoFromHtml(html);
 
             } finally {
                 response.close();
