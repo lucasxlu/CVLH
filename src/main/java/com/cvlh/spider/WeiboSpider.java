@@ -1,17 +1,16 @@
 package com.cvlh.spider;
 
 import com.cvlh.util.Constant;
+import com.cvlh.util.SpiderUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +19,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created by 29140 on 2017/2/21.
@@ -29,6 +30,20 @@ import java.io.IOException;
 public class WeiboSpider {
 
     private static final Logger logger = LogManager.getLogger();
+    private static String cookieString = null;
+
+    static {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            Files.readAllLines(Paths.get("D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\cookie.txt")).forEach(s -> {
+                stringBuilder.append(s);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            cookieString = stringBuilder.toString();
+        }
+    }
 
     /**
      * crawl all weibo comments belong to a specific weibo
@@ -38,23 +53,7 @@ public class WeiboSpider {
     public void crawlWeiboComments(String weiboUrl) throws InterruptedException {
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
 
-        // Create a local instance of cookie store
-        CookieStore cookieStore = new BasicCookieStore();
-        // Populate cookies if needed
-        BasicClientCookie cookie1 = new BasicClientCookie("_T_WM", "f45c6eee5166f31d973de90975ed4ac9");
-        BasicClientCookie cookie2 = new BasicClientCookie("ALF", "1490280565");
-        BasicClientCookie cookie3 = new BasicClientCookie("SCF", "AhXK3tD8oBIXxzVIoCDOKw9bQ7kc7UkM5pk7bRbkA27ccD6uXdzsLxUjAc5UPLfCDwyRU4LQ5HtFMrJ-NYrXPr0.");
-        BasicClientCookie cookie4 = new BasicClientCookie("SUB", "_2A251qCPLDeRxGeRK6FUY8SfFwz-IHXVXU02DrDV6PUJbktBeLXT1kW07dABJOV-ZHvFNaVTz1V3s2ZShrQ..");
-        BasicClientCookie cookie5 = new BasicClientCookie("SUBP", "0033WrSXqPxfM725Ws9jqgMF55529P9D9WFA5TwRz43RBDwVNEW_BoS35JpX5o2p5NHD95QESheN1K241Kn0Ws4DqcjMi--fi-zRiKnfi--NiKnciKyWi--NiKnciKyWK5tt");
-        BasicClientCookie cookie6 = new BasicClientCookie("SUHB", "0vJJmThEzOvnCu");
-        BasicClientCookie cookie7 = new BasicClientCookie("SSOLoginState", "1487688603");
-        cookieStore.addCookie(cookie1);
-        cookieStore.addCookie(cookie2);
-        cookieStore.addCookie(cookie3);
-        cookieStore.addCookie(cookie4);
-        cookieStore.addCookie(cookie5);
-        cookieStore.addCookie(cookie6);
-        cookieStore.addCookie(cookie7);
+        CookieStore cookieStore = SpiderUtil.normalizeCookie(cookieString, "weibo.cn");
 
         CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).setConnectionManager(cm).build();
         String[] urisToGet = {
@@ -97,6 +96,13 @@ public class WeiboSpider {
             e.printStackTrace();
         }
     }
+
+    private static void extractInfoFromHtml(String html) {
+        Document document = Jsoup.parse(html);
+        document.getElementsByAttributeValue("class", "c").forEach(element -> {
+            System.out.println(element.toString());
+        });
+    }
 }
 
 class GetThread extends Thread {
@@ -121,7 +127,9 @@ class GetThread extends Thread {
                 String html = EntityUtils.toString(httpEntity);
                 Document document = Jsoup.parse(html);
                 document.getElementsByAttributeValue("class", "c").forEach(element -> {
-                    System.out.println(element.toString());
+                    if (element.hasAttr("id")) {
+                        System.out.println(element.toString());
+                    }
                 });
 
             } finally {
