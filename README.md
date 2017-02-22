@@ -1,7 +1,8 @@
 # Computer Vision Lab of HAZU - Back End
 
 ## Introduction 
-    This repository is designed for later research in Computer Vision. It includes web spider, RESTful back-end API and so on.
+
+   This repository is designed for later research in Computer Vision, Machine Learning, Data Mining. It includes web spider, RESTful back-end API and so on.
      
 ## Prerequisite
     
