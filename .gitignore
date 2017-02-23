@@ -5,3 +5,4 @@ target
 tessdata
 Image.jpg
 logInfo.log
+out/
