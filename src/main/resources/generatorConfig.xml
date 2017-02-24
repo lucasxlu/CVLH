@@ -49,7 +49,7 @@
          <generatedKey column="id" sqlStatement="MySql" identity="true"/>
          </table>-->
 
-        <table schema="cvlh" tableName="user" domainObjectName="User"
+        <table schema="cvlh" tableName="douban_item_comment" domainObjectName="DoubanItemComment"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

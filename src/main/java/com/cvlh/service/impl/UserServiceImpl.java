@@ -17,6 +17,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User showUser() {
-        return userMapper.selectUser();
+        return null;
     }
 }
