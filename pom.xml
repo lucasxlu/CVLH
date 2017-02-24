@@ -63,8 +63,8 @@
                         <!--配置端口号-->
                         <port>8080</port>
                         <uriEncoding>UTF-8</uriEncoding>
-                        <!--配置访问路径，此处配置为根目录，即http://localhost/AgriculturalDoctor-->
-                        <path>/AgriculturalDoctor</path>
+                        <!--配置访问路径，此处配置为根目录，即http://localhost/CVLH-->
+                        <path>/CVLH</path>
                         <url>http://localhost:8080/manager/text</url>
                         <server>tomcat</server>
                     </configuration>

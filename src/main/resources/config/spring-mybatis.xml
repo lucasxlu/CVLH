@@ -61,7 +61,7 @@
 
     <!--Mybatis动态实现-->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.hzau.mapper"></property>
+        <property name="basePackage" value="com.cvlh.mapper"></property>
     </bean>
 
     <!--事务管理-->
