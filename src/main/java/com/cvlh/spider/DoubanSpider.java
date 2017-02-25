@@ -21,7 +21,6 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +35,7 @@ import java.util.Date;
 public class DoubanSpider {
 
     private static final Logger logger = LogManager.getLogger();
-    public static SqlSession sqlSession;
+    private static SqlSession sqlSession;
 
 
     static {

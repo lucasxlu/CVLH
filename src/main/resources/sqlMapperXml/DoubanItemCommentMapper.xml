@@ -11,12 +11,9 @@
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="digest" property="digest" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    comment_id, username, star, upvote, downvote, commentDate, content, digest
-  </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
+    select *
     from douban_item_comment
     where comment_id = #{commentId,jdbcType=VARCHAR}
   </select>

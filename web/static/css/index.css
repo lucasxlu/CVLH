@@ -1,0 +1,17 @@
+img {
+    min-width: 100%;
+    max-height: 353px;
+    background-color: black;
+}
+.navbar-nav li {
+    margin-left: 0px !important;
+}
+.navbar-collapse form{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+#navbar{position: relative;}
+.navbar-nav{margin-left: 10px;}
+.nav-p-rig{padding-right:2.5rem !important;}
+.carousel-control{width:5% !important;}

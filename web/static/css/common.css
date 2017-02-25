@@ -1,0 +1,17 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.navbar {
+    border-radius: 0;
+}
+footer {
+    font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 微软雅黑, Tahoma, Arial, sans-serif;
+    margin: 20px auto !important;
+    width: 100%;
+    font-size: 14px;
+    display: block;
+    text-align: center;
+    color: #b4bbbf;
+}

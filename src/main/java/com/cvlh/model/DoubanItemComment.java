@@ -20,6 +20,11 @@ public class DoubanItemComment implements Serializable {
 
     private String digest;
 
+    private static final long serialVersionUID = 1L;
+
+    public DoubanItemComment() {
+    }
+
     public DoubanItemComment(String commentId, String username, Integer star, Integer upvote, Integer downvote, Date commentdate, String content, String digest) {
         this.commentId = commentId;
         this.username = username;
@@ -30,11 +35,6 @@ public class DoubanItemComment implements Serializable {
         this.content = content;
         this.digest = digest;
     }
-
-    public DoubanItemComment() {
-    }
-
-    private static final long serialVersionUID = 1L;
 
     public String getCommentId() {
         return commentId;
