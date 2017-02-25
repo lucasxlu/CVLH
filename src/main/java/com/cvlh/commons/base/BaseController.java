@@ -82,8 +82,9 @@ public abstract class BaseController {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow_Methods", "POST,GET,OPTIONS,PUT,DELETE");
         Result result = new Result();
+        result.setMsg("OK");
         result.setStatus(0);
-        result.setResult(obj);
+        result.setData(obj);
         return result;
     }
 

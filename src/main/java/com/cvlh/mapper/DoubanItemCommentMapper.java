@@ -1,6 +1,9 @@
 package com.cvlh.mapper;
 
 import com.cvlh.model.DoubanItemComment;
+import com.cvlh.model.douban.TimeSequence;
+
+import java.util.List;
 
 public interface DoubanItemCommentMapper {
     int deleteByPrimaryKey(String commentId);
@@ -14,4 +17,6 @@ public interface DoubanItemCommentMapper {
     int updateByPrimaryKeySelective(DoubanItemComment record);
 
     int updateByPrimaryKey(DoubanItemComment record);
+
+    List<TimeSequence> selectCommentsDates();
 }

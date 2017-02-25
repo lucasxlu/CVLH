@@ -13,7 +13,7 @@ public class Result implements Serializable {
 
     private String msg = "";
 
-    private Object result = null;
+    private Object data = null;
 
     public int getStatus() {
         return status;
@@ -31,11 +31,11 @@ public class Result implements Serializable {
         this.msg = msg;
     }
 
-    public Object getResult() {
-        return result;
+    public Object getData() {
+        return data;
     }
 
-    public void setResult(Object result) {
-        this.result = result;
+    public void setData(Object data) {
+        this.data = data;
     }
 }

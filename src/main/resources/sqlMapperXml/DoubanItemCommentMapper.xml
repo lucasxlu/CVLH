@@ -1,125 +1,140 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cvlh.mapper.DoubanItemCommentMapper" >
-  <resultMap id="BaseResultMap" type="com.cvlh.model.DoubanItemComment" >
-    <id column="comment_id" property="commentId" jdbcType="VARCHAR" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="star" property="star" jdbcType="INTEGER" />
-    <result column="upvote" property="upvote" jdbcType="INTEGER" />
-    <result column="downvote" property="downvote" jdbcType="INTEGER" />
-    <result column="commentDate" property="commentdate" jdbcType="TIMESTAMP" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="digest" property="digest" jdbcType="VARCHAR" />
-  </resultMap>
+<mapper namespace="com.cvlh.mapper.DoubanItemCommentMapper">
+    <resultMap id="BaseResultMap" type="com.cvlh.model.DoubanItemComment">
+        <id column="comment_id" property="commentId" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="star" property="star" jdbcType="INTEGER"/>
+        <result column="upvote" property="upvote" jdbcType="INTEGER"/>
+        <result column="downvote" property="downvote" jdbcType="INTEGER"/>
+        <result column="commentDate" property="commentdate" jdbcType="TIMESTAMP"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="digest" property="digest" jdbcType="VARCHAR"/>
+    </resultMap>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select *
-    from douban_item_comment
-    where comment_id = #{commentId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from douban_item_comment
-    where comment_id = #{commentId,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.cvlh.model.DoubanItemComment" >
-    insert into douban_item_comment (comment_id, username, star, 
-      upvote, downvote, commentDate, 
-      content, digest)
-    values (#{commentId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{star,jdbcType=INTEGER}, 
-      #{upvote,jdbcType=INTEGER}, #{downvote,jdbcType=INTEGER}, #{commentdate,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=VARCHAR}, #{digest,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.cvlh.model.DoubanItemComment" >
-    insert into douban_item_comment
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="commentId != null" >
-        comment_id,
-      </if>
-      <if test="username != null" >
-        username,
-      </if>
-      <if test="star != null" >
-        star,
-      </if>
-      <if test="upvote != null" >
-        upvote,
-      </if>
-      <if test="downvote != null" >
-        downvote,
-      </if>
-      <if test="commentdate != null" >
-        commentDate,
-      </if>
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="digest != null" >
-        digest,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="commentId != null" >
-        #{commentId,jdbcType=VARCHAR},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="star != null" >
-        #{star,jdbcType=INTEGER},
-      </if>
-      <if test="upvote != null" >
-        #{upvote,jdbcType=INTEGER},
-      </if>
-      <if test="downvote != null" >
-        #{downvote,jdbcType=INTEGER},
-      </if>
-      <if test="commentdate != null" >
-        #{commentdate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="digest != null" >
-        #{digest,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cvlh.model.DoubanItemComment" >
-    update douban_item_comment
-    <set >
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="star != null" >
-        star = #{star,jdbcType=INTEGER},
-      </if>
-      <if test="upvote != null" >
-        upvote = #{upvote,jdbcType=INTEGER},
-      </if>
-      <if test="downvote != null" >
-        downvote = #{downvote,jdbcType=INTEGER},
-      </if>
-      <if test="commentdate != null" >
-        commentDate = #{commentdate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="digest != null" >
-        digest = #{digest,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where comment_id = #{commentId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.cvlh.model.DoubanItemComment" >
-    update douban_item_comment
-    set username = #{username,jdbcType=VARCHAR},
-      star = #{star,jdbcType=INTEGER},
-      upvote = #{upvote,jdbcType=INTEGER},
-      downvote = #{downvote,jdbcType=INTEGER},
-      commentDate = #{commentdate,jdbcType=TIMESTAMP},
-      content = #{content,jdbcType=VARCHAR},
-      digest = #{digest,jdbcType=VARCHAR}
-    where comment_id = #{commentId,jdbcType=VARCHAR}
-  </update>
+    <resultMap id="timeList" type="com.cvlh.model.douban.TimeSequence">
+        <result column="commentDate" property="date" jdbcType="TIMESTAMP"/>
+        <result column="num" property="number" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <select id="selectCommentsDates" resultMap="timeList">
+        SELECT
+            commentDate,
+            COUNT(commentDate) AS num
+        FROM douban_item_comment
+        GROUP BY commentDate
+        ORDER BY commentDate ASC
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT *
+        FROM douban_item_comment
+        WHERE comment_id = #{commentId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        DELETE FROM douban_item_comment
+        WHERE comment_id = #{commentId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.cvlh.model.DoubanItemComment">
+        INSERT INTO douban_item_comment (comment_id, username, star,
+                                         upvote, downvote, commentDate,
+                                         content, digest)
+        VALUES (#{commentId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{star,jdbcType=INTEGER},
+                #{upvote,jdbcType=INTEGER}, #{downvote,jdbcType=INTEGER}, #{commentdate,jdbcType=TIMESTAMP},
+                #{content,jdbcType=VARCHAR}, #{digest,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cvlh.model.DoubanItemComment">
+        insert into douban_item_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">
+                comment_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="star != null">
+                star,
+            </if>
+            <if test="upvote != null">
+                upvote,
+            </if>
+            <if test="downvote != null">
+                downvote,
+            </if>
+            <if test="commentdate != null">
+                commentDate,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="digest != null">
+                digest,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">
+                #{commentId,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="star != null">
+                #{star,jdbcType=INTEGER},
+            </if>
+            <if test="upvote != null">
+                #{upvote,jdbcType=INTEGER},
+            </if>
+            <if test="downvote != null">
+                #{downvote,jdbcType=INTEGER},
+            </if>
+            <if test="commentdate != null">
+                #{commentdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="digest != null">
+                #{digest,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cvlh.model.DoubanItemComment">
+        update douban_item_comment
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="star != null">
+                star = #{star,jdbcType=INTEGER},
+            </if>
+            <if test="upvote != null">
+                upvote = #{upvote,jdbcType=INTEGER},
+            </if>
+            <if test="downvote != null">
+                downvote = #{downvote,jdbcType=INTEGER},
+            </if>
+            <if test="commentdate != null">
+                commentDate = #{commentdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="digest != null">
+                digest = #{digest,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where comment_id = #{commentId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cvlh.model.DoubanItemComment">
+        UPDATE douban_item_comment
+        SET username    = #{username,jdbcType=VARCHAR},
+            star        = #{star,jdbcType=INTEGER},
+            upvote      = #{upvote,jdbcType=INTEGER},
+            downvote    = #{downvote,jdbcType=INTEGER},
+            commentDate = #{commentdate,jdbcType=TIMESTAMP},
+            content     = #{content,jdbcType=VARCHAR},
+            digest      = #{digest,jdbcType=VARCHAR}
+        WHERE comment_id = #{commentId,jdbcType=VARCHAR}
+    </update>
 </mapper>

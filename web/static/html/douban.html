@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Douban Movie</title>
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/echarts.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 800px;height:600px; margin-left: auto; margin-right: auto"></div>
+<div id="time" style="width: 800px;height:600px; margin-left: auto; margin-right: auto"></div>
+
+<script type="text/javascript">
+
+    var urlPrefix = "http://localhost:8080/api";
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('time'));
+    myChart.showLoading();
+    // 指定图表的配置项和数据
+    $.get(urlPrefix + '/douban/time').done(function (data) {
+        console.log(data);
+        myChart.hideLoading();
+        myChart.setOption({
+            title: {
+                text: 'Data Visualization'
+            },
+            tooltip: {},
+            xAxis: {
+                data: data.data.date
+            },
+            yAxis: {},
+            series: [{
+                name: 'Number',
+                type: 'bar',
+                data: data.data.number
+            }]
+        });
+    });
+
+</script>
+</body>
+</html>
