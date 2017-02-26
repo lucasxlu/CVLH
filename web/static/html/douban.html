@@ -17,9 +17,18 @@
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('time'));
     myChart.showLoading();
+
     // 指定图表的配置项和数据
     $.get(urlPrefix + '/douban/time').done(function (data) {
-        console.log(data);
+
+        var numbers = [];
+        var dates = [];
+        var dataJson = JSON.parse(data).data;
+        for (var i = 0; i < dataJson.length; i++) {
+            numbers[i] = dataJson[i].number;
+            dates[i] = new Date(dataJson[i].date).toISOString();
+        }
+
         myChart.hideLoading();
         myChart.setOption({
             title: {
@@ -27,13 +36,13 @@
             },
             tooltip: {},
             xAxis: {
-                data: data.data.date
+                data: dates
             },
             yAxis: {},
             series: [{
                 name: 'Number',
-                type: 'bar',
-                data: data.data.number
+                type: 'line',
+                data: numbers
             }]
         });
     });
