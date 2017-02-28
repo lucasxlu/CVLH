@@ -1,6 +1,5 @@
 package com.cvlh.spider;
 
-import com.cvlh.mapper.DoubanItemCommentMapper;
 import com.cvlh.model.DoubanItemComment;
 import com.cvlh.util.Constant;
 import com.cvlh.util.FileUtil;
@@ -10,10 +9,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -21,7 +16,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,6 +56,7 @@ public class DoubanSpider {
         CloseableHttpClient closeableHttpClient = HttpClients.custom().setUserAgent(Constant.BROWSER_USER_AGENT).build();
         for (int i = 0; i < maxPage; i++) {
             String url = "https://movie.douban.com/subject/" + String.valueOf(itemId) + "/reviews?start=" + String.valueOf(i * 20);
+            logger.debug("Page url is " + url);
             HttpGet httpGet = new HttpGet(url);
             httpGet.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
             httpGet.addHeader("Accept-Encoding", "gzip, deflate, sdch, br");
@@ -97,30 +92,34 @@ public class DoubanSpider {
         Document document = Jsoup.parse(html);
         if (document.getElementsByAttributeValue("class", "review-list").size() > 0) {
             for (Element element : document.getElementsByAttributeValue("class", "review-list").get(0).children()) {
+                String digest = null, commentId = null, username = null, content = null;
+                int star = 0, upvote = 0, downvote = 0;
+                Date commentDate = null;
+
                 try {
-                    String digest = element.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).text();
-                    String commentId = element.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).attr("href")
+                    digest = element.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).text();
+                    commentId = element.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).attr("href")
                             .replace("https://movie.douban.com/review/", "").replace("/", "").trim();
-                    String username = element.getElementsByAttributeValue("class", "header-more").get(0).getElementsByTag("a").get(1)
+                    username = element.getElementsByAttributeValue("class", "header-more").get(0).getElementsByTag("a").get(1)
                             .getElementsByTag("span").text();
-                    int star = Integer.parseInt(element.getElementsByAttributeValue("class", "header-more").get(0).getElementsByTag("span").get(1)
+                    star = Integer.parseInt(element.getElementsByAttributeValue("class", "header-more").get(0).getElementsByTag("span").get(1)
                             .attr("class").split(" ")[0].replace("allstar", "").trim());
                     String commentDateString = element.getElementsByAttributeValue("class", "header-more").get(0).getElementsByTag("span").get(2).text().trim();
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    Date commentDate = format.parse(commentDateString);
+                    commentDate = format.parse(commentDateString);
 
-                    String content = element.getElementsByAttributeValue("class", "short-content").get(0).text().trim();
-                    int upvote = Integer.parseInt(element.getElementsByAttributeValue("class", "left").get(0).text().split("/")[0].replace("有用", "").trim());
-                    int downvote = Integer.parseInt(element.getElementsByAttributeValue("class", "left").get(0).text().split("/")[1].replace("没用", "").trim());
+                    content = element.getElementsByAttributeValue("class", "short-content").get(0).text().trim();
+                    upvote = Integer.parseInt(element.getElementsByAttributeValue("class", "left").get(0).text().split("/")[0].replace("有用", "").trim());
+                    downvote = Integer.parseInt(element.getElementsByAttributeValue("class", "left").get(0).text().split("/")[1].replace("没用", "").trim());
 
-                    DoubanItemComment doubanItemComment = new DoubanItemComment(commentId, username, star / 10, upvote, downvote, commentDate, null, digest);
+                    DoubanItemComment doubanItemComment = new DoubanItemComment(commentId, username, star / 10, upvote, downvote, commentDate, content, digest);
                     logger.debug(doubanItemComment);
                     doubanItemCommentList.add(doubanItemComment);
 
 //                    sqlSession.getMapper(DoubanItemCommentMapper.class).insert(doubanItemComment);
-
-
                 } catch (IndexOutOfBoundsException e) {
+                    DoubanItemComment doubanItemComment = new DoubanItemComment(commentId, username, star / 10, upvote, downvote, commentDate, content, digest);
+                    doubanItemCommentList.add(doubanItemComment);
                     logger.error("该评论已被折叠，无法获取赞数和反对数!!");
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -132,6 +131,7 @@ public class DoubanSpider {
     public static void main(String[] args) {
         try {
             new DoubanSpider().crawlDoubanItemComments(25975243, 80);
+            logger.info("The size of comment list is " + doubanItemCommentList.size());
             FileUtil.outDoubanCommentsExcel(doubanItemCommentList, "D:/");
         } catch (IOException e) {
             e.printStackTrace();
