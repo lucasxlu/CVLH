@@ -3,6 +3,7 @@ package com.cvlh.spider;
 import com.cvlh.mapper.DoubanItemCommentMapper;
 import com.cvlh.model.DoubanItemComment;
 import com.cvlh.util.Constant;
+import com.cvlh.util.FileUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -24,7 +25,9 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -35,10 +38,10 @@ import java.util.Date;
 public class DoubanSpider {
 
     private static final Logger logger = LogManager.getLogger();
-    private static SqlSession sqlSession;
+    private static List<DoubanItemComment> doubanItemCommentList = new ArrayList<>();
+//    private static SqlSession sqlSession;
 
-
-    static {
+/*    static {
         String resource = "mybatis-config.xml";
         InputStream inputStream = null;
         try {
@@ -48,7 +51,7 @@ public class DoubanSpider {
         }
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         sqlSession = sqlSessionFactory.openSession();
-    }
+    }*/
 
     /**
      * a web spider for douban item
@@ -110,10 +113,11 @@ public class DoubanSpider {
                     int upvote = Integer.parseInt(element.getElementsByAttributeValue("class", "left").get(0).text().split("/")[0].replace("有用", "").trim());
                     int downvote = Integer.parseInt(element.getElementsByAttributeValue("class", "left").get(0).text().split("/")[1].replace("没用", "").trim());
 
-                    DoubanItemComment doubanItemComment = new DoubanItemComment(commentId, username, star, upvote, downvote, commentDate, null, digest);
+                    DoubanItemComment doubanItemComment = new DoubanItemComment(commentId, username, star / 10, upvote, downvote, commentDate, null, digest);
                     logger.debug(doubanItemComment);
+                    doubanItemCommentList.add(doubanItemComment);
 
-                    sqlSession.getMapper(DoubanItemCommentMapper.class).insert(doubanItemComment);
+//                    sqlSession.getMapper(DoubanItemCommentMapper.class).insert(doubanItemComment);
 
 
                 } catch (IndexOutOfBoundsException e) {
@@ -128,10 +132,12 @@ public class DoubanSpider {
     public static void main(String[] args) {
         try {
             new DoubanSpider().crawlDoubanItemComments(25975243, 80);
+            FileUtil.outDoubanCommentsExcel(doubanItemCommentList, "D:/");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }
