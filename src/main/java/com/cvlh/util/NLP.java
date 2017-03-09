@@ -2,14 +2,12 @@ package com.cvlh.util;
 
 
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,12 +16,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by 29140 on 2017/3/8.
  */
+@Deprecated
 public class NLP implements NLPService {
 
     private static final Logger logger = LogManager.getLogger();
@@ -42,8 +41,8 @@ public class NLP implements NLPService {
                 .setParameter("access_token", token).build();
         HttpPost httpPost = new HttpPost(uri);
 
+        httpPost.setEntity(new StringEntity(new NLP().commAbstractBody(comment, "11").toString()));
 
-        httpPost.setEntity(new UrlEncodedFormEntity((List<? extends NameValuePair>) new NLP().commAbstractBody(comment, "11")));
         httpPost.addHeader("Content-Type", "application/json");
         CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(httpPost);
         HttpEntity httpEntity = closeableHttpResponse.getEntity();
@@ -77,12 +76,18 @@ public class NLP implements NLPService {
 
     @Override
     public Object commAbstractBody(String comment, String typeId) {
-        List<NameValuePair> params = new ArrayList<>();
+        /*List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("comment", comment));
         params.add(new BasicNameValuePair("entity", "NULL"));
         params.add(new BasicNameValuePair("type", "10"));
 
-        return params;
+        return params;*/
+        Map<String, String> map = new HashMap<>();
+        map.put("comment", comment);
+        map.put("entity", "NULL");
+        map.put("type", typeId);
+        return JSONObject.wrap(map);
+
     }
 
     public static void main(String[] args) {
