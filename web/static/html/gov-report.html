@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Government Report</title>
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/echarts.js"></script>
+</head>
+<body>
+
+<div id="personWords" style="width: 800px;height:600px; margin-left: auto; margin-right: auto"></div>
+<script type="text/javascript">
+
+    var urlPrefix = "http://localhost:8080/api";
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('personWords'));
+    myChart.showLoading();
+
+    // 指定图表的配置项和数据
+    $.get('../data/毛泽东.json').done(function (data) {
+
+        var numbers = [];
+        var dates = [];
+        var dataJson = JSON.parse(data).data;
+        for (var i = 0; i < dataJson.length; i++) {
+            numbers[i] = dataJson[i].number;
+            dates[i] = new Date(dataJson[i].date).toISOString();
+        }
+
+        myChart.hideLoading();
+        myChart.setOption({
+            title: {
+                text: 'Data Visualization'
+            },
+            tooltip: {},
+            xAxis: {
+                data: dates
+            },
+            yAxis: {},
+            series: [{
+                name: 'Number',
+                type: 'line',
+                data: numbers
+            }]
+        });
+    });
+
+</script>
+
+</body>
+</html>
