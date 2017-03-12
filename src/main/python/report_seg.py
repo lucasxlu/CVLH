@@ -9,7 +9,7 @@ import os
 
 
 def get_hot_words(article):
-    # jieba.analyse.set_stop_words("/home/xulu/code/gov_rep_code/stopwords.txt")
+    jieba.analyse.set_stop_words("D:/Users/IdeaProjects/TempProjects/CVLH-BE/src/main/python/stopwordsCN.txt")
     # jieba.load_userdict("/home/xulu/code/gov_rep_code/userdict.txt")
     return jieba.analyse.extract_tags(article, topK=50, withWeight=True, allowPOS=())
 

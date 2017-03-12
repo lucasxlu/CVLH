@@ -2,6 +2,10 @@ import csv
 import os
 import json
 
+import jieba
+
+import report_seg
+
 
 def is_count_word(word, csv_file_path):
     """
@@ -50,17 +54,52 @@ def dict2json(data_dict, json_filename):
         f.close()
 
 
+def sentiment_analysis(report_filepath):
+    # jieba.analyse.set_stop_words(stop_words_path=stopwords_filepath)
+    article = report_seg.get_article_content(report_filepath)
+    wordlist = jieba.analyse.extract_tags(article, topK=int(len(article) / 3), withWeight=False, allowPOS=())
+
+    positive_score = negative_score = 0
+    positive_wordbags = read_all_words('D:/Users/IdeaProjects/TempProjects/CVLH-BE/src/main/resources/NLPSentiment/sentiment_dict/NTUSD_positive_simplified.txt')
+    negative_wordbags = read_all_words('D:/Users/IdeaProjects/TempProjects/CVLH-BE/src/main/resources/NLPSentiment/sentiment_dict/NTUSD_negative_simplified.txt')
+
+    for each_word in wordlist:
+        if each_word in positive_wordbags:
+            positive_score += 1
+        elif each_word in negative_wordbags:
+            negative_score += 1
+
+    if positive_score >= negative_score:
+        print('POSITIVE is ' + str(positive_score))
+        return 'POSITIVE', (positive_score / (positive_score + negative_score))
+    elif positive_score < negative_score:
+        print('NEGATIVE is ' + str(negative_score))
+        return 'NEGATIVE', (negative_score / (positive_score + negative_score))
+
+
+def read_all_words(filepath):
+    with open(filepath, mode='rt', encoding='utf-8') as f:
+        return f.readlines()
+
+
 if __name__ == '__main__':
     csv_dir = 'C:/Users/29140/Desktop/GovReport/gov_hotwords'
+
+    attitude, score = sentiment_analysis("D:/comments.txt")
+    print('The sentiment is ' + attitude, end='\r')
+    print('Score is ' + str(score))
+
     """
-        word_freq = count_word(1954, 1976, csv_dir)
+        word_freq = count_word(2013, 2017, csv_dir)
         print(word_freq)
-        dict2json(word_freq, '毛泽东')
+        dict2json(word_freq, '习近平')
     """
 
-    count_sum = 0
-    for each_csv_file in os.listdir(csv_dir):
-        if is_count_word('增长', csv_dir + os.path.sep + each_csv_file) is True:
-            count_sum += 1
+    """
+        count_sum = 0
+        for each_csv_file in os.listdir(csv_dir):
+            if is_count_word('增长', csv_dir + os.path.sep + each_csv_file) is True:
+                count_sum += 1
 
-    print('It is proposed ' + str(count_sum) + ' times!')
+        print('It is proposed ' + str(count_sum) + ' times!')
+    """
