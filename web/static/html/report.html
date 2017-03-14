@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Report for Text Mining">
+    <meta name="author" content="LucasX">
+    <link rel="icon" href="../res/favicon.ico">
+
+    <style>
+        img {
+            width: 356px;
+        }
+    </style>
+    <title>Report for Text Mining</title>
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="../css/album.css" rel="stylesheet">
+
+    <script src="../js/jquery-3.1.1.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="collapse bg-inverse" id="navbarHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 py-4">
+                <h4 class="text-white">Report</h4>
+            </div>
+            <div class="col-sm-4 py-4">
+                <h4 class="text-white">Contact</h4>
+                <ul class="list-unstyled">
+                    <li><a href="https://github.com/EclipseXuLu" target="_blank" class="text-white">Follow on github</a></li>
+                    <li><a href="http://www.weibo.com/xldev" target="_blank" class="text-white">Follow me on Weibo</a></li>
+                    <li><a href="mailto:xulu0620@qq.com" target="_blank" class="text-white">Email me</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar navbar-inverse bg-inverse">
+    <div class="container d-flex justify-content-between">
+        <a href="#" class="navbar-brand" style="color: white">Report</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading" align="center">China Government Report</h1>
+        <p align="center">
+            <a href="../res/GovReport.pptx" target="_blank">Get PPTX File</a>
+        </p>
+    </div>
+</section>
+
+<div class="album text-muted">
+    <div class="container">
+
+        <div class="row" id="ppt">
+        </div>
+
+    </div>
+</div>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+        <p class="float-right">
+            <a href="index.html">Back to Index</a>
+        </p>
+    </div>
+</footer>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+
+<script>
+    var htmlContent = '';
+    for (var i = 1; i <= 26; i++) {
+        htmlContent += '<div class=\"card\"><img src=\"../res/img/gov_report/幻灯片' + i + '.PNG\" alt=\"Card image cap\"></div>';
+    }
+
+    $("#ppt").html(htmlContent);
+</script>
+<script>
+    $(function () {
+        Holder.addTheme("thumb", {background: "#55595c", foreground: "#eceeef", text: "Thumbnail"});
+    });
+</script>
+<script src="../bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+<script src="../js/holder.min.js"></script>
+</body>
+</html>
