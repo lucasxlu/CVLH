@@ -20,3 +20,8 @@
    1. [BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html)
    2. [requests](http://www.python-requests.org/en/master/)
    3. [jieba](https://github.com/fxsjy/jieba/)
+   
+## Note 
+
+   For later research, [TensorFlow](https://www.tensorflow.org/) is required, so you'd better have [CUDA](https://developer.nvidia.com/cuda-downloads), 
+   [cuDNN](https://developer.nvidia.com/cudnn) and [TensorFlow](https://www.tensorflow.org/) installed on your machine.
