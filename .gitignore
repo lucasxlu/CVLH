@@ -8,3 +8,5 @@ logInfo.log
 out/
 src/main/resources/BaiduAI.properties
 src/test/java/test/cvlh/spider/NLPTest.java
+src/main/python/__pycache__/
+web/static/res/hzau/

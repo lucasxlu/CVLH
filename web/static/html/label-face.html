@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    <title>Label Face</title>
+    <script>
+        $(document).ready(function () {
+            init();
+        });
+
+        function init() {
+            var url = 'http://localhost:8080/api/hzau/face';
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "json",
+            })
+                .done(function (json) {
+                    $("#face").attr({
+                        alt: json.data[0].idnumber,
+                        src: json.data[0].avatarpath
+                    });
+                    return json;
+                })
+                .fail(function (xhr, status, errorThrown) {
+                    alert("Sorry, there was a problem!");
+                    console.log("Error: " + errorThrown);
+                    console.log("Status: " + status);
+                    console.dir(xhr);
+                })
+                .always(function (xhr, status) {
+                    console.log("The request is complete!");
+                });
+        }
+
+        function submit() {
+            var sumbitUrl = "http://localhost:8080/api/hzau/scoreface";
+            $.ajax({
+                url: sumbitUrl,
+                type: "POST",
+                data: {
+                    labeledScore: 6.6,
+                    idnumber: '2016317110028',
+                    labeler: 'Lucas'
+                }
+            })
+                .done(function () {
+                    console.log('submit successfully~');
+                })
+                .fail(function (xhr, status, errorThrown) {
+                    alert("Sorry, there was a problem!");
+                    console.log("Error: " + errorThrown);
+                    console.log("Status: " + status);
+                    console.dir(xhr);
+                });
+        }
+    </script>
+    <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
+    <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/tether.min.js"></script>
+    <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div align="center">
+    <img id="face" class="img-polaroid"/>
+</div>
+<div align="center">
+
+
+    <form>
+        <fieldset>
+            <legend>Face Scoring</legend>
+            <label>HZAU</label>
+            <input type="number" id="score">
+            <button class="btn btn-primary" type="button" onclick="submit()">Next Face</button>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

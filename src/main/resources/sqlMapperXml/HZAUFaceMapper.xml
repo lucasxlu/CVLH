@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvlh.mapper.HZAUFaceMapper" >
+  <resultMap id="BaseResultMap" type="com.cvlh.model.HZAUFace" >
+    <id column="idnumber" property="idnumber" jdbcType="VARCHAR" />
+    <result column="avatarpath" property="avatarpath" jdbcType="VARCHAR" />
+    <result column="labeled_score" property="labeledScore" jdbcType="DOUBLE" />
+    <result column="college" property="college" jdbcType="VARCHAR" />
+    <result column="labeler" property="labeler" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="ResultMap1" type="com.cvlh.model.HZAUFace" >
+    <id column="idnumber" property="idnumber" jdbcType="VARCHAR" />
+    <result column="avatarpath" property="avatarpath" jdbcType="VARCHAR" />
+    <result column="college" property="college" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectAllFaces" resultMap="ResultMap1">
+    SELECT idnumber, avatarpath, college
+    FROM hzau_face
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from hzau_face
+    where idnumber = #{idnumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hzau_face
+    where idnumber = #{idnumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cvlh.model.HZAUFace" >
+    insert into hzau_face (idnumber, avatarpath, labeled_score, 
+      college, labeler)
+    values (#{idnumber,jdbcType=VARCHAR}, #{avatarpath,jdbcType=VARCHAR}, #{labeledScore,jdbcType=DOUBLE}, 
+      #{college,jdbcType=VARCHAR}, #{labeler,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cvlh.model.HZAUFace" >
+    insert into hzau_face
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="idnumber != null" >
+        idnumber,
+      </if>
+      <if test="avatarpath != null" >
+        avatarpath,
+      </if>
+      <if test="labeledScore != null" >
+        labeled_score,
+      </if>
+      <if test="college != null" >
+        college,
+      </if>
+      <if test="labeler != null" >
+        labeler,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="idnumber != null" >
+        #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarpath != null" >
+        #{avatarpath,jdbcType=VARCHAR},
+      </if>
+      <if test="labeledScore != null" >
+        #{labeledScore,jdbcType=DOUBLE},
+      </if>
+      <if test="college != null" >
+        #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="labeler != null" >
+        #{labeler,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cvlh.model.HZAUFace" >
+    update hzau_face
+    <set >
+      <if test="avatarpath != null" >
+        avatarpath = #{avatarpath,jdbcType=VARCHAR},
+      </if>
+      <if test="labeledScore != null" >
+        labeled_score = #{labeledScore,jdbcType=DOUBLE},
+      </if>
+      <if test="college != null" >
+        college = #{college,jdbcType=VARCHAR},
+      </if>
+      <if test="labeler != null" >
+        labeler = #{labeler,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where idnumber = #{idnumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cvlh.model.HZAUFace" >
+    update hzau_face
+    set avatarpath = #{avatarpath,jdbcType=VARCHAR},
+      labeled_score = #{labeledScore,jdbcType=DOUBLE},
+      college = #{college,jdbcType=VARCHAR},
+      labeler = #{labeler,jdbcType=VARCHAR}
+    where idnumber = #{idnumber,jdbcType=VARCHAR}
+  </update>
+
+  <update id="update">
+    update hzau_face
+    set labeled_score = #{labeledScore,jdbcType=DOUBLE},
+    labeler = #{labeler,jdbcType=VARCHAR}
+    where idnumber = #{idnumber,jdbcType=VARCHAR}
+  </update>
+</mapper>

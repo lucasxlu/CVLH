@@ -49,7 +49,7 @@
          <generatedKey column="id" sqlStatement="MySql" identity="true"/>
          </table>-->
 
-        <table schema="cvlh" tableName="gov_report_hotwords" domainObjectName="GovReportHotwords"
+        <table schema="cvlh" tableName="hzau_face" domainObjectName="HZAUFace"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

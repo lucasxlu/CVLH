@@ -9,6 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 /**
@@ -53,5 +57,28 @@ public class FileUtil {
         FileOutputStream fileOut = new FileOutputStream(filePath + File.separator + "data.xlsx");
         wb.write(fileOut);
         fileOut.close();
+    }
+
+    public static void loadImgToDb(String baseDir) throws IOException {
+        Files.list(Paths.get(baseDir)).forEach(path -> {
+            if (Files.isDirectory(path)) {
+                try {
+                    Files.list(path).forEach(path1 -> {
+                        String idNumber = path1.getFileName().toString().split("\\.")[0].trim();
+                        String imgPath = "../res/hzau/coi/" + path1.getFileName().toString();
+                        String college = path.getFileName().toString();
+                        String line = idNumber + "\t" + imgPath + "\t" + college + "\r\n";
+                        System.out.println(line);
+                        try {
+                            Files.write(Paths.get("D:/facedata.txt"), line.getBytes(), StandardOpenOption.APPEND);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
