@@ -65,7 +65,7 @@ public class FileUtil {
                 try {
                     Files.list(path).forEach(path1 -> {
                         String idNumber = path1.getFileName().toString().split("\\.")[0].trim();
-                        String imgPath = "../res/hzau/coi/" + path1.getFileName().toString();
+                        String imgPath = "../res/hzau/" + path.getFileName().toString() + "/" + path1.getFileName().toString();
                         String college = path.getFileName().toString();
                         String line = idNumber + "\t" + imgPath + "\t" + college + "\r\n";
                         System.out.println(line);

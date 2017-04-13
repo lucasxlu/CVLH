@@ -12,7 +12,7 @@ public class FileUtilTest {
     @Test
     public void testLoadImgToDb() {
         try {
-            FileUtil.loadImgToDb("D:\\DataSet\\hzau");
+            FileUtil.loadImgToDb("D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\web\\static\\res\\hzau");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,11 +5,13 @@
     <script src="../js/jquery-3.1.1.min.js"></script>
     <title>Label Face</title>
     <script>
-        $(document).ready(function () {
-            init();
-        });
+        var labeler, faceList;
+        var index;
+        console.log(index);
 
-        function init() {
+        $(function () {
+            index = $('#index').val();
+            labeler = prompt("Please input your name here");
             var url = 'http://localhost:8080/api/hzau/face';
             $.ajax({
                 url: url,
@@ -18,42 +20,54 @@
             })
                 .done(function (json) {
                     $("#face").attr({
-                        alt: json.data[0].idnumber,
-                        src: json.data[0].avatarpath
+                        alt: json.data[index].idnumber,
+                        src: json.data[index].avatarpath
                     });
-                    return json;
+                    faceList = json.data;
                 })
                 .fail(function (xhr, status, errorThrown) {
                     alert("Sorry, there was a problem!");
                     console.log("Error: " + errorThrown);
                     console.log("Status: " + status);
                     console.dir(xhr);
-                })
-                .always(function (xhr, status) {
-                    console.log("The request is complete!");
                 });
-        }
+        });
 
-        function submit() {
+
+        function scoreFace(face) {
             var sumbitUrl = "http://localhost:8080/api/hzau/scoreface";
             $.ajax({
                 url: sumbitUrl,
                 type: "POST",
                 data: {
-                    labeledScore: 6.6,
-                    idnumber: '2016317110028',
-                    labeler: 'Lucas'
+                    labeledScore: $('#score').val(),
+                    idnumber: face['idnumber'],
+                    labeler: labeler
                 }
             })
                 .done(function () {
-                    console.log('submit successfully~');
+                    console.log('score ok');
                 })
                 .fail(function (xhr, status, errorThrown) {
-                    alert("Sorry, there was a problem!");
+                    $('#myModal').modal(options);
                     console.log("Error: " + errorThrown);
                     console.log("Status: " + status);
                     console.dir(xhr);
                 });
+        }
+
+
+        function nextFace() {
+            if (index < faceList.length) {
+                var face = faceList[index];
+                console.log(index);
+                scoreFace(face);
+                index++;
+                $("#face").attr({
+                    alt: faceList[index].idnumber,
+                    src: faceList[index].avatarpath
+                });
+            }
         }
     </script>
     <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
@@ -61,20 +75,44 @@
     <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
+<h2 align="center">Face Scoring with Your Appetite</h2>
+<p align="center">Scoring these faces with a range of 1 to 10, 10 stands for the most good-looking while 1 represents the ugliest.</p>
+<p align="center">It's just for fun and research, so feel free to do that ^_^</p>
 <div align="center">
     <img id="face" class="img-polaroid"/>
 </div>
 <div align="center">
-
-
     <form>
         <fieldset>
             <legend>Face Scoring</legend>
-            <label>HZAU</label>
-            <input type="number" id="score">
-            <button class="btn btn-primary" type="button" onclick="submit()">Next Face</button>
+            <label>Your Score</label>
+            <input type="number" id="score" min="1" max="10">
+            <input type="number" value="0" hidden id="index"/>
+            <button class="btn btn-primary" type="button" onclick="nextFace()">Next Face</button>
         </fieldset>
     </form>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

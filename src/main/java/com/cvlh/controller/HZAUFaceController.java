@@ -31,8 +31,8 @@ public class HZAUFaceController extends BaseController {
 
     @RequestMapping(value = "/hzau/scoreface", method = RequestMethod.POST)
     @ResponseBody
-    public Object scoreFace(@RequestParam String idnumber, @RequestParam int score, @RequestParam String labeler, HttpServletResponse httpServletResponse) {
-        int i = hzauFaceService.score(idnumber, score, labeler);
+    public Object scoreFace(@RequestParam String idnumber, @RequestParam double labeledScore, @RequestParam String labeler, HttpServletResponse httpServletResponse) {
+        int i = hzauFaceService.score(idnumber, labeledScore, labeler);
         return i != 0 ? renderSuccess("face scoring done!", httpServletResponse) : renderError("ERROR!", httpServletResponse);
     }
 

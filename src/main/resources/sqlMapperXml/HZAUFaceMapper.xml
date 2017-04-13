@@ -18,6 +18,8 @@
   <select id="selectAllFaces" resultMap="ResultMap1">
     SELECT idnumber, avatarpath, college
     FROM hzau_face
+    WHERE labeled_score IS NULL
+    ORDER BY idnumber ASC
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >

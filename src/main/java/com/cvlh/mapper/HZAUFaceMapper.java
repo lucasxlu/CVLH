@@ -1,6 +1,7 @@
 package com.cvlh.mapper;
 
 import com.cvlh.model.HZAUFace;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface HZAUFaceMapper {
 
     int updateByPrimaryKeySelective(HZAUFace record);
 
-    int update(String idnumber, double labeledScore, String labeler);
+    int update(@Param("idnumber") String idnumber, @Param("labeledScore") double labeledScore, @Param("labeler") String labeler);
 
     int updateByPrimaryKey(HZAUFace record);
 

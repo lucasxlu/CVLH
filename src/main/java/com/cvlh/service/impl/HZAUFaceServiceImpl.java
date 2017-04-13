@@ -24,7 +24,7 @@ public class HZAUFaceServiceImpl implements HZAUFaceService {
     }
 
     @Override
-    public int score(@Param("idnumber") String idnumber, @Param("labeledScore") double labeledScore, @Param("labeler") String labeler) {
+    public int score(String idnumber, double labeledScore, String labeler) {
         return hzauFaceMapper.update(idnumber, labeledScore, labeler);
     }
 }
