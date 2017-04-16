@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../js/jquery-3.1.1.min.js"></script>
+
+    <title>Face of HZAU Report</title>
+
+    <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
+    <style>
+        img {
+            margin: 0 3px;
+        }
+    </style>
+    <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/tether.min.js"></script>
+    <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+
+    <script>
+        function showFace() {
+            var sumbitUrl = "http://localhost:8080/api/hzau/showface";
+            $.ajax({
+                url: sumbitUrl,
+                type: "POST",
+                data: {
+                    minVal: $('#minVal').val(),
+                    maxVal: $('#maxVal').val()
+                },
+                dataType: "json"
+            })
+                .done(function (json) {
+                        var faceList = json.data;
+                        var htmlContent = '<div class=\"card\">';
+                        for (var i = 0; i < faceList.length; i++) {
+                            var face = faceList[i];
+                            htmlContent += '<img src=\"' + face.avatarpath + '\" alt=\"' + face.idnumber + '\"/>';
+                        }
+                        htmlContent += '</div>';
+                        $("#faceArea").html(htmlContent);
+                    }
+                )
+                .fail(function (xhr, status, errorThrown) {
+                    $('#myModal').modal(options);
+                    console.log("Error: " + errorThrown);
+                    console.log("Status: " + status);
+                    console.dir(xhr);
+                });
+        }
+    </script>
+</head>
+<body>
+<div align="center" style="border: 2px pink;">
+    <h2>Here are the face images belongs to different level</h2>
+    <h5>Please choose your score range and it will show the faces</h5>
+    <label>min value</label><input type="number" id="minVal" min="0" max="10"/>
+    <label>max value</label><input type="number" id="maxVal" min="0" max="10"/>
+    <button type="button" class="btn btn-success" onclick="showFace()">Show Face</button>
+    <div id="faceArea"></div>
+</div>
+
+</body>
+</html>

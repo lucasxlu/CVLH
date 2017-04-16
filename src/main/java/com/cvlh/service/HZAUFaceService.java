@@ -12,4 +12,6 @@ public interface HZAUFaceService {
     List<HZAUFace> showAllFaces();
 
     int score(String idnumber, double labeledScore, String labeler);
+
+    List<HZAUFace> showFacesByRange(double minVal, double maxVal);
 }

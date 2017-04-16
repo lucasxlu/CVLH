@@ -36,4 +36,11 @@ public class HZAUFaceController extends BaseController {
         return i != 0 ? renderSuccess("face scoring done!", httpServletResponse) : renderError("ERROR!", httpServletResponse);
     }
 
+    @RequestMapping(value = "/hzau/showface", method = RequestMethod.POST)
+    @ResponseBody
+    public Object showFace(@RequestParam double minVal, @RequestParam double maxVal, HttpServletResponse httpServletResponse) {
+        List<HZAUFace> hzauFaceList = hzauFaceService.showFacesByRange(minVal, maxVal);
+
+        return null != hzauFaceList ? renderSuccess(hzauFaceList, httpServletResponse) : renderError("No Data!", httpServletResponse);
+    }
 }

@@ -27,4 +27,9 @@ public class HZAUFaceServiceImpl implements HZAUFaceService {
     public int score(String idnumber, double labeledScore, String labeler) {
         return hzauFaceMapper.update(idnumber, labeledScore, labeler);
     }
+
+    @Override
+    public List<HZAUFace> showFacesByRange(double minVal, double maxVal) {
+        return hzauFaceMapper.showFacesByRange(minVal, maxVal);
+    }
 }

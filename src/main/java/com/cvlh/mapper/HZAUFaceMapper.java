@@ -21,4 +21,6 @@ public interface HZAUFaceMapper {
     int updateByPrimaryKey(HZAUFace record);
 
     List<HZAUFace> selectAllFaces();
+
+    List<HZAUFace> showFacesByRange(@Param("minVal") double minVal, @Param("maxVal") double maxVal);
 }
