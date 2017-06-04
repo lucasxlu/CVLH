@@ -1,5 +1,6 @@
 package test.bioinfo.algorithm;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -411,12 +412,22 @@ public class Assignment {
     }
 
     public static void main(String[] args) throws IOException {
-        String filePath = "E:/MyDocument/BioAlgorithm/ass/input2.txt";
+        String filePath = args[0];
         List<Integer> integerList = readPermutationFromTxt(filePath);
-        long startTime = System.currentTimeMillis();
-        twoApproximation(1, integerList);
-//        fourApproximation(1, integerList);
-        long endTime = System.currentTimeMillis();
+        String typeAlgorithm = JOptionPane.showInputDialog("which algorithm do you want to test? 4 for 4-approximation and 2 for 2-approximation!");
+        long startTime = 0, endTime = 0;
+        if (typeAlgorithm.trim().equals("2")) {
+            startTime = System.currentTimeMillis();
+            twoApproximation(1, integerList);
+            endTime = System.currentTimeMillis();
+        } else if (typeAlgorithm.trim().equals("4")) {
+            startTime = System.currentTimeMillis();
+            fourApproximation(1, integerList);
+            endTime = System.currentTimeMillis();
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid input, please input 2 or 4!");
+            System.exit(-1);
+        }
         System.out.println("It takes " + (endTime - startTime) + " ms in all!");
     }
 

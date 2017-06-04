@@ -10,3 +10,5 @@ src/main/resources/BaiduAI.properties
 src/test/java/test/cvlh/spider/NLPTest.java
 src/main/python/__pycache__/
 web/static/res/hzau/
+test/java/test/bioinfo/algorithm.zipalgo
+src/test/java/test/bioinfo/algorithm.zip
