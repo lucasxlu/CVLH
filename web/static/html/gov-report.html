@@ -5,47 +5,91 @@
     <title>Government Report</title>
     <script src="/static/js/jquery-3.1.1.min.js"></script>
     <script src="/static/js/echarts.js"></script>
+    <script src="/static/js/echarts-wordcloud.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
 </head>
 <body>
+<div class="container" align="center">
+    <h2 align="center">Visualization of government reports keyword</h2>
 
-<div id="personWords" style="width: 800px;height:600px; margin-left: auto; margin-right: auto"></div>
-<script type="text/javascript">
+    <form>
+        <div class="form-group">
+            <label for="chairman">Select a chairman</label>
+            <select class="form-control" id="chairman">
+                <option label="毛泽东" value="../data/毛泽东.json">毛泽东</option>
+                <option label="邓小平" value="../data/邓小平.json">邓小平</option>
+                <option label="江泽民" value="../data/江泽民.json">江泽民</option>
+                <option label="胡锦涛" value="../data/胡锦涛.json">胡锦涛</option>
+                <option label="习近平" value="../data/习近平.json">习近平</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" onclick="showKeywords()">Show</button>
+    </form>
 
-    var urlPrefix = "http://localhost:8080/api";
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('personWords'));
-    myChart.showLoading();
+    <script type="text/javascript">
 
-    // 指定图表的配置项和数据
-    $.get('../data/毛泽东.json').done(function (data) {
+        function showKeywords() {
 
-        var numbers = [];
-        var dates = [];
-        var dataJson = JSON.parse(data).data;
-        for (var i = 0; i < dataJson.length; i++) {
-            numbers[i] = dataJson[i].number;
-            dates[i] = new Date(dataJson[i].date).toISOString();
+            var dataUrl = $(':selected').attr('value');
+            var urlPrefix = "http://localhost:8080/api";
+            var myChart = echarts.init(document.getElementById('keywords'));
+
+            var data = [];
+            $.get(dataUrl).done(function (keywords) {
+                for (var name in keywords) {
+                    data.push({
+                        name: name,
+                        value: Math.sqrt(keywords[name])
+                    })
+                }
+
+            });
+
+
+            var maskImage = new Image();
+
+            var option = {
+                series: [{
+                    type: 'wordCloud',
+                    sizeRange: [10, 100],
+                    rotationRange: [-90, 90],
+                    rotationStep: 45,
+                    gridSize: 2,
+                    shape: 'pentagon',
+                    maskImage: maskImage,
+                    textStyle: {
+                        normal: {
+                            color: function () {
+                                return 'rgb(' + [
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160)
+                                    ].join(',') + ')';
+                            }
+                        }
+                    },
+                    data: data.sort(function (a, b) {
+                        return b.value - a.value;
+                    })
+                }]
+            };
+
+            maskImage.onload = function () {
+                option.series[0].maskImage
+                myChart.setOption(option);
+            }
+
+            maskImage.src = '/static/logo.png';
         }
+    </script>
+    <div id="keywords" style="width: 1024px;height:768px;"></div>
+</div>
 
-        myChart.hideLoading();
-        myChart.setOption({
-            title: {
-                text: 'Data Visualization'
-            },
-            tooltip: {},
-            xAxis: {
-                data: dates
-            },
-            yAxis: {},
-            series: [{
-                name: 'Number',
-                type: 'line',
-                data: numbers
-            }]
-        });
-    });
+<footer id="footer" class="footer hidden-print">
+    Copyright &copy; 2017 Computer Vision Lab of HZAU
+</footer>
 
-</script>
-
+<link rel="stylesheet" href="/static/css/index.css">
+<link rel="stylesheet" href="/static/css/common.css">
 </body>
 </html>

@@ -3,6 +3,10 @@
 ## Introduction 
 
    This repository is designed for later research in Computer Vision, Machine Learning, Data Mining. It includes web spider, RESTful back-end API and so on.
+   
+   ![1](Intro/1.png)
+   ![2](Intro/2.png)
+   ![3](Intro/3.png)
      
 ## Prerequisite
     
