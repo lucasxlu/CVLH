@@ -6,7 +6,6 @@
    
    ![1](Intro/1.png)
    ![2](Intro/2.png)
-   ![3](Intro/3.png)
      
 ## Prerequisite
     
