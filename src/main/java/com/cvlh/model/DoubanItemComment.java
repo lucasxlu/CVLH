@@ -1,116 +1,95 @@
 package com.cvlh.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class DoubanItemComment implements Serializable {
-    private String commentId;
-
-    private String username;
-
-    private Integer star;
-
-    private Integer upvote;
-
-    private Integer downvote;
-
-    private Date commentdate;
-
-    private String content;
-
-    private String digest;
-
-    private static final long serialVersionUID = 1L;
+public class DoubanItemComment {
+    private String itemId;
+    private String commenterName;
+    private String commenterUrl;
+    private int vote;
+    private int star;
+    private Date commentTime;
+    private String comment;
 
     public DoubanItemComment() {
     }
 
-    public DoubanItemComment(String commentId, String username, Integer star, Integer upvote, Integer downvote, Date commentdate, String content, String digest) {
-        this.commentId = commentId;
-        this.username = username;
+    public DoubanItemComment(String itemId, String commenterName, String commenterUrl, int vote, int star, Date commentTime, String comment) {
+        this.itemId = itemId;
+        this.commenterName = commenterName;
+        this.commenterUrl = commenterUrl;
+        this.vote = vote;
         this.star = star;
-        this.upvote = upvote;
-        this.downvote = downvote;
-        this.commentdate = commentdate;
-        this.content = content;
-        this.digest = digest;
+        this.commentTime = commentTime;
+        this.comment = comment;
     }
 
-    public String getCommentId() {
-        return commentId;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setCommentId(String commentId) {
-        this.commentId = commentId == null ? null : commentId.trim();
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getCommenterName() {
+        return commenterName;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setCommenterName(String commenterName) {
+        this.commenterName = commenterName;
     }
 
-    public Integer getStar() {
+    public String getCommenterUrl() {
+        return commenterUrl;
+    }
+
+    public void setCommenterUrl(String commenterUrl) {
+        this.commenterUrl = commenterUrl;
+    }
+
+    public int getVote() {
+        return vote;
+    }
+
+    public void setVote(int vote) {
+        this.vote = vote;
+    }
+
+    public int getStar() {
         return star;
     }
 
-    public void setStar(Integer star) {
+    public void setStar(int star) {
         this.star = star;
     }
 
-    public Integer getUpvote() {
-        return upvote;
+    public Date getCommentTime() {
+        return commentTime;
     }
 
-    public void setUpvote(Integer upvote) {
-        this.upvote = upvote;
+    public void setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
     }
 
-    public Integer getDownvote() {
-        return downvote;
+    public String getComment() {
+        return comment;
     }
 
-    public void setDownvote(Integer downvote) {
-        this.downvote = downvote;
-    }
-
-    public Date getCommentdate() {
-        return commentdate;
-    }
-
-    public void setCommentdate(Date commentdate) {
-        this.commentdate = commentdate;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
-
-    public String getDigest() {
-        return digest;
-    }
-
-    public void setDigest(String digest) {
-        this.digest = digest == null ? null : digest.trim();
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
     public String toString() {
         return "DoubanItemComment{" +
-                "commentId='" + commentId + '\'' +
-                ", username='" + username + '\'' +
+                "itemId='" + itemId + '\'' +
+                ", commenterName='" + commenterName + '\'' +
+                ", commenterUrl='" + commenterUrl + '\'' +
+                ", vote=" + vote +
                 ", star=" + star +
-                ", upvote=" + upvote +
-                ", downvote=" + downvote +
-                ", commentdate=" + commentdate +
-                ", content='" + content + '\'' +
-                ", digest='" + digest + '\'' +
+                ", commentTime=" + commentTime +
+                ", comment='" + comment + '\'' +
                 '}';
     }
 }

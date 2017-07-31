@@ -1,7 +1,7 @@
 package com.cvlh.service.impl;
 
 import com.cvlh.mapper.DoubanItemCommentMapper;
-import com.cvlh.model.DoubanItemComment;
+import com.cvlh.model.DoubanItemReview;
 import com.cvlh.model.douban.TimeSequence;
 import com.cvlh.service.DoubanItemCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class DoubanItemCommentServiceImpl implements DoubanItemCommentService {
     private DoubanItemCommentMapper doubanItemCommentMapper;
 
     @Override
-    public int addDoubanItemComment(DoubanItemComment doubanItemComment) {
+    public int addDoubanItemComment(DoubanItemReview doubanItemComment) {
         return doubanItemCommentMapper.insert(doubanItemComment);
     }
 

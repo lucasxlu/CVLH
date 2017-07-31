@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cvlh.mapper.DoubanItemCommentMapper">
-    <resultMap id="BaseResultMap" type="com.cvlh.model.DoubanItemComment">
+    <resultMap id="BaseResultMap" type="com.cvlh.model.DoubanItemReview">
         <id column="comment_id" property="commentId" jdbcType="VARCHAR"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="star" property="star" jdbcType="INTEGER"/>
@@ -36,7 +36,7 @@
         DELETE FROM douban_item_comment
         WHERE comment_id = #{commentId,jdbcType=VARCHAR}
     </delete>
-    <insert id="insert" parameterType="com.cvlh.model.DoubanItemComment">
+    <insert id="insert" parameterType="com.cvlh.model.DoubanItemReview">
         INSERT INTO douban_item_comment (comment_id, username, star,
                                          upvote, downvote, commentDate,
                                          content, digest)
@@ -44,7 +44,7 @@
                 #{upvote,jdbcType=INTEGER}, #{downvote,jdbcType=INTEGER}, #{commentdate,jdbcType=TIMESTAMP},
                 #{content,jdbcType=VARCHAR}, #{digest,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.cvlh.model.DoubanItemComment">
+    <insert id="insertSelective" parameterType="com.cvlh.model.DoubanItemReview">
         insert into douban_item_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="commentId != null">
@@ -99,7 +99,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.cvlh.model.DoubanItemComment">
+    <update id="updateByPrimaryKeySelective" parameterType="com.cvlh.model.DoubanItemReview">
         update douban_item_comment
         <set>
             <if test="username != null">
@@ -126,7 +126,7 @@
         </set>
         where comment_id = #{commentId,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.cvlh.model.DoubanItemComment">
+    <update id="updateByPrimaryKey" parameterType="com.cvlh.model.DoubanItemReview">
         UPDATE douban_item_comment
         SET username    = #{username,jdbcType=VARCHAR},
             star        = #{star,jdbcType=INTEGER},

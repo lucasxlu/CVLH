@@ -1,6 +1,6 @@
 package com.cvlh.service;
 
-import com.cvlh.model.DoubanItemComment;
+import com.cvlh.model.DoubanItemReview;
 import com.cvlh.model.douban.TimeSequence;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface DoubanItemCommentService {
 
-    int addDoubanItemComment(DoubanItemComment doubanItemComment);
+    int addDoubanItemComment(DoubanItemReview doubanItemComment);
 
     List<TimeSequence> showCommentsTimeSeq();
 }

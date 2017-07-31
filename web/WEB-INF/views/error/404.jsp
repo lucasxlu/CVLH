@@ -9,8 +9,17 @@
 <html>
 <head>
     <title>404</title>
+    <script>
+        window.setTimeout(function () {
+            window.history.back();
+        }, 5000);
+    </script>
 </head>
 <body>
-    404 error!!
+<div align="center">
+    <img src="../../../static/image/404.png" alt="404"/>
+    Sorry, this page seems to have disappeared,
+    We will be back to previous page in 5 seconds...
+</div>
 </body>
 </html>

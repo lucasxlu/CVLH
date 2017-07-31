@@ -395,6 +395,14 @@
             <version>1.1.1</version>
         </dependency>
 
+        <!--Stanford NLP Toolkit-->
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>3.8.0</version>
+            <classifier>models-chinese</classifier>
+        </dependency>
+
     </dependencies>
     
 </project>
