@@ -197,14 +197,14 @@ public class OpenCVTest {
 
         ArrayList<Mat> arrayList = new OpenCVTest().detectFaces("D:\\TestFace\\4.jpg");
 
-        Mat image1 = Imgcodecs.imread("D:\\TestFace\\output\\1.png");
+        /*Mat image1 = Imgcodecs.imread("D:\\TestFace\\output\\1.png");
         Mat image2 = Imgcodecs.imread("D:\\TestFace\\output\\2.png");
         Imgproc.cvtColor(image1, image1, Imgproc.COLOR_BGR2GRAY, 0);
         Imgproc.cvtColor(image2, image2, Imgproc.COLOR_BGR2GRAY, 0);
 
         System.out.println(hogFeature(image1).length);
         System.out.println("similarity is "
-                + cosineSimilarity(hogFeature(image1), hogFeature(image2)));
+                + cosineSimilarity(hogFeature(image1), hogFeature(image2)));*/
     }
 
 }

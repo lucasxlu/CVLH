@@ -46,15 +46,40 @@
                     }
                 }
             );
+
         }
     );
+
+    function classifyUrl() {
+        $.ajax({
+            url: "/api/hzau/image/url",
+            type: "POST",
+            data: {url: $("#imageurl").val().trim()},
+            success: function (data) {
+                var obj = data.evalJSON();
+                console.log(obj);
+                if (obj.status == 0) {
+                    $(".media-object").attr("src", obj.data.imgSrc);
+                    $(".media").show();
+                    var html = gethtmlbyObj(obj.data.result.precision);
+                    var html1 = gethtmlbyObj(obj.data.result.recall);
+                    $("#infopred ul").html(html);
+                    $("#flatpred ul").html(html1);
+                    $('.ctimes').text(obj.data.time);
+                }
+            },
+            error: function (data) {
+                $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
+            }
+        })
+    }
 
     function gethtmlbyObj(obj) {
         var html = "";
         for (var key in obj) {
             html += '<li class="list-group-item"><span class="badge">' + obj[key] +
                 '</span><h4 class="list-group-item-heading">' +
-                '<a href="https://www.google.com/#q=insect" target="_blank">' + key + '</a></h4></li>';
+                '<a href="https://www.baidu.com/s?wd=' + key + '" target="_blank">' + key + '</a></h4></li>';
         }
         return html;
     }
@@ -100,12 +125,12 @@
     <hr>
 
 
-    <form role="form" action="classify_url" method="get">
+    <form>
         <div class="form-group">
             <div class="input-group">
                 <input type="text" class="form-control" name="imageurl" id="imageurl" placeholder="Provide an image URL">
                 <span class="input-group-btn">
-              <input class="btn btn-primary" value="Classify URL" type="submit" id="classifyurl">
+              <input class="btn btn-primary" value="Classify URL" id="classifyurl" onclick="classifyUrl()">
             </span>
             </div><!-- /input-group -->
         </div>

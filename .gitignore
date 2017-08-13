@@ -7,3 +7,4 @@ logInfo.log
 src/main/python/__pycache__/
 web/static/res/hzau/
 /target
+fileUpload

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Compare</title>
+    <link rel="stylesheet" href="../css/face-compare.css">
+</head>
+<body>
+<div class="container comparing-page">
+    <div id="demo" class="compare-demo-page">
+        <h2>Face Compare</h2>
+        <p>Face comparing based on FaceNet algorithm</p>
+        <div class="compare-box">
+            <div class="handle-img first">
+                <div class="img-box img-box-one"><img id="img-one" src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_one.jpg">
+                    <div class="face-border face-border-one" style="width:500px; height:500px; top:50%; left:50%; margin-left:-250px; margin-top:-250px;">
+                        <div class="landmarkBox" style="width: 264px; height:264px; left: 125px; top: 211px;"></div>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <lable for="file-uploader" class="upload-img"><i class="icons icon-upload"></i><span>Upload</span>
+                        <input type="file" accept="image/png,image/jpeg" id="file-uploader" class="file-uploader-one">
+                    </lable>
+                    <button class="search-btn search-btn-one">Detect</button>
+                    <input placeholder="图片URL" class="search-input search-input-one">
+                </div>
+                <div class="swiper-box">
+                    <div class="swiper-container swiper-container-one swiper-container-horizontal">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide swiper-slide-active" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_one.jpg"
+                                     class="slide-img-box slide-img-box-one img-active-one"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_one.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide swiper-slide-next" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_two.jpg"
+                                     class="slide-img-box slide-img-box-one"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_two.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_three.jpg"
+                                     class="slide-img-box slide-img-box-one"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_three.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_four.jpg"
+                                     class="slide-img-box slide-img-box-one"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_four.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_five.jpg"
+                                     class="slide-img-box slide-img-box-one"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_five.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_six.jpg"
+                                     class="slide-img-box slide-img-box-one"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_six.jpg" alt="demo"></div>
+                            </div>
+                        </div>
+                        <div class="swiper-button-prev swiper-button-prev-one swiper-button-disabled">
+                            <div class="icons icon-swiper-left-small"></div>
+                        </div>
+                        <div class="swiper-button-next swiper-button-next-one">
+                            <div class="icons icon-swiper-right-small"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="compare-result result-box">
+                    <h2>Comparing Result</h2>
+                    <p class="result-desc">Are they the same person: Very likely</p></div>
+            </div>
+            <div class="handle-img">
+                <div class="img-box-two img-box"><img id="img-two" src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_one.jpg">
+                    <div class="face-border face-border-two" style="width:500px; height:500px; top:50%; left:50%; margin-left:-250px; margin-top:-250px;">
+                        <div class="landmarkBox" style=" width: 260px; height:260px; left: 133px; top: 215px;"></div>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <lable for="file-uploader" class="upload-img"><i class="icons icon-upload"></i><span>Upload</span>
+                        <input type="file" accept="image/png,image/jpeg" id="file-uploader" class="file-uploader-two">
+                    </lable>
+                    <button class="search-btn search-btn-two">Detect</button>
+                    <input placeholder="图片URL" class="search-input search-input-two">
+                </div>
+                <div class="swiper-box">
+                    <div class="swiper-container swiper-container-two swiper-container-horizontal">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide swiper-slide-active" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_one.jpg"
+                                     class="slide-img-box slide-img-box-two img-active-two"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_one.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide swiper-slide-next" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_two.jpg"
+                                     class="slide-img-box slide-img-box-two"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_two.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_three.jpg"
+                                     class="slide-img-box slide-img-box-two"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_three.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_four.jpg"
+                                     class="slide-img-box slide-img-box-two"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_four.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_five.jpg"
+                                     class="slide-img-box slide-img-box-two"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_five.jpg" alt="demo"></div>
+                            </div>
+                            <div class="swiper-slide" style="width: 88px;">
+                                <div data-image="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_six.jpg"
+                                     class="slide-img-box slide-img-box-two"><img
+                                        src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_six.jpg" alt="demo"></div>
+                            </div>
+                        </div>
+                        <div class="swiper-button-prev swiper-button-prev-two swiper-button-disabled">
+                            <div class="icons icon-swiper-left-small"></div>
+                        </div>
+                        <div class="swiper-button-next swiper-button-next-two">
+                            <div class="icons icon-swiper-right-small"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="response-json result-box">
+                    <h2>Response JSON</h2>
+                    <textarea readonly="" cols="30" rows="10" class="resp-json-container">{
+  "faces1": [
+    {
+      "face_rectangle": {
+        "width": 264,
+        "top": 211,
+        "left": 125,
+        "height": 264
+      },
+      "face_token": "6d7bb3faa7f5c2a960e8f32642ea0118"
+    }
+  ],
+  "faces2": [
+    {
+      "face_rectangle": {
+        "width": 260,
+        "top": 215,
+        "left": 133,
+        "height": 260
+      },
+      "face_token": "8fd4582254235948dd334df6bdbafa05"
+    }
+  ],
+  "time_used": 641,
+  "thresholds": {
+    "1e-3": 62.327,
+    "1e-5": 73.975,
+    "1e-4": 69.101
+  },
+  "confidence": 88.508,
+  "image_id2": "SPedNTNWqgPmupahuTaSZQ==",
+  "image_id1": "uADw4RAdkIsQxhaDMwiqig==",
+  "request_id": "1502633782,f0f30b82-15aa-405a-bd4f-a8bcd135eab7"
+}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer-box">© 2017 CVLH</div>
+</body>
+</html>

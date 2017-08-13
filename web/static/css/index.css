@@ -15,3 +15,7 @@ img {
 .navbar-nav{margin-left: 10px;}
 .nav-p-rig{padding-right:2.5rem !important;}
 .carousel-control{width:5% !important;}
+
+.dropdown-menu.show {
+    display: block;
+}

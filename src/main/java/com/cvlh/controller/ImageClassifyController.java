@@ -3,6 +3,11 @@ package com.cvlh.controller;
 import com.cvlh.commons.base.BaseController;
 import com.cvlh.util.MLUtil;
 import com.cvlh.util.UploadUtil;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +18,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,5 +52,31 @@ public class ImageClassifyController extends BaseController {
         return renderSuccess(result, httpServletResponse);
     }
 
+    @RequestMapping(value = "/hzau/image/url", method = RequestMethod.POST)
+    @ResponseBody
+    public Object imageUrlClassify(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String url) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String serverPath = httpServletRequest.getSession().getServletContext().getRealPath("/");
+        serverPath = serverPath.substring(0, serverPath.lastIndexOf(File.separator));
+        serverPath = serverPath.substring(0, serverPath.lastIndexOf(File.separator));
+        serverPath = serverPath + "/fileUpload/head/" + sdf.format(new Date()) + "/";
+        HashMap<String, Object> result = new HashMap();
+        String fileName = url.trim().split("/")[url.trim().split("/").length - 1];
+
+        try {
+            FileUtils.copyURLToFile(new URL(url), new File(serverPath + fileName));
+            Long startTime = System.currentTimeMillis();
+            HashMap<String, Object> hashMap = (HashMap<String, Object>) MLUtil.classifyImage(serverPath + fileName);
+            result.put("result", hashMap);
+            Long endTime = System.currentTimeMillis();
+            result.put("imgSrc", "/fileUpload/head/" + sdf.format(new Date()) + "/" + fileName);
+            result.put("time", (endTime - startTime) / 1000);
+
+            return renderSuccess(result, httpServletResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return renderError("Invalid image URL", httpServletResponse);
+        }
+    }
 
 }
