@@ -1,14 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
 CVLH-BE.iml
-target
 tessdata
 Image.jpg
 logInfo.log
-out/
-src/main/resources/BaiduAI.properties
-src/test/java/test/cvlh/spider/NLPTest.java
 src/main/python/__pycache__/
 web/static/res/hzau/
-test/java/test/bioinfo/algorithm.zipalgo
-src/test/java/test/bioinfo/algorithm.zip
+/target

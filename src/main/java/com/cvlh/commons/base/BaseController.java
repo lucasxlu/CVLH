@@ -26,6 +26,7 @@ public abstract class BaseController {
         Result result = new Result();
         result.setStatus(1);
         result.setMsg(msg);
+
         return result;
     }
 
@@ -39,6 +40,7 @@ public abstract class BaseController {
         response.setHeader("Access-Control-Allow_Methods", "POST,GET,OPTIONS,PUT,DELETE");
         Result result = new Result();
         result.setStatus(0);
+
         return result;
     }
 
@@ -54,6 +56,7 @@ public abstract class BaseController {
         Result result = new Result();
         result.setStatus(0);
         result.setMsg(msg);
+
         return result;
     }
 
@@ -69,6 +72,7 @@ public abstract class BaseController {
         Result result = new Result();
         result.setStatus(status);
         result.setMsg(msg);
+
         return result;
     }
 
@@ -85,6 +89,7 @@ public abstract class BaseController {
         result.setMsg("OK");
         result.setStatus(0);
         result.setData(obj);
+
         return result;
     }
 

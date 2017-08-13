@@ -44,7 +44,7 @@ public class OpenCVTest {
             }
             System.out.println("angle is " + angle);
             Mat rotatedFace = rotateFace(dstImage, angle); // 校正后的人脸
-            Imgcodecs.imwrite("D:\\TestFace\\output\\3.png", rotatedFace);
+            Imgcodecs.imwrite("D:\\TestFace\\output\\4.png", rotatedFace);
 
             matList.add(rotatedFace);
         }
@@ -119,7 +119,7 @@ public class OpenCVTest {
         }
         double denominator = Math.sqrt(temp1) * Math.sqrt(temp2);
 
-        return rectifiedSigmoid(numerator / denominator);
+        return polynomialNormalize(numerator / denominator);
     }
 
 
@@ -132,6 +132,19 @@ public class OpenCVTest {
      */
     public static double rectifiedSigmoid(double x) {
         double value = (1 / (1 + Math.pow(Math.E, -50 * (x - 0.78))));
+
+        return value * 100;
+    }
+
+    /**
+     * 二次幂标准化处理
+     *
+     * @param x
+     * @return
+     */
+    public static double polynomialNormalize(double x) {
+        double threshold = 0.8;
+        double value = x > threshold ? x : Math.pow(x, 2);
 
         return value * 100;
     }
@@ -182,13 +195,14 @@ public class OpenCVTest {
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-//        ArrayList<Mat> arrayList = new OpenCVTest().detectFaces("D:\\TestFace\\3.jpg");
+        ArrayList<Mat> arrayList = new OpenCVTest().detectFaces("D:\\TestFace\\4.jpg");
 
         Mat image1 = Imgcodecs.imread("D:\\TestFace\\output\\1.png");
-        Mat image2 = Imgcodecs.imread("D:\\TestFace\\output\\3.png");
+        Mat image2 = Imgcodecs.imread("D:\\TestFace\\output\\2.png");
         Imgproc.cvtColor(image1, image1, Imgproc.COLOR_BGR2GRAY, 0);
         Imgproc.cvtColor(image2, image2, Imgproc.COLOR_BGR2GRAY, 0);
 
+        System.out.println(hogFeature(image1).length);
         System.out.println("similarity is "
                 + cosineSimilarity(hogFeature(image1), hogFeature(image2)));
     }
