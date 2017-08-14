@@ -31,7 +31,7 @@ public class ImageClassifyController extends BaseController {
 
     @RequestMapping(value = "/hzau/image/classify", method = RequestMethod.POST)
     @ResponseBody
-    public Object imageClassify(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestParam("file") CommonsMultipartFile[] files) {
+    public Object imageClassify(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestParam("file") CommonsMultipartFile[] files) throws IOException {
         String a = files[0].getOriginalFilename();
         List<String> pathList = null;
         HashMap<String, Object> result = new HashMap();
