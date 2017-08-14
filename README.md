@@ -11,11 +11,12 @@
     
    To make use of this repository, you should have several softwares installed on your machine.
    1. JDK1.8 or higer
-   2. Python3.X is required(Python3.5 or 3.6 is recommended)
-   3. Maven support
-   4. MySQL should be 5.7 or higher
-   5. Tomcat 8 or higher (Ngix will also be fine)
-   6. In order to handle with captcha, you should have [tessdata](https://github.com/tesseract-ocr/tessdata) directory in your project
+   2. [deeplearning4j](https://deeplearning4j.org/)
+   3. Python3.X is required(Python3.5 or 3.6 is recommended)
+   4. Maven support
+   5. MySQL should be 5.7 or higher
+   6. Tomcat 8 or higher (Ngix will also be fine)
+   7. In order to handle with captcha, you should have [tessdata](https://github.com/tesseract-ocr/tessdata) directory in your project
 
 ## Third Party Library
     
