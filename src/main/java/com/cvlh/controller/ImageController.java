@@ -1,11 +1,12 @@
 package com.cvlh.controller;
 
 import com.cvlh.commons.base.BaseController;
+import com.cvlh.entity.Face;
 import com.cvlh.util.ImageUtil;
 import com.cvlh.util.MLUtil;
 import com.cvlh.util.UploadUtil;
-import it.unimi.dsi.fastutil.Hash;
 import org.apache.commons.io.FileUtils;
+import org.opencv.core.Rect;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,13 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 
 @Controller
-public class ImageClassifyController extends BaseController {
+public class ImageController extends BaseController {
 
     @RequestMapping(value = "/hzau/image/classify", method = RequestMethod.POST)
     @ResponseBody
     public Object imageClassify(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestParam("file") CommonsMultipartFile[] files) throws IOException {
         String a = files[0].getOriginalFilename();
-        List<String> pathList = null;
+        List<String> pathList;
         HashMap<String, Object> result = new HashMap();
         if (a == null || a.equals("")) {
         } else {
@@ -78,8 +79,32 @@ public class ImageClassifyController extends BaseController {
 
     @RequestMapping(value = "/hzau/face/compare", method = RequestMethod.POST)
     @ResponseBody
-    public Object imageUrlClassify(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) {
+    public Object compareFace(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) {
         HashMap<Double, String> result = ImageUtil.faceCompare(faceImg1, faceImg2);
+
+        return renderSuccess(result, httpServletResponse);
+    }
+
+    @RequestMapping(value = "/hzau/face/detect", method = RequestMethod.POST)
+    @ResponseBody
+    public Object detectFaces(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImgPath) {
+        long startTime = System.currentTimeMillis();
+        HashMap<Integer, Rect[]> map = ImageUtil.detectFaceCoordinate(faceImgPath);
+        int faceNum = map.keySet().iterator().next();
+        HashMap<String, Face> hashMap = new HashMap<>();
+        int faceIndex = 1;
+        for (Rect rect : map.values().iterator().next()) {
+            Face face = new Face(rect.x, rect.y, rect.width, rect.height);
+            hashMap.put("face" + faceIndex, face);
+            faceIndex++;
+        }
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("face_number", faceNum);
+        result.put("faces", hashMap);
+        long endTime = System.currentTimeMillis();
+        result.put("time", endTime - startTime);
+
+        System.out.println(result);
 
         return renderSuccess(result, httpServletResponse);
     }

@@ -1,6 +1,5 @@
 package com.cvlh.util;
 
-import org.apache.commons.io.FileUtils;
 import org.datavec.image.loader.NativeImageLoader;
 import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.nn.modelimport.keras.trainedmodels.Utils.ImageNetLabels;
@@ -12,6 +11,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
 import org.nd4j.linalg.dataset.api.preprocessor.VGG16ImagePreProcessor;
 import org.nd4j.linalg.factory.Nd4j;
+import org.opencv.core.Core;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,10 @@ import java.util.Map;
 public class MLUtil {
 
     private static final String PRETRAINED_MODEL_RESNET50 = "C:/Users/29140/.deeplearning4j/resnet50_dl4j_inference.zip";
+
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
 
     public static Map classifyImage(String imagePath) throws IOException {
         if (!new File(PRETRAINED_MODEL_RESNET50).exists()) {

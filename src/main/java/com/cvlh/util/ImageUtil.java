@@ -1,5 +1,6 @@
 package com.cvlh.util;
 
+import it.unimi.dsi.fastutil.Hash;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -8,6 +9,7 @@ import org.opencv.objdetect.HOGDescriptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -25,7 +27,11 @@ public class ImageUtil {
      * @param imagePath
      * @return
      */
-    public ArrayList<Mat> detectFaces(String imagePath) {
+    static {
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
+
+    public static ArrayList<Mat> detectFaces(String imagePath) {
         ArrayList<Mat> matList = new ArrayList<>();
         CascadeClassifier faceDetector = new CascadeClassifier(
                 FACE_PRETRAINED_MODEL);
@@ -54,6 +60,25 @@ public class ImageUtil {
         }
 
         return matList;
+    }
+
+    /**
+     * @param faceImagePath
+     * @return
+     */
+    public static HashMap<Integer, Rect[]> detectFaceCoordinate(String faceImagePath) {
+        CascadeClassifier faceDetector = new CascadeClassifier(
+                FACE_PRETRAINED_MODEL);
+        Mat image = Imgcodecs.imread(faceImagePath);
+        MatOfRect faceDetections = new MatOfRect();
+        faceDetector.detectMultiScale(image, faceDetections);
+
+        System.out.println(String.format("Detected %s faces",
+                faceDetections.toArray().length));
+        HashMap<Integer, Rect[]> hashMap = new HashMap<>();
+        hashMap.put(faceDetections.toArray().length, faceDetections.toArray());
+
+        return hashMap;
     }
 
     /**
@@ -220,14 +245,6 @@ public class ImageUtil {
             result.put(cosineSim, "low");
 
         return result;
-    }
-
-    public static void main(String[] args) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
-//        ArrayList<Mat> arrayList = new ImageUtil().detectFaces("D:\\TestFace\\4.jpg");
-
-        faceCompare("D:\\TestFace\\output\\1.png", "D:\\TestFace\\output\\2.png");
     }
 
 }

@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Face Compare</title>
-    <link rel="stylesheet" href="../css/face-compare.css">
+    <link rel="stylesheet" href="/static/css/face-compare.css">
     <link rel="icon" href="/static/res/favicon.ico">
+    <style>
+        h2 {
+            font-family: Times, serif;
+        }
+
+        .footer-box a {
+            color: #dadada;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 <div class="container comparing-page">
@@ -20,10 +30,10 @@
                 </div>
                 <div class="search-box">
                     <lable for="file-uploader" class="upload-img"><i class="icons icon-upload"></i><span>Upload</span>
-                        <input type="file" accept="image/png,image/jpeg" id="file-uploader" class="file-uploader-one">
+                        <input type="file" accept="image/png,image/jpeg" id="file-uploader1" class="file-uploader-one">
                     </lable>
                     <button class="search-btn search-btn-one">Detect</button>
-                    <input placeholder="图片URL" class="search-input search-input-one">
+                    <input placeholder="Image URL" class="search-input search-input-one">
                 </div>
                 <div class="swiper-box">
                     <div class="swiper-container swiper-container-one swiper-container-horizontal">
@@ -79,10 +89,10 @@
                 </div>
                 <div class="search-box">
                     <lable for="file-uploader" class="upload-img"><i class="icons icon-upload"></i><span>Upload</span>
-                        <input type="file" accept="image/png,image/jpeg" id="file-uploader" class="file-uploader-two">
+                        <input type="file" accept="image/png,image/jpeg" id="file-uploader2" class="file-uploader-two">
                     </lable>
                     <button class="search-btn search-btn-two">Detect</button>
-                    <input placeholder="图片URL" class="search-input search-input-two">
+                    <input placeholder="Image URL" class="search-input search-input-two">
                 </div>
                 <div class="swiper-box">
                     <div class="swiper-container swiper-container-two swiper-container-horizontal">
@@ -167,6 +177,6 @@
         </div>
     </div>
 </div>
-<div class="footer-box">© 2017 CVLH</div>
+<div class="footer-box">© 2017 <a href="index.html">CVLH</a></div>
 </body>
 </html>

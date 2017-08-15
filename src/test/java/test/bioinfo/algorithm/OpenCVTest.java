@@ -8,6 +8,7 @@ import org.opencv.objdetect.HOGDescriptor;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("Duplicates")
 public class OpenCVTest {
 
     private static final int DEFAULT_WIDTH = 64;

@@ -446,3 +446,8 @@ input, textarea, select, button {
     outline: 2px solid #4aabe8;
     z-index: 100;
 }
+.upload-img input[type="file"]{
+    position: absolute;
+    opacity: 0;
+    left: 0;
+}

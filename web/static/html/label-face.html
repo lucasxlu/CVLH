@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
     <title>Label Face</title>
     <script>
         var labeler, faceList;
@@ -71,8 +71,15 @@
     </script>
     <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
     <link rel="icon" href="/static/res/favicon.ico">
+    <link rel="stylesheet" href="/static/css/common.css">
     <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/tether.min.js"></script>
     <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+
+    <style>
+        h2, p, legend, label {
+            font-family: Times, serif;
+        }
+    </style>
 </head>
 <body>
 <h2 align="center">Face Scoring with Your Appetite</h2>
@@ -117,5 +124,9 @@
 <div align="center" style="margin-top: 5px">
     <a class="btn btn-success btn-block" href="label-face-report.html" style="width: 255px;">Visit Report</a>
 </div>
+
+<footer id="footer" class="footer hidden-print">
+    Copyright &copy; 2017 Computer Vision Lab of HZAU
+</footer>
 </body>
 </html>
