@@ -7,9 +7,14 @@
     <title>Face of HZAU Report</title>
 
     <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/common.css">
     <style>
         img {
             margin: 0 3px;
+        }
+
+        h2, h5 {
+            font-family: Times, serif;
         }
     </style>
     <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/tether.min.js"></script>
@@ -50,7 +55,7 @@
 </head>
 <body>
 <div align="center" style="border: 2px pink;">
-    <h2>Here are the face images belongs to different level</h2>
+    <h2>Here are the face images belong to different level</h2>
     <h5>Please choose your score range and it will show the faces</h5>
     <label>min value</label><input type="number" id="minVal" min="0" max="10"/>
     <label>max value</label><input type="number" id="maxVal" min="0" max="10"/>
@@ -58,5 +63,8 @@
     <div id="faceArea"></div>
 </div>
 
+<footer id="footer" class="footer hidden-print">
+    Copyright &copy; 2017 Computer Vision Lab of HZAU
+</footer>
 </body>
 </html>

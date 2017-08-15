@@ -1,8 +1,10 @@
 package com.cvlh.controller;
 
 import com.cvlh.commons.base.BaseController;
+import com.cvlh.util.ImageUtil;
 import com.cvlh.util.MLUtil;
 import com.cvlh.util.UploadUtil;
+import it.unimi.dsi.fastutil.Hash;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +74,14 @@ public class ImageClassifyController extends BaseController {
             e.printStackTrace();
             return renderError("Invalid image URL", httpServletResponse);
         }
+    }
+
+    @RequestMapping(value = "/hzau/face/compare", method = RequestMethod.POST)
+    @ResponseBody
+    public Object imageUrlClassify(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) {
+        HashMap<Double, String> result = ImageUtil.faceCompare(faceImg1, faceImg2);
+
+        return renderSuccess(result, httpServletResponse);
     }
 
 }
