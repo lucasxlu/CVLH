@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +84,39 @@ public class ImageController extends BaseController {
         HashMap<Double, String> result = ImageUtil.faceCompare(faceImg1, faceImg2);
 
         return renderSuccess(result, httpServletResponse);
+    }
+
+    @RequestMapping(value = "/hzau/face/upthendetect", method = RequestMethod.POST)
+    @ResponseBody
+    public Object upthendetect(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, @RequestParam("file") CommonsMultipartFile[] files) {
+        String a = files[0].getOriginalFilename();
+        List<String> pathList;
+        if (a == null || a.equals("")) {
+            return renderSuccess("INVALID SRC", httpServletResponse);
+        } else {
+            pathList = UploadUtil.batchUpload(httpServletRequest, files, "compare");
+            String relPath = pathList.get(0); //relative path
+            String absPath = pathList.get(1); //absolute pa
+            long startTime = System.currentTimeMillis();
+            HashMap<Integer, Rect[]> map = ImageUtil.detectFaceCoordinate(absPath);
+            int faceNum = map.keySet().iterator().next();
+            HashMap<String, Face> hashMap = new HashMap<>();
+            int faceIndex = 1;
+            for (Rect rect : map.values().iterator().next()) {
+                Face face = new Face(rect.x, rect.y, rect.width, rect.height);
+                hashMap.put("face" + faceIndex, face);
+                faceIndex++;
+            }
+            HashMap<String, Object> result = new HashMap<>();
+            result.put("face_number", faceNum);
+            result.put("faces", hashMap);
+            long endTime = System.currentTimeMillis();
+            result.put("time", endTime - startTime);
+            result.put("src", relPath);
+            System.out.println(result);
+            return renderSuccess(result, httpServletResponse);
+        }
+
     }
 
     @RequestMapping(value = "/hzau/face/detect", method = RequestMethod.POST)
