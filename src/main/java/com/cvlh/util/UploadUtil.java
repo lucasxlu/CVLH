@@ -32,7 +32,7 @@ public class UploadUtil {
         serverPath = serverPath.substring(0, serverPath.lastIndexOf(File.separator));
         serverPath = serverPath.substring(0, serverPath.lastIndexOf(File.separator));
         serverPath = serverPath + "/fileUpload/" + directory + "/" + sdf.format(new Date()) + "/";
-        String relativePath = "/fileUpload/" + directory + "/" + sdf.format(new Date()) + "/";
+        String relativePath = "/fileUpload/" + directory + File.separator + sdf.format(new Date()) + File.separator;
         File localFile = new File(serverPath);
 
         if (!localFile.exists()) {
