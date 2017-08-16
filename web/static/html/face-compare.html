@@ -208,7 +208,7 @@
                     $("." + pclass + " img").attr("src", obj.data.src);
                     var sunobj = obj.data.faces.face1;
                     $("." + pclass + " .face-border").css({'width': $("." + pclass + " img").width(), 'height': $("." + pclass + " img").height()})
-                    $("." + pclass + " .landmarkBox").css({'left': sunobj.x, 'top': sunobj.y, 'width': sunobj.width, 'height': sunobj.height})
+                    $("." + pclass + " .landmarkBox").css({'left': 250 - sunobj.width / 2, 'top': sunobj.y, 'width': sunobj.width, 'height': sunobj.height})
                     /*for(i=0;i<obj.data.face_number;i++){
 //                            var sunobj=obj.faces[face+];
                         $("."+pclass+" .landmarkBox").css({'left':sunobj.x,'top':sunobj.y,'width':sunobj.x})

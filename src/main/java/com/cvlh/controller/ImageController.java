@@ -7,6 +7,7 @@ import com.cvlh.util.MLUtil;
 import com.cvlh.util.UploadUtil;
 import org.apache.commons.io.FileUtils;
 import org.opencv.core.Rect;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,9 +82,12 @@ public class ImageController extends BaseController {
     @RequestMapping(value = "/hzau/face/compare", method = RequestMethod.POST)
     @ResponseBody
     public Object compareFace(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) {
-        HashMap<Double, String> result = ImageUtil.faceCompare(faceImg1, faceImg2);
-
-        return renderSuccess(result, httpServletResponse);
+        if (new File(faceImg1).exists() && new File(faceImg2).exists()) {
+            HashMap<Double, String> result = ImageUtil.faceCompare(faceImg1, faceImg2);
+            return renderSuccess(result, httpServletResponse);
+        } else {
+            return renderError("Invalid Image", httpServletResponse);
+        }
     }
 
     @RequestMapping(value = "/hzau/face/upthendetect", method = RequestMethod.POST)
@@ -96,14 +100,21 @@ public class ImageController extends BaseController {
         } else {
             pathList = UploadUtil.batchUpload(httpServletRequest, files, "compare");
             String relPath = pathList.get(0); //relative path
-            String absPath = pathList.get(1); //absolute pa
+            String absPath = pathList.get(1); //absolute path
             long startTime = System.currentTimeMillis();
             HashMap<Integer, Rect[]> map = ImageUtil.detectFaceCoordinate(absPath);
             int faceNum = map.keySet().iterator().next();
             HashMap<String, Face> hashMap = new HashMap<>();
             int faceIndex = 1;
             for (Rect rect : map.values().iterator().next()) {
+                ArrayList<double[]> arrayList = ImageUtil.detectEyes(Imgcodecs.imread(absPath).submat(rect));
                 Face face = new Face(rect.x, rect.y, rect.width, rect.height);
+                if (arrayList.size() >= 2) {
+                    face.setLeftEyeX(arrayList.get(0)[0]);
+                    face.setLeftEyeY(arrayList.get(0)[1]);
+                    face.setRightEyeX(arrayList.get(1)[0]);
+                    face.setRightEyeY(arrayList.get(1)[1]);
+                }
                 hashMap.put("face" + faceIndex, face);
                 faceIndex++;
             }

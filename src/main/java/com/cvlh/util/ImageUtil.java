@@ -1,15 +1,29 @@
 package com.cvlh.util;
 
-import it.unimi.dsi.fastutil.Hash;
+import org.datavec.image.loader.ImageLoader;
+import org.datavec.image.loader.NativeImageLoader;
+import org.deeplearning4j.nn.graph.ComputationGraph;
+import org.deeplearning4j.util.ModelSerializer;
+import org.deeplearning4j.zoo.PretrainedType;
+import org.deeplearning4j.zoo.ZooModel;
+import org.deeplearning4j.zoo.model.ResNet50;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
+import org.nd4j.linalg.dataset.api.preprocessor.VGG16ImagePreProcessor;
+import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.ops.transforms.Transforms;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.HOGDescriptor;
+import org.springframework.util.SocketUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -20,6 +34,7 @@ public class ImageUtil {
     private static final int DEFAULT_HEIGHT = 128;
     private static final String EYES_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_eye.xml";
     private static final String FACE_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_frontalface_default.xml";
+    private static final String PRETRAINED_MODEL_VGGFace = "C:\\Users\\29140\\.deeplearning4j\\vgg16_dl4j_vggface_inference.v1.zip";
 
     /**
      * detect all appeared faces given an image filepath
@@ -126,7 +141,7 @@ public class ImageUtil {
     }
 
     /**
-     * calculate the cosine similarity of two feature vectors
+     * calculate the cosine similarity of two feature vectors based on <b>HOG</b> descriptor
      *
      * @param featureVector1
      * @param featureVector2
@@ -247,4 +262,42 @@ public class ImageUtil {
         return result;
     }
 
+    /**
+     * extract deep convolution networks' top layers feature map and reshape it as facial feature vector
+     *
+     * @param faceRegionImagePath
+     * @throws IOException
+     */
+    public static INDArray faceNetFeature(String faceRegionImagePath) throws IOException {
+        Mat faceMat = Imgcodecs.imread(faceRegionImagePath);
+        if (faceMat.size().height != 224 && faceMat.size().width != 224) {
+            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
+        }
+        if (!new File(PRETRAINED_MODEL_VGGFace).exists()) {
+            ZooModel zooModel = new ResNet50();
+            zooModel.initPretrained(PretrainedType.VGGFACE);
+        }
+        File locationToSave = new File(ImageUtil.PRETRAINED_MODEL_VGGFace);
+        ComputationGraph vgg16 = ModelSerializer.restoreComputationGraph(locationToSave);
+        NativeImageLoader loader = new NativeImageLoader(224, 224, 3, true);
+//        INDArray image = loader.asMatrix(faceMat);   // why this not work????
+        Imgcodecs.imwrite("D:/1.jpg", faceMat);
+        INDArray image = loader.asMatrix(new File("D:/1.jpg"));
+        DataNormalization scaler = new VGG16ImagePreProcessor();
+        scaler.transform(image);
+        Map<String, INDArray> map = vgg16.feedForward(image, false);
+
+        return map.get("fc6");
+    }
+
+    public static void main(String[] args) {
+        try {
+            INDArray indArray1 = faceNetFeature("D:\\TestFace\\output\\1.png");
+            INDArray indArray2 = faceNetFeature("D:\\TestFace\\output\\3.png");
+            double cosSim = Transforms.cosineSim(indArray1, indArray2);
+            System.out.println("similarity is " + cosSim);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
