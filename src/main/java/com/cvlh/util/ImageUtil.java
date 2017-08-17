@@ -246,7 +246,6 @@ public class ImageUtil {
      */
     public static HashMap<String, Object> faceCompare(String faceFile1, String faceFile2) throws IOException {
         HashMap<String, Object> result = new HashMap<>();
-
         ArrayList<Mat> faceMatList1 = ImageUtil.detectFaces(faceFile1);
         ArrayList<Mat> faceMatList2 = ImageUtil.detectFaces(faceFile2);
 
@@ -263,10 +262,10 @@ public class ImageUtil {
             if (cosineSim >= 0.85d) {
                 result.put("desc", "high");
                 result.put("similarity", cosineSim);
-            } else if (cosineSim >= 0.70d && cosineSim < 0.85d) {
+            } else if (cosineSim >= 0.50d && cosineSim < 0.85d) {
                 result.put("desc", "medium");
                 result.put("similarity", cosineSim);
-            } else if (cosineSim < 0.70d) {
+            } else if (cosineSim < 0.5d) {
                 result.put("desc", "low");
                 result.put("similarity", cosineSim);
             }
@@ -305,10 +304,13 @@ public class ImageUtil {
 
     public static void main(String[] args) {
         try {
-            INDArray indArray1 = faceNetFeature(Imgcodecs.imread("D:\\TestFace\\output\\1.png"));
+            /*INDArray indArray1 = faceNetFeature(Imgcodecs.imread("D:\\TestFace\\output\\1.png"));
             INDArray indArray2 = faceNetFeature(Imgcodecs.imread("D:\\TestFace\\output\\2.png"));
             double cosSim = Transforms.cosineSim(indArray1, indArray2);
-            System.out.println("similarity is " + cosSim);
+            System.out.println("similarity is " + cosSim);*/
+            faceCompare("D:\\TestFace\\1.jpg", "D:\\TestFace\\2.jpg").forEach((s, o) -> {
+                System.out.println(s + " : " + o);
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
