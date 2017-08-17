@@ -7,6 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<style>
+    div {
+        font-family: Times, serif;
+    }
+</style>
 <head>
     <title>404</title>
     <script>

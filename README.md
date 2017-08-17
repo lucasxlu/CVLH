@@ -18,6 +18,8 @@
    5. MySQL should be 5.7 or higher
    6. Tomcat 8 or higher (Ngix will also be fine)
    7. In order to handle with captcha, you should have [tessdata](https://github.com/tesseract-ocr/tessdata) directory in your project
+   8. Compile OpenCV3.2, if you config this project in IntelliJ IDEA, you should set your VM Options as follows:
+      > -Djava.library.path="D:\OpenCV3\opencv\build\java\x64"
 
 ## Third Party Library
     

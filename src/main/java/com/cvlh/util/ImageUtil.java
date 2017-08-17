@@ -29,9 +29,9 @@ public class ImageUtil {
 
     private static final int DEFAULT_WIDTH = 64;
     private static final int DEFAULT_HEIGHT = 128;
-    private static final String EYES_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_eye.xml";
-    private static final String FACE_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_frontalface_default.xml";
-    private static final String PRETRAINED_MODEL_VGGFace = "C:\\Users\\29140\\.deeplearning4j\\vgg16_dl4j_vggface_inference.v1.zip";
+    protected static final String OPENCV_EYES_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_eye.xml";
+    protected static final String OPENCV_FACE_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_frontalface_default.xml";
+    public static final String PRETRAINED_MODEL_VGGFace = "C:\\Users\\29140\\.deeplearning4j\\vgg16_dl4j_vggface_inference.v1.zip";
 
     /**
      * detect all appeared faces given an image file path
@@ -46,7 +46,7 @@ public class ImageUtil {
     public static ArrayList<Mat> detectFaces(String imagePath) {
         ArrayList<Mat> matList = new ArrayList<>();
         CascadeClassifier faceDetector = new CascadeClassifier(
-                FACE_PRETRAINED_MODEL);
+                OPENCV_FACE_PRETRAINED_MODEL);
         Mat image = Imgcodecs.imread(imagePath);
 
         MatOfRect faceDetections = new MatOfRect();
@@ -80,7 +80,7 @@ public class ImageUtil {
      */
     public static HashMap<Integer, Rect[]> detectFaceCoordinate(String faceImagePath) {
         CascadeClassifier faceDetector = new CascadeClassifier(
-                FACE_PRETRAINED_MODEL);
+                OPENCV_FACE_PRETRAINED_MODEL);
         Mat image = Imgcodecs.imread(faceImagePath);
         MatOfRect faceDetections = new MatOfRect();
         faceDetector.detectMultiScale(image, faceDetections);
@@ -101,7 +101,7 @@ public class ImageUtil {
     public static ArrayList<double[]> detectEyes(Mat faceMat) {
         MatOfRect eyeDetections = new MatOfRect();
         CascadeClassifier eyeDetector = new CascadeClassifier(
-                EYES_PRETRAINED_MODEL);
+                OPENCV_EYES_PRETRAINED_MODEL);
         eyeDetector.detectMultiScale(faceMat, eyeDetections, 1.1, 2, 0,
                 new Size(1, 1), new Size());
 
