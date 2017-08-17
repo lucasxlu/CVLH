@@ -81,9 +81,9 @@ public class ImageController extends BaseController {
 
     @RequestMapping(value = "/hzau/face/compare", method = RequestMethod.POST)
     @ResponseBody
-    public Object compareFace(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) {
+    public Object compareFace(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) throws IOException {
         if (new File(faceImg1).exists() && new File(faceImg2).exists()) {
-            HashMap<Double, String> result = ImageUtil.faceCompare(faceImg1, faceImg2);
+            HashMap<String, Object> result = ImageUtil.faceCompare(faceImg1, faceImg2);
             return renderSuccess(result, httpServletResponse);
         } else {
             return renderError("Invalid Image", httpServletResponse);
@@ -96,7 +96,7 @@ public class ImageController extends BaseController {
         String a = files[0].getOriginalFilename();
         List<String> pathList;
         if (a == null || a.equals("")) {
-            return renderSuccess("INVALID SRC", httpServletResponse);
+            return renderSuccess("Invalid image", httpServletResponse);
         } else {
             pathList = UploadUtil.batchUpload(httpServletRequest, files, "compare");
             String relPath = pathList.get(0); //relative path

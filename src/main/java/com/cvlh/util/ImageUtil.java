@@ -1,6 +1,5 @@
 package com.cvlh.util;
 
-import org.datavec.image.loader.ImageLoader;
 import org.datavec.image.loader.NativeImageLoader;
 import org.deeplearning4j.nn.graph.ComputationGraph;
 import org.deeplearning4j.util.ModelSerializer;
@@ -10,14 +9,12 @@ import org.deeplearning4j.zoo.model.ResNet50;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.preprocessor.DataNormalization;
 import org.nd4j.linalg.dataset.api.preprocessor.VGG16ImagePreProcessor;
-import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.ops.transforms.Transforms;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.HOGDescriptor;
-import org.springframework.util.SocketUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +34,7 @@ public class ImageUtil {
     private static final String PRETRAINED_MODEL_VGGFace = "C:\\Users\\29140\\.deeplearning4j\\vgg16_dl4j_vggface_inference.v1.zip";
 
     /**
-     * detect all appeared faces given an image filepath
+     * detect all appeared faces given an image file path
      *
      * @param imagePath
      * @return
@@ -69,7 +66,7 @@ public class ImageUtil {
             }
             System.out.println("angle is " + angle);
             Mat rotatedFace = rotateFace(dstImage, angle); // face after alignment
-            Imgcodecs.imwrite("D:\\TestFace\\output\\4.png", rotatedFace);
+//            Imgcodecs.imwrite("D:\\TestFace\\output\\4.png", rotatedFace);
 
             matList.add(rotatedFace);
         }
@@ -125,6 +122,7 @@ public class ImageUtil {
      * @param mat face mat
      * @return hog features
      */
+    @Deprecated
     public static float[] hogFeature(Mat mat) {
 //        mat = rotateFace(mat, calculateAngle(detectEyes(mat).get(0), detectEyes(mat).get(1)));
         Imgproc.resize(mat, mat, new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -163,7 +161,7 @@ public class ImageUtil {
         }
         double denominator = Math.sqrt(temp1) * Math.sqrt(temp2);
 
-        return polynomialNormalize(numerator / denominator);
+        return numerator / denominator;
     }
 
 
@@ -174,6 +172,7 @@ public class ImageUtil {
      * @param x
      * @return
      */
+    @Deprecated
     public static double rectifiedSigmoid(double x) {
         double value = (1 / (1 + Math.pow(Math.E, -50 * (x - 0.78))));
 
@@ -186,6 +185,7 @@ public class ImageUtil {
      * @param x
      * @return
      */
+    @Deprecated
     public static double polynomialNormalize(double x) {
         double threshold = 0.8;
         double value = x > threshold ? x : Math.pow(x, 2);
@@ -242,36 +242,48 @@ public class ImageUtil {
      * @param faceFile1
      * @param faceFile2
      * @return
+     * @version V1.1
      */
-    public static HashMap<Double, String> faceCompare(String faceFile1, String faceFile2) {
-        Mat image1 = Imgcodecs.imread(faceFile1);
-        Mat image2 = Imgcodecs.imread(faceFile2);
-        Imgproc.cvtColor(image1, image1, Imgproc.COLOR_BGR2GRAY, 0);
-        Imgproc.cvtColor(image2, image2, Imgproc.COLOR_BGR2GRAY, 0);
+    public static HashMap<String, Object> faceCompare(String faceFile1, String faceFile2) throws IOException {
+        HashMap<String, Object> result = new HashMap<>();
 
-        HashMap<Double, String> result = new HashMap<>();
-        double cosineSim = cosineSimilarity(hogFeature(image1), hogFeature(image2));
+        ArrayList<Mat> faceMatList1 = ImageUtil.detectFaces(faceFile1);
+        ArrayList<Mat> faceMatList2 = ImageUtil.detectFaces(faceFile2);
 
-        if (cosineSim >= 0.85d)
-            result.put(cosineSim, "high");
-        else if (cosineSim >= 0.75d && cosineSim < 0.85d)
-            result.put(cosineSim, "medium");
-        else if (cosineSim < 0.75)
-            result.put(cosineSim, "low");
+        if (faceMatList1.size() < 1 && faceMatList2.size() < 1) {
+            result.put("No face are detected!", 0);
 
-        return result;
+            return result;
+        } else {
+            INDArray indArray1 = ImageUtil.faceNetFeature(faceMatList1.get(0));
+            INDArray indArray2 = ImageUtil.faceNetFeature(faceMatList2.get(0));
+            double cosineSim = Transforms.cosineSim(indArray1, indArray2);
+            System.out.println("similarity is " + cosineSim);
+
+            if (cosineSim >= 0.85d) {
+                result.put("desc", "high");
+                result.put("similarity", cosineSim);
+            } else if (cosineSim >= 0.70d && cosineSim < 0.85d) {
+                result.put("desc", "medium");
+                result.put("similarity", cosineSim);
+            } else if (cosineSim < 0.70d) {
+                result.put("desc", "low");
+                result.put("similarity", cosineSim);
+            }
+
+            return result;
+        }
     }
 
     /**
      * extract deep convolution networks' top layers feature map and reshape it as facial feature vector
      *
-     * @param faceRegionImagePath
+     * @param faceRegionMat
      * @throws IOException
      */
-    public static INDArray faceNetFeature(String faceRegionImagePath) throws IOException {
-        Mat faceMat = Imgcodecs.imread(faceRegionImagePath);
-        if (faceMat.size().height != 224 && faceMat.size().width != 224) {
-            Imgproc.resize(faceMat, faceMat, new Size(224, 224));
+    public static INDArray faceNetFeature(Mat faceRegionMat) throws IOException {
+        if (faceRegionMat.size().height != 224 && faceRegionMat.size().width != 224) {
+            Imgproc.resize(faceRegionMat, faceRegionMat, new Size(224, 224));
         }
         if (!new File(PRETRAINED_MODEL_VGGFace).exists()) {
             ZooModel zooModel = new ResNet50();
@@ -281,19 +293,20 @@ public class ImageUtil {
         ComputationGraph vgg16 = ModelSerializer.restoreComputationGraph(locationToSave);
         NativeImageLoader loader = new NativeImageLoader(224, 224, 3, true);
 //        INDArray image = loader.asMatrix(faceMat);   // why this not work????
-        Imgcodecs.imwrite("D:/1.jpg", faceMat);
-        INDArray image = loader.asMatrix(new File("D:/1.jpg"));
+        Imgcodecs.imwrite("1.jpg", faceRegionMat);
+        INDArray image = loader.asMatrix(new File("1.jpg"));
         DataNormalization scaler = new VGG16ImagePreProcessor();
         scaler.transform(image);
         Map<String, INDArray> map = vgg16.feedForward(image, false);
+        new File("1.jpg").delete();
 
         return map.get("fc6");
     }
 
     public static void main(String[] args) {
         try {
-            INDArray indArray1 = faceNetFeature("D:\\TestFace\\output\\1.png");
-            INDArray indArray2 = faceNetFeature("D:\\TestFace\\output\\3.png");
+            INDArray indArray1 = faceNetFeature(Imgcodecs.imread("D:\\TestFace\\output\\1.png"));
+            INDArray indArray2 = faceNetFeature(Imgcodecs.imread("D:\\TestFace\\output\\2.png"));
             double cosSim = Transforms.cosineSim(indArray1, indArray2);
             System.out.println("similarity is " + cosSim);
         } catch (IOException e) {

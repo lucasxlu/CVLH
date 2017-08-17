@@ -21,7 +21,7 @@
 <div class="container comparing-page">
     <div id="demo" class="compare-demo-page">
         <h2>Face Compare</h2>
-        <p>Face comparing based on FaceNet algorithm</p>
+        <p style="font-family: Times, serif">Face comparing based on Deep VGGFace Networks</p>
         <div class="compare-box">
             <div class="handle-img first">
                 <div class="img-box img-box-one"><img id="img-one" src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/left_pic_one.jpg">
@@ -82,7 +82,7 @@
                 </div>
                 <div class="compare-result result-box">
                     <h2>Comparing Result</h2>
-                    <p class="result-desc">Are they the same person: Very likely</p></div>
+                    <p class="result-desc">Are they the same person in probability: <span id="desc">high</span></p></div>
             </div>
             <div class="handle-img">
                 <div class="img-box-two img-box"><img id="img-two" src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_one.jpg">
@@ -184,6 +184,7 @@
 </div>
 <div class="footer-box">© 2017 <a href="index.html">CVLH</a></div>
 <script src="/static/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="/static/js/popper.min.js"></script>
 <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="/static/js/bootstrapValidator.js" type="text/javascript"></script>
 <script src="/static/js/layer/layer.js" type="text/javascript"></script>
