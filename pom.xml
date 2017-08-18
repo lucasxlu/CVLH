@@ -58,7 +58,7 @@
                 <plugin>
                     <groupId>org.apache.tomcat.maven</groupId>
                     <artifactId>tomcat7-maven-plugin</artifactId>
-                    <version>2.2</version>
+                    <version>3.3</version>
                     <configuration>
                         <!--配置端口号-->
                         <port>8080</port>
@@ -141,11 +141,11 @@
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/javax.media/jai_imageio -->
-        <dependency>
-            <groupId>javax.media</groupId>
-            <artifactId>jai_imageio</artifactId>
-            <version>1.1.1</version>
-        </dependency>
+        <!--  <dependency>
+              <groupId>javax.media</groupId>
+              <artifactId>jai_imageio</artifactId>
+              <version>1.1.1</version>
+          </dependency>-->
 
 
         <!-- https://mvnrepository.com/artifact/net.java.dev.jna/jna -->

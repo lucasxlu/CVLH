@@ -99,6 +99,7 @@ img {
     text-align: center;
     position: relative;
     overflow: hidden;
+    line-height: 500px;
 }
 
 .compare-demo-page .face-border {

@@ -82,7 +82,7 @@
                 </div>
                 <div class="compare-result result-box">
                     <h2>Comparing Result</h2>
-                    <p class="result-desc">Are they the same person in probability: <span id="desc">high</span></p></div>
+                    <p class="result-desc">Are they the same person in probability: <span id="desc"></span></p></div>
             </div>
             <div class="handle-img">
                 <div class="img-box-two img-box"><img id="img-two" src="https://bj-mc-prod-asset.oss-cn-beijing.aliyuncs.com/mc-official/images/comparing/right_pic_one.jpg">
@@ -143,40 +143,7 @@
                 </div>
                 <div class="response-json result-box">
                     <h2>Response JSON</h2>
-                    <textarea readonly="" cols="30" rows="10" class="resp-json-container">{
-  "faces1": [
-    {
-      "face_rectangle": {
-        "width": 264,
-        "top": 211,
-        "left": 125,
-        "height": 264
-      },
-      "face_token": "6d7bb3faa7f5c2a960e8f32642ea0118"
-    }
-  ],
-  "faces2": [
-    {
-      "face_rectangle": {
-        "width": 260,
-        "top": 215,
-        "left": 133,
-        "height": 260
-      },
-      "face_token": "8fd4582254235948dd334df6bdbafa05"
-    }
-  ],
-  "time_used": 641,
-  "thresholds": {
-    "1e-3": 62.327,
-    "1e-5": 73.975,
-    "1e-4": 69.101
-  },
-  "confidence": 88.508,
-  "image_id2": "SPedNTNWqgPmupahuTaSZQ==",
-  "image_id1": "uADw4RAdkIsQxhaDMwiqig==",
-  "request_id": "1502633782,f0f30b82-15aa-405a-bd4f-a8bcd135eab7"
-}</textarea>
+                    <textarea readonly cols="30" rows="10" class="resp-json-container"></textarea>
                 </div>
             </div>
         </div>
@@ -208,8 +175,36 @@
                     debugger
                     $("." + pclass + " img").attr("src", obj.data.src);
                     var sunobj = obj.data.faces.face1;
-                    $("." + pclass + " .face-border").css({'width': $("." + pclass + " img").width(), 'height': $("." + pclass + " img").height()})
-                    $("." + pclass + " .landmarkBox").css({'left': 250 - sunobj.width / 2, 'top': sunobj.y, 'width': sunobj.width, 'height': sunobj.height})
+                    $("." + pclass + " .face-border").css({
+                        width: $("." + pclass + " img").width() + "px", height: $("." + pclass + " img").height() + "px",
+                        marginLeft: -$("." + pclass + " img").width() / 2 + "px", marginTop: -$("." + pclass + " img").height() / 2 + "px"
+                    })
+                    $("." + pclass + " .landmarkBox").css({
+//                        'left': sunobj.x + 250 - $("." + pclass + " img").width() / 2 + 'px',
+//                        'top': sunobj.y + 250 - $("." + pclass + " img").height() / 2 + 'px',
+                        'left': sunobj.x + 'px',
+                        'top': sunobj.y + 'px',
+                        'width': sunobj.width + 'px',
+                        'height': sunobj.height + 'px'
+                    })
+                    var img1 = $("#img-one").attr("src");
+                    var img2 = $("#img-two").attr("src");
+                    if (img1.trim() != "" && img2.trim() != "") {
+                        $.ajax({
+                            url: "/api/hzau/face/compare",
+                            type: "POST",
+                            data: {faceImg1: img1, faceImg2: img2},
+                            success: function (data) {
+                                var obj = data.evalJSON();
+                                console.log(obj);
+                                $("#desc").text(176);
+                                $(".resp-json-container").html(data);
+                            },
+                            error: function (data) {
+                                $('#serverResponse').html(data.status + " : " + data.statusText + " : " + data.responseText);
+                            }
+                        })
+                    }
                     /*for(i=0;i<obj.data.face_number;i++){
 //                            var sunobj=obj.faces[face+];
                         $("."+pclass+" .landmarkBox").css({'left':sunobj.x,'top':sunobj.y,'width':sunobj.x})

@@ -100,7 +100,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: javax.media:jai_imageio:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:4.2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.lept4j:lept4j:1.2.4" level="project" />

@@ -82,6 +82,11 @@ public class ImageController extends BaseController {
     @RequestMapping(value = "/hzau/face/compare", method = RequestMethod.POST)
     @ResponseBody
     public Object compareFace(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String faceImg1, String faceImg2) throws IOException {
+        String serverPath = httpServletRequest.getSession().getServletContext().getRealPath("/");
+        serverPath = serverPath.substring(0, serverPath.lastIndexOf(File.separator));
+        serverPath = serverPath.substring(0, serverPath.lastIndexOf(File.separator));
+        faceImg1 = serverPath + faceImg1;
+        faceImg2 = serverPath + faceImg2;
         if (new File(faceImg1).exists() && new File(faceImg2).exists()) {
             HashMap<String, Object> result = ImageUtil.faceCompare(faceImg1, faceImg2);
             return renderSuccess(result, httpServletResponse);
