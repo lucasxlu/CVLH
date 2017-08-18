@@ -1,6 +1,7 @@
 package com.cvlh.spider;
 
 import com.cvlh.entity.NlpJob;
+import com.cvlh.entity.NlpJobType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

@@ -1,4 +1,4 @@
-package com.cvlh.spider;
+package com.cvlh.entity;
 
 public enum NlpJobType {
     SHIXI("shixi"), PARTTIME("parttime"), FULLTIME("fulltime");

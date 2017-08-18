@@ -29,8 +29,8 @@ public class ImageUtil {
 
     private static final int DEFAULT_WIDTH = 64;
     private static final int DEFAULT_HEIGHT = 128;
-    protected static final String OPENCV_EYES_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_eye.xml";
-    protected static final String OPENCV_FACE_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\haarcascade_frontalface_default.xml";
+    protected static final String OPENCV_EYES_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH\\src\\main\\resources\\haarcascade_eye.xml";
+    protected static final String OPENCV_FACE_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH\\src\\main\\resources\\haarcascade_frontalface_default.xml";
     public static final String PRETRAINED_MODEL_VGGFace = "C:\\Users\\29140\\.deeplearning4j\\vgg16_dl4j_vggface_inference.v1.zip";
 
     /**
@@ -57,8 +57,7 @@ public class ImageUtil {
 
         for (Rect rect : faceDetections.toArray()) {
             Mat dstImage = image.submat(rect);
-            // Imgproc.resize(dstImage, dstImage, new Size(DEFAULT_WIDTH,
-            // DEFAULT_HEIGHT));
+            Imgproc.resize(dstImage, dstImage, new Size(64, 64));
             ArrayList<double[]> arrayList = detectEyes(dstImage);
             double angle = 0.0d;
             if (arrayList.size() == 2) {
@@ -250,7 +249,8 @@ public class ImageUtil {
         ArrayList<Mat> faceMatList2 = ImageUtil.detectFaces(faceFile2);
 
         if (faceMatList1.size() < 1 && faceMatList2.size() < 1) {
-            result.put("No face are detected!", 0);
+            result.put("desc", "No faces are detected!");
+            result.put("similarity", 0);
 
             return result;
         } else {
@@ -308,7 +308,8 @@ public class ImageUtil {
             INDArray indArray2 = faceNetFeature(Imgcodecs.imread("D:\\TestFace\\output\\2.png"));
             double cosSim = Transforms.cosineSim(indArray1, indArray2);
             System.out.println("similarity is " + cosSim);*/
-            faceCompare("D:\\TestFace\\1.jpg", "D:\\TestFace\\2.jpg").forEach((s, o) -> {
+            faceCompare("C:\\Users\\29140\\Desktop\\Face_Report\\Beauty-Faces\\2016301110085.jpg",
+                    "C:\\Users\\29140\\Desktop\\Face_Report\\Beauty-Faces\\2016305120047.jpg").forEach((s, o) -> {
                 System.out.println(s + " : " + o);
             });
         } catch (IOException e) {
