@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -16,7 +18,8 @@ import java.util.regex.Pattern;
 public class NlpJobSpider {
     private static final int TIME_OUT = 10000;
 
-    public void crawlJobInfo(String jobType) throws IOException {
+    public List<NlpJob> crawlJobInfo(String jobType) throws IOException {
+        List<NlpJob> nlpJobList = new ArrayList<>();
         String requestUrl = String.format("http://www.nlpjob.com/jobs/%s?p=1", jobType);
         System.out.println(requestUrl);
         Pattern regex = Pattern.compile("http://www.nlpjob.com/job/\\d");
@@ -48,9 +51,11 @@ public class NlpJobSpider {
                     e.printStackTrace();
                 }
             }
-
-            System.out.println(nlpJob);
+            nlpJobList.add(nlpJob);
+//            System.out.println(nlpJob);
         });
+
+        return nlpJobList;
     }
 
     public static void main(String[] args) {
@@ -61,25 +66,4 @@ public class NlpJobSpider {
         }
     }
 
-}
-
-enum NlpJobType {
-    SHIXI("shixi"), PARTTIME("parttime"), FULLTIME("fulltime");
-
-    NlpJobType() {
-    }
-
-    private String type;
-
-    NlpJobType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }

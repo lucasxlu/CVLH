@@ -1,8 +1,9 @@
-# Computer Vision Lab of HZAU - Back End
+# Computer Vision Lab of HZAU
 
 ## Introduction 
 
-   This repository is designed for later research in Computer Vision, Machine Learning, Data Mining. It includes web spider, RESTful back-end API and so on.
+   This repository is designed for later research in Computer Vision, Machine Learning, Data Mining and NLP. It includes web spider, computer vision algorithm, RESTful back-end 
+   API and so on.
    
    ![1](Intro/1.png)
    ![2](Intro/2.png)
