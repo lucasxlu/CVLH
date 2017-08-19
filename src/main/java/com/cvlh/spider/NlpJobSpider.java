@@ -23,7 +23,7 @@ public class NlpJobSpider {
         List<NlpJob> nlpJobList = new ArrayList<>();
         String requestUrl = String.format("http://www.nlpjob.com/jobs/%s?p=1", jobType);
         System.out.println(requestUrl);
-        Pattern regex = Pattern.compile("http://www.nlpjob.com/job/\\d");
+        Pattern regex = Pattern.compile("http://www.nlpjob.com/job/\\w*}");
         Document document = Jsoup.parse(new URL(requestUrl), NlpJobSpider.TIME_OUT);
         document.getElementById("job-listings").getElementsByAttributeValueContaining("class", "row").forEach(element -> {
             String href = element.getElementsByTag("a").attr("href").toString();
@@ -35,16 +35,14 @@ public class NlpJobSpider {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if (element.getElementsByAttributeValue("class", "la").size() >= 2) {
-                String company = element.getElementsByAttributeValue("class", "la").first().text();
-                String location = element.getElementsByAttributeValue("class", "la").first().text();
-                nlpJob.setCompany(company);
-                nlpJob.setLocation(location);
-//                System.out.println(element.select("/span[1]/text()[1]").text());
-//                applied-to-job
-            }
+            String company = element.getElementsByAttributeValue("class", "row-info").text().replace(jobName, "").split("in")[0].replace("at", "").trim();
+            String location = element.getElementsByAttributeValue("class", "row-info").text().replace(jobName, "").split("in")[1].trim();
+            nlpJob.setCompany(company);
+            nlpJob.setLocation(location);
+
             String dateString = element.select("span.time-posted").text().trim();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            System.out.println(dateString + "++++++++++");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD");
             if (dateString.length() > 0) {
                 try {
                     nlpJob.setPublishDate(simpleDateFormat.parse(dateString));
