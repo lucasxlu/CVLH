@@ -1,10 +1,14 @@
 package com.cvlh.commons.base;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.cvlh.commons.result.Result;
+import com.cvlh.util.Json2Btable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by Administrator on 2016/8/18.
@@ -91,6 +95,29 @@ public abstract class BaseController {
         result.setData(obj);
 
         return result;
+    }
+    /**
+     * 将字符串以输出流的形式输出到浏览器的流中。
+     *
+     * @param str
+     * @param response
+     */
+    private void outString(String str, HttpServletResponse response) {
+        try {
+            response.setHeader("Content-type", "application/json;charset=UTF-8");
+            response.getWriter().print(str);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 将list封装的数据对象组合以json的形式给bootstrap的表格。
+     * @param j2b
+     * @param response
+     */
+    public void outJson2Btable(Json2Btable j2b, HttpServletResponse response) {
+        outString(JSON.toJSONString(j2b, SerializerFeature.DisableCircularReferenceDetect), response);
     }
 
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Learning Internship</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/job-info.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/components.min.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/simple-line-icons/simple-line-icons.min.css">
+    <link rel="stylesheet" href="/static/js/bootstrap-table/bootstrap-table.css">
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/job-info.js"></script>
+    <link rel="icon" href="/static/res/favicon.ico">
+</head>
+<body>
+<h2 class="ji-title">Machine Learning Job Info</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <form class="form-inline">
+                <div class="form-group" style="width: 100%;margin-bottom: 20px;line-height: 34px;">
+                    <div class="col-sm-3"></div>
+                    <label class="col-sm-2 control-label" style="text-align: right;">crawlType：</label>
+                    <div class="col-sm-4">
+                        <select id="crawlType" onchange="crawlJob()" class="form-control" style="width: 100%;">
+                            <option value="">Choose</option>
+                            <option value="shixi">Intern</option>
+                            <option value="parttime">Part-Time</option>
+                            <option value="fulltime">Full-Time</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <div class="m-heading-1 border-green m-bordered">
+                <form class="form-inline">
+                    <div class="form-group" style="text-align: center;">
+                        <label>Job Type：</label>
+                        <select id="jobType" class="form-control">
+                            <option value="">Choose</option>
+                            <option value="shixi">Intern</option>
+                            <option value="parttime">Part-Time</option>
+                            <option value="fulltime">Full-Time</option>
+                        </select>
+                    </div>
+                    <a class="btn red" onclick="javascript:doSearch();">Search</a>
+                    <a class="btn blue" onclick="javascript:doReset();">Reset</a>
+                </form>
+            </div>
+            <div class="portlet-body">
+                <!--<div id="toolbar" class="btn-group toolbar">
+                    <div class="row">
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </div>-->
+                <table id="tableinfo" class="table table-hover active result"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<footer id="footer" class="footer hidden-print">
+    Copyright &copy; 2017 Computer Vision Lab of HZAU
+</footer>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap-table/bootstrap-table.js"></script>
+<script src="/static/js/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="/static/js/commons-time.js"></script>
+<script src="/static/js/layer/layer.js"></script>
+<script>
+    function crawlJob() {
+        var index = layer.load(0, {shade: false});
+        $.ajax({
+            url: "/api/hzau/job/crawl",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            data: {"crawlType": $("#crawlType option:selected").val()},    //参数值
+            type: "POST",   //请求方式
+            success: function (req) {//请求成功时处理
+                layer.close(index);
+                layer.msg("crawl success!", {icon: 1});
+                $('#tableinfo').bootstrapTable('refresh');
+            }
+        });
+    }
+</script>
+</body>
+</html>

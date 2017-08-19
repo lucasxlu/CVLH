@@ -1,7 +1,7 @@
 package com.cvlh.spider;
 
-import com.cvlh.entity.NlpJob;
 import com.cvlh.entity.NlpJobType;
+import com.cvlh.model.NlpJob;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -28,10 +28,10 @@ public class NlpJobSpider {
         document.getElementById("job-listings").getElementsByAttributeValueContaining("class", "row").forEach(element -> {
             String href = element.getElementsByTag("a").attr("href").toString();
             String jobName = element.getElementsByTag("a").text().toString();
-            NlpJob nlpJob = new NlpJob(jobName, null, null, 0, href, null);
+            NlpJob nlpJob = new NlpJob(null, jobName, null, null, 0, href, null, jobType);
             try {
                 int applyNum = Integer.parseInt(Jsoup.parse(new URL(href), NlpJobSpider.TIME_OUT).getElementById("applied-to-job").text().replace("申请人", "").trim());
-                nlpJob.setApplyNum(applyNum);
+                nlpJob.setApplynum(applyNum);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -41,17 +41,16 @@ public class NlpJobSpider {
             nlpJob.setLocation(location);
 
             String dateString = element.select("span.time-posted").text().trim();
-            System.out.println(dateString + "++++++++++");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-DD");
             if (dateString.length() > 0) {
                 try {
-                    nlpJob.setPublishDate(simpleDateFormat.parse(dateString));
+                    nlpJob.setPublishdate(simpleDateFormat.parse(dateString));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
             nlpJobList.add(nlpJob);
-//            System.out.println(nlpJob);
+            System.out.println(nlpJob);
         });
 
         return nlpJobList;

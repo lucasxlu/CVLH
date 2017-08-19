@@ -139,6 +139,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- 阿里巴巴的json包 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.12</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.media/jai_imageio -->
         <!--  <dependency>
@@ -421,12 +427,12 @@
         </dependency>
 
         <!--Stanford NLP Toolkit-->
-        <dependency>
+        <!--<dependency>
             <groupId>edu.stanford.nlp</groupId>
             <artifactId>stanford-corenlp</artifactId>
             <version>3.8.0</version>
             <classifier>models-chinese</classifier>
-        </dependency>
+        </dependency>-->
 
         <!-- ND4J backend. You need one in every DL4J project. Normally define artifactId as either "nd4j-native-platform" or "nd4j-cuda-7.5-platform" -->
         <dependency>

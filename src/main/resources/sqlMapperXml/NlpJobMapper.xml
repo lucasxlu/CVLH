@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvlh.mapper.NlpJobMapper">
+    <resultMap id="BaseResultMap" type="com.cvlh.model.NlpJob">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="jobName" property="jobname" jdbcType="VARCHAR"/>
+        <result column="company" property="company" jdbcType="VARCHAR"/>
+        <result column="location" property="location" jdbcType="VARCHAR"/>
+        <result column="applyNum" property="applynum" jdbcType="INTEGER"/>
+        <result column="detailUrl" property="detailurl" jdbcType="VARCHAR"/>
+        <result column="publishDate" property="publishdate" jdbcType="TIMESTAMP"/>
+        <result column="jobType" property="jobtype" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, jobName, company, location, applyNum, detailUrl, publishDate, jobType
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from nlpjob
+        where 1=1
+        <if test="jobType != null and '' != jobType">
+            jobType=#{jobType}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from nlpjob
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM nlpjob
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="batchInsertNlpJobs" parameterType="java.util.List">
+        insert into nlpjob (id, jobName, company,
+        location, applyNum, detailUrl,
+        publishDate,jobType)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=BIGINT}, #{item.jobname,jdbcType=VARCHAR}, #{item.company,jdbcType=VARCHAR},
+            #{item.location,jdbcType=VARCHAR}, #{item.applynum,jdbcType=INTEGER}, #{item.detailurl,jdbcType=VARCHAR},
+            #{item.publishdate,jdbcType=TIMESTAMP},#{item.jobtype,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <insert id="insert" parameterType="com.cvlh.model.NlpJob">
+        INSERT INTO nlpjob (id, jobName, company,
+                            location, applyNum, detailUrl,
+                            publishDate, jobType)
+        VALUES (#{id,jdbcType=BIGINT}, #{jobname,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR},
+                #{location,jdbcType=VARCHAR}, #{applynum,jdbcType=INTEGER}, #{detailurl,jdbcType=VARCHAR},
+                #{publishdate,jdbcType=TIMESTAMP}, #{jobtype,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.cvlh.model.NlpJob">
+        insert into nlpjob
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="jobname != null">
+                jobName,
+            </if>
+            <if test="company != null">
+                company,
+            </if>
+            <if test="location != null">
+                location,
+            </if>
+            <if test="applynum != null">
+                applyNum,
+            </if>
+            <if test="detailurl != null">
+                detailUrl,
+            </if>
+            <if test="publishdate != null">
+                publishDate,
+            </if>
+            <if test="jobtype != null">
+                jobType,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="jobname != null">
+                #{jobname,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="location != null">
+                #{location,jdbcType=VARCHAR},
+            </if>
+            <if test="applynum != null">
+                #{applynum,jdbcType=INTEGER},
+            </if>
+            <if test="detailurl != null">
+                #{detailurl,jdbcType=VARCHAR},
+            </if>
+            <if test="publishdate != null">
+                #{publishdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="jobtype != null">
+                #{jobtype,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cvlh.model.NlpJob">
+        update nlpjob
+        <set>
+            <if test="jobname != null">
+                jobName = #{jobname,jdbcType=VARCHAR},
+            </if>
+            <if test="company != null">
+                company = #{company,jdbcType=VARCHAR},
+            </if>
+            <if test="location != null">
+                location = #{location,jdbcType=VARCHAR},
+            </if>
+            <if test="applynum != null">
+                applyNum = #{applynum,jdbcType=INTEGER},
+            </if>
+            <if test="detailurl != null">
+                detailUrl = #{detailurl,jdbcType=VARCHAR},
+            </if>
+            <if test="publishdate != null">
+                publishDate = #{publishdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="jobtype != null">
+                jobType = #{jobtype,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cvlh.model.NlpJob">
+        UPDATE nlpjob
+        SET jobName     = #{jobname,jdbcType=VARCHAR},
+            company     = #{company,jdbcType=VARCHAR},
+            location    = #{location,jdbcType=VARCHAR},
+            applyNum    = #{applynum,jdbcType=INTEGER},
+            detailUrl   = #{detailurl,jdbcType=VARCHAR},
+            publishDate = #{publishdate,jdbcType=TIMESTAMP},
+            jobType     = #{jobtype,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
