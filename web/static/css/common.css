@@ -6,9 +6,11 @@ html, body {
 .navbar {
     border-radius: 0;
 }
+
 footer {
     font-family: 'PingFang SC', Helvetica, 'Helvetica Neue', 微软雅黑, Tahoma, Arial, sans-serif;
-    margin: 20px auto !important;
+    /*margin: 20px auto !important;*/
+    padding: 20px;
     width: 100%;
     font-size: 14px;
     display: block;
@@ -16,4 +18,13 @@ footer {
     color: #b4bbbf;
     position: fixed;
     bottom: 0;
+    background: #373a3c;
+}
+
+.btn i {
+    margin-right: 5px;
+}
+
+h2 {
+    text-align: center
 }

@@ -13,7 +13,7 @@ public interface NlpJobService {
 
     void deleteByPrimaryKey(Long id);
 
-    List<NlpJob> selectAll(String jobType);
+    List<NlpJob> selectAll(String jobType, String search, String sort, String order);
 
-    void deleteAll();
+    void deleteByType(String crawlType);
 }

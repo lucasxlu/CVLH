@@ -2,6 +2,7 @@ package com.cvlh.spider;
 
 import com.cvlh.entity.NlpJobType;
 import com.cvlh.model.NlpJob;
+import com.cvlh.util.Constant;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -24,7 +25,7 @@ public class NlpJobSpider {
         String requestUrl = String.format("http://www.nlpjob.com/jobs/%s?p=1", jobType);
         System.out.println(requestUrl);
         Pattern regex = Pattern.compile("http://www.nlpjob.com/job/\\w*}");
-        Document document = Jsoup.parse(new URL(requestUrl), NlpJobSpider.TIME_OUT);
+        Document document = Jsoup.connect(requestUrl).userAgent(Constant.BROWSER_USER_AGENT).timeout(Constant.TIME_OUT).get();
         document.getElementById("job-listings").select("div[class^=row]").forEach(element -> {
             String href = element.getElementsByTag("a").attr("href").toString();
             String jobName = element.getElementsByTag("a").text().toString();

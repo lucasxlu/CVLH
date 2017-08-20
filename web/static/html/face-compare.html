@@ -162,6 +162,7 @@
 
     function uploadimg(i, pclass) {
         var obj = $("#file-uploader" + i), formobj = $(".search-box" + i);
+        var index = layer.load(0, {shade: false});
         if (obj.val()) {
             var formdata = new FormData(formobj[0]);
             $.ajax({
@@ -171,8 +172,8 @@
                 processData: false,
                 data: formdata,
                 success: function (data) {
+                    layer.close(index);
                     var obj = data.evalJSON();
-                    debugger
                     $("." + pclass + " img").attr("src", obj.data.src);
                     var sunobj = obj.data.faces.face1;
                     var image = new Image();
@@ -215,12 +216,14 @@
     }
 
     function detectUrl(c) {
+        var index = layer.load(0, {shade: true});
         if ($(".c").val().trim() != "") {
             $.ajax({
                 url: "/api/hzau/image/url",
                 type: "POST",
                 data: {url: $("#imageurl").val().trim()},
                 success: function (data) {
+                    layer.close(index);
                     var obj = data.evalJSON();
                     if (obj.status == 0) {
                         $(".media-object").attr("src", obj.data.imgSrc);

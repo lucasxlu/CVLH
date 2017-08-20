@@ -4,6 +4,10 @@ img {
     background-color: black;
 }
 
+.list-group-item i {
+    margin-right: 5px;
+}
+
 .navbar-nav li {
     margin-left: 0px !important;
 }

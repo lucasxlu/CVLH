@@ -20,7 +20,7 @@ public interface NlpJobMapper {
 
     void batchInsertNlpJobs(List<NlpJob> nlpJobList);
 
-    List<NlpJob> selectAll(@Param(value = "jobType") String jobType);
+    List<NlpJob> selectAll(@Param(value = "jobType") String jobType, @Param(value = "search") String search, @Param(value = "sort") String sort, @Param(value = "order") String order);
 
-    void deleteAll();
+    void deleteByType(@Param(value = "crawltype") String crawltype);
 }

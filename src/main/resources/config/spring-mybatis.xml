@@ -57,6 +57,7 @@
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations" value="classpath*:/sqlMapperXml/*.xml"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
     </bean>
 
     <!--Mybatis动态实现-->

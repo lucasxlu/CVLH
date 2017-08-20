@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Analysis</title>
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <script src="/static/js/echarts.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="icon" href="/static/res/favicon.ico">
+    <style>
+        textarea {
+            width: 100%;
+            padding: 15px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-family: Times, serif;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 style="padding-top: 20px;">Sentiment Analysis</h2>
+    <textarea name="text" rows="10">32463547</textarea>
+    <button class="btn btn-primary btn-block" onclick="sentiment()"><i class="fa fa-cogs" aria-hidden="true"></i>sentiment</button>
+    <div id="main" style="width:100%;height:600px;">
+
+    </div>
+</div>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+            tooltip: {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                feature: {
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            series: [
+                {
+                    min: 0,
+                    max: 1,
+                    name: 'Positive',
+                    axisLine: {            // 坐标轴线
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            color: [[0.2, '#ff4500'], [0.8, '#1e90ff'], [1, '#91c7ae']]
+                        }
+                    },
+                    title: {
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'normal',
+                            fontSize: 15
+                        }
+                    },
+                    center: ['30%', '55%'],    // 默认全局居中
+                    type:
+                        'gauge',
+                    radius:
+                        '70%',
+                    detail:
+                        {
+                            formatter: '{value}'
+                        }
+                    ,
+                    data: [{value: 50, name: 'Positive'}]
+                },
+                {
+                    min: 0,
+                    max: 1,
+                    radius: '70%',
+                    name: 'Negative',
+                    center: ['70%', '55%'],    // 默认全局居中
+                    type: 'gauge',
+                    detail: {
+                        formatter: '{value}'
+                    },
+                    title: {
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontWeight: 'normal',
+                            fontSize: 15
+                        }
+                    },
+                    axisLine: {            // 坐标轴线
+                        lineStyle: {       // 属性lineStyle控制线条样式
+                            color: [[0.2, '#91c7ae'], [0.8, '#1e90ff'], [1, '#ff4500']]
+                        }
+                    },
+                    data: [{value: 50, name: 'Negative'}]
+                }
+            ]
+        }
+    ;
+
+    function sentiment() {
+        var val = $("textarea").val();
+        if (val.trim() != "") {
+            var index = layer.load(0, {shade: [0.3, "rgba(0,0,0,0.5)"]});
+            $.ajax({
+                url: "/api/hzau/sentiment",    //请求的url地址
+                dataType: "json",   //返回格式为json
+                data: {"text": $("textarea").val()},    //参数值
+                type: "POST"   //请求方式
+            }).done(function (data) {
+                layer.close(index);
+                var v1 = data.data.positive.toFixed(3);
+                var v2 = data.data.negative.toFixed(3);
+                if (v1 > v2) {
+                    option.series[0].title.textStyle.fontWeight = 'bolder';
+                    option.series[0].title.textStyle.fontSize = '20';
+                    option.series[1].title.textStyle.fontWeight = 'normal';
+                    option.series[1].title.textStyle.fontSize = '15';
+                } else if (v1 < v2) {
+                    option.series[0].title.textStyle.fontWeight = 'normal';
+                    option.series[0].title.textStyle.fontSize = '15';
+                    option.series[1].title.textStyle.fontWeight = 'bolder';
+                    option.series[1].title.textStyle.fontSize = '20';
+                }
+                option.series[0].data[0].value = v1;
+                option.series[1].data[0].value = v2;
+                myChart.setOption(option, true);
+            });
+        } else {
+            layer.msg("Invalid input text", {icon: 2, shift: 6})
+        }
+    }
+</script>
+<footer>Copyright &copy; 2016 Computer Vision Lab of HZAU</footer>
+</body>
+</html>

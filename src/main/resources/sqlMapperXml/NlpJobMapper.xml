@@ -15,14 +15,25 @@
         id, jobName, company, location, applyNum, detailUrl, publishDate, jobType
     </sql>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from nlpjob
         where 1=1
         <if test="jobType != null and '' != jobType">
-            jobType=#{jobType}
+            and jobType=#{jobType}
         </if>
+        <if test="search != null and '' != search">
+            and concat_ws('',jobName,company,location,applyNum,detailUrl,DATE_FORMAT(publishDate,'%Y-%m-%d %H:%i:%S'),jobType) like concat('%',#{search},'%')
+        </if>
+        <choose>
+            <when test="sort != null and '' != sort and order != null and '' != order">
+                ORDER BY ${sort} ${order}
+            </when>
+            <otherwise>
+                ORDER BY id DESC
+            </otherwise>
+        </choose>
     </select>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
@@ -34,8 +45,11 @@
         DELETE FROM nlpjob
         WHERE id = #{id,jdbcType=BIGINT}
     </delete>
-    <delete id="deleteAll">
-        DELETE FROM nlpjob
+    <delete id="deleteByType" parameterType="java.lang.String">
+        DELETE FROM nlpjob WHERE 1 = 1
+        <if test="crawltype != null and crawltype != ''">
+            AND jobType = #{crawltype}
+        </if>
     </delete>
     <insert id="batchInsertNlpJobs" parameterType="java.util.List">
         insert into nlpjob (id, jobName, company,

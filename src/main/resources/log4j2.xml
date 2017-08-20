@@ -11,6 +11,9 @@
         </Console>
     </Appenders>
     <Loggers>
+        <logger name="com.cvlh.mapper" level="DEBUG" additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
         <Root level="trace">
             <AppenderRef ref="file" level="INFO"/>
             <AppenderRef ref="STDOUT" level="DEBUG"/>

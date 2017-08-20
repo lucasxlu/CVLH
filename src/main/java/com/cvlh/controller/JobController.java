@@ -26,18 +26,26 @@ public class JobController extends BaseController {
     @RequestMapping(value = "/hzau/job/crawl", method = RequestMethod.POST)
     @ResponseBody
     public Object crwalNlpJobs(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String crawlType) throws IOException {
-        nlpJobService.deleteAll();
+        nlpJobService.deleteByType(crawlType);
         List<NlpJob> nlpJobList = new NlpJobSpider().crawlJobInfo(crawlType);
         nlpJobService.batchInsertNlpJobs(nlpJobList);
 
-        return renderSuccess(nlpJobList, httpServletResponse);
+        return renderSuccess("type " + crawlType + " has been crawled done!", httpServletResponse);
     }
 
     @RequestMapping(value = "/hzau/job/view", method = RequestMethod.GET)
     @ResponseBody
-    public void viewNlpJobs(HttpServletResponse httpServletResponse, Integer offset, Integer limit, String jobType) throws IOException {
+    public void viewNlpJobs(HttpServletResponse httpServletResponse, Integer offset, Integer limit, String jobType, String search, String sort, String order) throws IOException {
         Page<Object> page = PageHelper.offsetPage(offset, limit);
-        List<NlpJob> nlpJobList = nlpJobService.selectAll(jobType);
+        if (null != sort) {
+            if (sort.equals("applynum")) {
+                sort = "applyNum";
+            }
+            if (sort.equals("publishdate")) {
+                sort = "publishDate";
+            }
+        }
+        List<NlpJob> nlpJobList = nlpJobService.selectAll(jobType, search, sort, order);
         this.outJson2Btable(new Json2Btable(page.getTotal(), nlpJobList), httpServletResponse);
     }
 

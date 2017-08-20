@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/components.min.css">
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
     <link rel="stylesheet" href="/static/css/simple-line-icons/simple-line-icons.min.css">
     <link rel="stylesheet" href="/static/js/bootstrap-table/bootstrap-table.css">
     <script src="/static/js/jquery-3.1.1.min.js"></script>
@@ -20,32 +21,30 @@
     <div class="col-md-12">
         <div class="portlet light">
             <form class="form-inline">
-                <div class="form-group" style="width: 100%;margin-bottom: 20px;line-height: 34px;">
-                    <div class="col-sm-3"></div>
-                    <label class="col-sm-2 control-label" style="text-align: right;">crawlType：</label>
-                    <div class="col-sm-4">
-                        <select id="crawlType" onchange="crawlJob()" class="form-control" style="width: 100%;">
-                            <option value="">Choose</option>
-                            <option value="shixi">Intern</option>
-                            <option value="parttime">Part-Time</option>
-                            <option value="fulltime">Full-Time</option>
-                        </select>
-                    </div>
+                <div class="form-group" style="width: 100%;margin-bottom: 20px;line-height: 34px;text-align: center;">
+                    <label>Crawl Type：</label>
+                    <select id="crawlType" class="form-control" style="width:400px;">
+                        <option value="">Choose</option>
+                        <option value="shixi">Intern</option>
+                        <option value="parttime">Part-Time</option>
+                        <option value="fulltime">Full-Time</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="crawlJob()"><i class="fa fa-bolt" aria-hidden="true"></i>Crawl</button>
                 </div>
             </form>
-            <div class="m-heading-1 border-green m-bordered">
-                <form class="form-inline">
-                    <div class="form-group" style="text-align: center;">
+            <div class="m-heading-1 border-blue m-bordered">
+                <form class="form-inline" style="text-align: center;">
+                    <div class="form-group">
                         <label>Job Type：</label>
-                        <select id="jobType" class="form-control">
+                        <select id="jobType" class="form-control" style="width:200px;">
                             <option value="">Choose</option>
                             <option value="shixi">Intern</option>
                             <option value="parttime">Part-Time</option>
                             <option value="fulltime">Full-Time</option>
                         </select>
                     </div>
-                    <a class="btn red" onclick="javascript:doSearch();">Search</a>
-                    <a class="btn blue" onclick="javascript:doReset();">Reset</a>
+                    <a class="btn red" onclick="javascript:doSearch();"><i class="fa fa-search" aria-hidden="true"></i>Search</a>
+                    <a class="btn blue" onclick="javascript:doReset();"><i class="fa fa-undo" aria-hidden="true"></i>Reset</a>
                 </form>
             </div>
             <div class="portlet-body">
@@ -69,6 +68,7 @@
 <script src="/static/js/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 <script src="/static/js/commons-time.js"></script>
 <script src="/static/js/layer/layer.js"></script>
+<script src="/static/js/common.js"></script>
 <script>
     function crawlJob() {
         var index = layer.load(0, {shade: false});
@@ -76,13 +76,14 @@
             url: "/api/hzau/job/crawl",    //请求的url地址
             dataType: "json",   //返回格式为json
             data: {"crawlType": $("#crawlType option:selected").val()},    //参数值
-            type: "POST",   //请求方式
-            success: function (req) {//请求成功时处理
-                layer.close(index);
-                layer.msg("crawl success!", {icon: 1});
-                $('#tableinfo').bootstrapTable('refresh');
-            }
+            type: "POST"   //请求方式
+        }).done(function () {
+            debugger;
+            layer.msg("crawl success!", {icon: 1});
+            $('#tableinfo').bootstrapTable('refresh');
+            layer.close(index);
         });
+
     }
 </script>
 </body>

@@ -28,12 +28,13 @@ public class NlpJobServiceImpl implements NlpJobService {
     }
 
     @Override
-    public List<NlpJob> selectAll(String jobType) {
-        return nlpJobMapper.selectAll(jobType);
+    public List<NlpJob> selectAll(String jobType,String search, String sort, String order) {
+        return nlpJobMapper.selectAll(jobType,search,sort,order);
     }
 
+
     @Override
-    public void deleteAll() {
-        nlpJobMapper.deleteAll();
+    public void deleteByType(String crawlType) {
+        nlpJobMapper.deleteByType(crawlType);
     }
 }
