@@ -26,6 +26,7 @@ public class JobController extends BaseController {
     @RequestMapping(value = "/hzau/job/crawl", method = RequestMethod.POST)
     @ResponseBody
     public Object crwalNlpJobs(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String crawlType) throws IOException {
+        nlpJobService.deleteAll();
         List<NlpJob> nlpJobList = new NlpJobSpider().crawlJobInfo(crawlType);
         nlpJobService.batchInsertNlpJobs(nlpJobList);
 

@@ -21,4 +21,6 @@ public interface NlpJobMapper {
     void batchInsertNlpJobs(List<NlpJob> nlpJobList);
 
     List<NlpJob> selectAll(@Param(value = "jobType") String jobType);
+
+    void deleteAll();
 }

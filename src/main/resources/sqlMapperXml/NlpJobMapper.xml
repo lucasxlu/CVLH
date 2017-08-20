@@ -34,6 +34,9 @@
         DELETE FROM nlpjob
         WHERE id = #{id,jdbcType=BIGINT}
     </delete>
+    <delete id="deleteAll">
+        DELETE FROM nlpjob
+    </delete>
     <insert id="batchInsertNlpJobs" parameterType="java.util.List">
         insert into nlpjob (id, jobName, company,
         location, applyNum, detailUrl,

@@ -25,7 +25,7 @@ public class NlpJobSpider {
         System.out.println(requestUrl);
         Pattern regex = Pattern.compile("http://www.nlpjob.com/job/\\w*}");
         Document document = Jsoup.parse(new URL(requestUrl), NlpJobSpider.TIME_OUT);
-        document.getElementById("job-listings").getElementsByAttributeValueContaining("class", "row").forEach(element -> {
+        document.getElementById("job-listings").select("div[class^=row]").forEach(element -> {
             String href = element.getElementsByTag("a").attr("href").toString();
             String jobName = element.getElementsByTag("a").text().toString();
             NlpJob nlpJob = new NlpJob(null, jobName, null, null, 0, href, null, jobType);

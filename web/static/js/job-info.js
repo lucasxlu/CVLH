@@ -79,7 +79,8 @@ var TableInit = function () {
                         title: 'publishdate',
                         align: 'center',
                         formatter: function (value, row, index) {
-                            return getLocalTime(value, 'yyyy-MM-dd HH:mm:ss');
+                            // return getLocalTime(value, 'yyyy-MM-dd HH:mm:ss');
+                            return getLocalTime(value);
                         }
                     },
                     {
