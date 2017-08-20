@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <style>
         img {
             margin: 0 3px;
@@ -19,6 +20,7 @@
     </style>
     <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/tether.min.js"></script>
     <script src="/static/bootstrap-4.0.0-alpha.5-dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/common.js"></script>
 
     <script>
         function showFace() {
@@ -62,7 +64,10 @@
     <button type="button" class="btn btn-success" onclick="showFace()">Show Face</button>
     <div id="faceArea"></div>
 </div>
-
+<div class="amz-toolbar" id="amz-toolbar" style="right: 10px;">
+    <a title="Back to Top" class="am-icon-btn am-active" id="amz-go-top"><i class="fa fa-arrow-up"></i></a>
+    <a href="index.html" title="Back to Home" class="am-icon-btn am-icon-faq am-icon-question-circle"><i class="fa fa-home"></i></a>
+</div>
 <footer id="footer" class="footer hidden-print">
     Copyright &copy; 2017 Computer Vision Lab of HZAU
 </footer>
