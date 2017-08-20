@@ -26,6 +26,7 @@ public class HZAUFaceController extends BaseController {
     @ResponseBody
     public Object showByTime(HttpServletResponse httpServletResponse) {
         List<HZAUFace> hzauFaceList = hzauFaceService.showAllFaces();
+
         return null != hzauFaceList ? renderSuccess(hzauFaceList, httpServletResponse) : renderError("No Data!", httpServletResponse);
     }
 
@@ -33,6 +34,7 @@ public class HZAUFaceController extends BaseController {
     @ResponseBody
     public Object scoreFace(@RequestParam String idnumber, @RequestParam double labeledScore, @RequestParam String labeler, HttpServletResponse httpServletResponse) {
         int i = hzauFaceService.score(idnumber, labeledScore, labeler);
+
         return i != 0 ? renderSuccess("face scoring done!", httpServletResponse) : renderError("ERROR!", httpServletResponse);
     }
 

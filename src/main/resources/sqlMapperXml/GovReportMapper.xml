@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvlh.mapper.GovReportMapper">
+    <resultMap id="BaseResultMap" type="com.cvlh.model.GovReport">
+        <result column="keyword" property="keyword" jdbcType="VARCHAR"/>
+        <result column="frequency" property="frequency" jdbcType="DOUBLE"/>
+        <result column="chairman" property="chairman" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        keyword, frequency, chairman
+    </sql>
+
+    <select id="selectByChairman" resultMap="BaseResultMap">
+        select *
+        from gov_report
+        where 1=1
+        <if test="chairman != null and chairman != ''">
+            AND chairman = #{chairman}
+        </if>
+
+    </select>
+    <insert id="insert" parameterType="com.cvlh.model.GovReport">
+        INSERT INTO gov_report (keyword, frequency, chairman
+        )
+        VALUES (#{keyword,jdbcType=VARCHAR}, #{frequency,jdbcType=DOUBLE}, #{chairman,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.cvlh.model.GovReport">
+        insert into gov_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="keyword != null">
+                keyword,
+            </if>
+            <if test="frequency != null">
+                frequency,
+            </if>
+            <if test="chairman != null">
+                chairman,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="keyword != null">
+                #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="frequency != null">
+                #{frequency,jdbcType=DOUBLE},
+            </if>
+            <if test="chairman != null">
+                #{chairman,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

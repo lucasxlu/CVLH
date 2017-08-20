@@ -49,7 +49,7 @@
          <generatedKey column="id" sqlStatement="MySql" identity="true"/>
          </table>-->
 
-        <table schema="cvlh" tableName="nlpjob" domainObjectName="NlpJob"
+        <table schema="cvlh" tableName="gov_report" domainObjectName="GovReport"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableUpdateByExample="false"

@@ -6,8 +6,12 @@
     <script src="/static/js/jquery-3.1.1.min.js"></script>
     <script src="/static/js/echarts.js"></script>
     <script src="/static/js/echarts-wordcloud.js"></script>
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
     <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.min.css">
     <link rel="icon" href="/static/res/favicon.ico">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <style>
         h2, label {
             font-family: Times, serif;
@@ -22,11 +26,11 @@
         <div class="form-group">
             <label for="chairman">Select a chairman</label>
             <select class="form-control" id="chairman">
-                <option label="毛泽东" value="../data/毛泽东.json">毛泽东</option>
-                <option label="邓小平" value="../data/邓小平.json">邓小平</option>
-                <option label="江泽民" value="../data/江泽民.json">江泽民</option>
-                <option label="胡锦涛" value="../data/胡锦涛.json">胡锦涛</option>
-                <option label="习近平" value="../data/习近平.json">习近平</option>
+                <option label="毛泽东" value="毛泽东">毛泽东</option>
+                <option label="邓小平" value="邓小平">邓小平</option>
+                <option label="江泽民" value="江泽民">江泽民</option>
+                <option label="胡锦涛" value="胡锦涛">胡锦涛</option>
+                <option label="习近平" value="习近平">习近平</option>
             </select>
         </div>
         <button type="button" class="btn btn-primary btn-block" onclick="showKeywords()">Show</button>
@@ -35,25 +39,34 @@
     <script type="text/javascript">
 
         function showKeywords() {
-
-            var dataUrl = $(':selected').attr('value');
-            var urlPrefix = "http://localhost:8080/api";
+            var index = layer.load(0, {shade: false});
+            var urlPrefix = "/api/hzau/gov";
             var myChart = echarts.init(document.getElementById('keywords'));
 
-            var data = [];
-            $.get(dataUrl).done(function (keywords) {
+            var keywordsObj = new Object();
+            var wordcloud = [];
+            $.ajax({
+                url: urlPrefix,
+                data: {"chairman": $(':selected').attr('value').trim()},
+                dataType: "json",
+                type: "GET"
+            }).done(function (data) {
+                for (var i = 0; i < data.data.length; i++) {
+                    var item = data.data[i];
+                    keywordsObj[item.keyword] = item.frequency;
+                }
+                layer.close(index);
+                var keywords = JSON.stringify(keywordsObj);
+
                 for (var name in keywords) {
-                    data.push({
+                    wordcloud.push({
                         name: name,
                         value: Math.sqrt(keywords[name])
                     })
                 }
-
             });
 
-
             var maskImage = new Image();
-
             var option = {
                 series: [{
                     type: 'wordCloud',
@@ -67,24 +80,22 @@
                         normal: {
                             color: function () {
                                 return 'rgb(' + [
-                                        Math.round(Math.random() * 160),
-                                        Math.round(Math.random() * 160),
-                                        Math.round(Math.random() * 160)
-                                    ].join(',') + ')';
+                                    Math.round(Math.random() * 160),
+                                    Math.round(Math.random() * 160),
+                                    Math.round(Math.random() * 160)
+                                ].join(',') + ')';
                             }
                         }
                     },
-                    data: data.sort(function (a, b) {
+                    data: wordcloud.sort(function (a, b) {
                         return b.value - a.value;
                     })
                 }]
             };
-
             maskImage.onload = function () {
-                option.series[0].maskImage
+                option.series[0].maskImage;
                 myChart.setOption(option);
             }
-
             maskImage.src = '/static/logo.png';
         }
     </script>
