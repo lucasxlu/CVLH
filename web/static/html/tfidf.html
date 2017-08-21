@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hot Words Analysis</title>
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <script src="/static/js/echarts.js"></script>
+    <script src="/static/js/common.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="icon" href="/static/res/favicon.ico">
+    <style>
+        textarea {
+            width: 100%;
+            padding: 15px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-family: Times, serif;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 style="padding-top: 20px;">Hot Words Analysis</h2>
+    <textarea name="text" rows="10"></textarea>
+    <button class="btn btn-primary btn-block" onclick="tfidf()"><i class="fa fa-calculator" aria-hidden="true"></i>TF-IDF</button>
+    <div id="main" style="width:100%;height:600px;">
+
+    </div>
+</div>
+<div class="amz-toolbar" id="amz-toolbar" style="right: 10px;">
+    <a title="Back to Top" class="am-icon-btn am-active" id="amz-go-top"><i class="fa fa-arrow-up"></i></a>
+    <a href="index.html" title="Back to Home" class="am-icon-btn am-icon-faq am-icon-question-circle"><i class="fa fa-home"></i></a>
+</div>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+    function tfidf() {
+        var val = $("textarea").val();
+        if (val.trim() != "") {
+            var index = layer.load(0, {shade: [0.3, "rgba(0,0,0,0.5)"]});
+            $.ajax({
+                url: "/api/hzau/tfidf",    //请求的url地址
+                dataType: "json",   //返回格式为json
+                data: {"text": $("textarea").val()},    //参数值
+                type: "POST"   //请求方式
+            }).done(function () {
+                layer.close(index);
+            });
+        } else {
+            layer.msg("Invalid input text", {icon: 2, shift: 6})
+        }
+    }
+</script>
+<footer>Copyright &copy; 2016 Computer Vision Lab of HZAU</footer>
+</body>
+</html>

@@ -7,7 +7,9 @@
    
    ![1](Intro/1.png)
    ![2](Intro/2.png)
-   ![3](Intro/3.jpg)
+   ![3](Intro/3.png)
+   ![4](Intro/4.png)
+   ![5](Intro/5.png)
      
 ## Prerequisite
     

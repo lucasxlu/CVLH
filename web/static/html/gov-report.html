@@ -26,6 +26,7 @@
         <div class="form-group">
             <label for="chairman">Select a chairman</label>
             <select class="form-control" id="chairman">
+                <option label="Choose" value="">Choose</option>
                 <option label="毛泽东" value="毛泽东">毛泽东</option>
                 <option label="邓小平" value="邓小平">邓小平</option>
                 <option label="江泽民" value="江泽民">江泽民</option>
@@ -43,7 +44,6 @@
             var urlPrefix = "/api/hzau/gov";
             var myChart = echarts.init(document.getElementById('keywords'));
 
-            var keywordsObj = new Object();
             var wordcloud = [];
             $.ajax({
                 url: urlPrefix,
@@ -53,55 +53,53 @@
             }).done(function (data) {
                 for (var i = 0; i < data.data.length; i++) {
                     var item = data.data[i];
-                    keywordsObj[item.keyword] = item.frequency;
+                    var keywordsObj = new Object();
+                    keywordsObj['name'] = item.keyword;
+                    keywordsObj['value'] = item.frequency;
+                    wordcloud.push(keywordsObj);
                 }
                 layer.close(index);
-                var keywords = JSON.stringify(keywordsObj);
 
-                for (var name in keywords) {
-                    wordcloud.push({
-                        name: name,
-                        value: Math.sqrt(keywords[name])
-                    })
-                }
-            });
 
-            var maskImage = new Image();
-            var option = {
-                series: [{
-                    type: 'wordCloud',
-                    sizeRange: [10, 100],
-                    rotationRange: [-90, 90],
-                    rotationStep: 45,
-                    gridSize: 2,
-                    shape: 'pentagon',
-                    maskImage: maskImage,
-                    textStyle: {
-                        normal: {
-                            color: function () {
-                                return 'rgb(' + [
-                                    Math.round(Math.random() * 160),
-                                    Math.round(Math.random() * 160),
-                                    Math.round(Math.random() * 160)
-                                ].join(',') + ')';
+                var option = {
+                    tooltip: {},
+                    series: [{
+                        type: 'wordCloud',
+                        gridSize: 2,
+                        sizeRange: [12, 50],
+                        rotationRange: [-90, 90],
+                        shape: 'pentagon',
+                        width: 900,
+                        height: 600,
+                        textStyle: {
+                            normal: {
+                                color: function () {
+                                    return 'rgb(' + [
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160)
+                                    ].join(',') + ')';
+                                }
+                            },
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowColor: '#333'
                             }
-                        }
-                    },
-                    data: wordcloud.sort(function (a, b) {
-                        return b.value - a.value;
-                    })
-                }]
-            };
-            maskImage.onload = function () {
-                option.series[0].maskImage;
+                        },
+                        data: wordcloud
+                    }]
+                };
                 myChart.setOption(option);
-            }
-            maskImage.src = '/static/logo.png';
+            });
         }
     </script>
     <div id="keywords" style="width: 1024px;height:768px;"></div>
 </div>
 
+<div class="amz-toolbar" id="amz-toolbar" style="right: 10px;">
+    <a title="Back to Top" class="am-icon-btn am-active" id="amz-go-top"><i class="fa fa-arrow-up"></i></a>
+    <a href="index.html" title="Back to Home" class="am-icon-btn am-icon-faq am-icon-question-circle"><i class="fa fa-home"></i></a>
+</div>
 <footer id="footer" class="footer hidden-print">
     Copyright &copy; 2017 Computer Vision Lab of HZAU
 </footer>

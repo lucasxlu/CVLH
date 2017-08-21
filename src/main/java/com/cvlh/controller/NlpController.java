@@ -56,4 +56,16 @@ public class NlpController extends BaseController {
 
         return renderSuccess(hashMap, httpServletResponse);
     }
+
+    @RequestMapping(value = "/hzau/word/sim", method = RequestMethod.POST)
+    @ResponseBody
+    public Object calcWordsSimilarity(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest, String word1, String word2) throws IOException {
+        Map<String, Object> hashMap = new HashMap<>();
+        long startTime = System.currentTimeMillis();
+        hashMap.put("similarity", NlpUtil.calcWordsSimilarity(word1, word2));
+        long endTime = System.currentTimeMillis();
+        hashMap.put("time", endTime - startTime);
+
+        return hashMap;
+    }
 }

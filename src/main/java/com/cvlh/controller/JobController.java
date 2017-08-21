@@ -53,6 +53,7 @@ public class JobController extends BaseController {
     @ResponseBody
     public Object deleteNlpJobs(HttpServletResponse httpServletResponse, Long id) throws IOException {
         nlpJobService.deleteByPrimaryKey(id);
+
         return renderSuccess("Delete successfully!", httpServletResponse);
     }
 }
