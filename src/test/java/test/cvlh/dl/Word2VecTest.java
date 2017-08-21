@@ -1,5 +1,6 @@
 package test.cvlh.dl;
 
+import com.cvlh.util.NlpUtil;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.text.sentenceiterator.BasicLineIterator;
@@ -13,14 +14,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
 
 public class Word2VecTest {
     public static void main(String[] args) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         Files.readAllLines(Paths.get("D:/corpus.txt")).forEach(s -> {
-            stringBuilder.append(s).append(" ");
+            stringBuilder.append(s);
         });
-        Files.write(Paths.get("E:/corpus.txt"), stringBuilder.toString().getBytes());
+        List<Object> list = NlpUtil.tokenize(stringBuilder.toString(), false);
+        list.forEach(o -> {
+            builder.append(o.toString()).append(" ");
+        });
+
+        Files.write(Paths.get("E:/corpus.txt"), builder.toString().getBytes());
         String filePath = new File("E:/corpus.txt").getAbsolutePath();
         System.out.println("Load & Vectorize Sentences....");
         // Strip white space before and after for each line
@@ -32,7 +40,7 @@ public class Word2VecTest {
         t.setTokenPreProcessor(new CommonPreprocessor());
         System.out.println("Building model....");
         Word2Vec vec = new Word2Vec.Builder()
-                .minWordFrequency(5)
+                .minWordFrequency(2)
                 .iterations(1)
                 .layerSize(100)
                 .seed(42)
@@ -45,10 +53,10 @@ public class Word2VecTest {
         vec.fit();
 
         // Write word vectors
-        WordVectorSerializer.writeWordVectors(vec, "D:/pathToWriteto.txt");
+        WordVectorSerializer.writeWord2VecModel(vec, "D:/pathToWriteto.txt");
 
         System.out.println("Closest Words:");
-        Collection<String> lst = vec.wordsNearest("day", 10);
+        Collection<String> lst = vec.wordsNearest("人工智能", 10);
         System.out.println(lst);
 
         double cosSim = vec.similarity("华尔街", "金融");
