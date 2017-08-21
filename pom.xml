@@ -447,6 +447,12 @@
             <classifier>models-chinese</classifier>
         </dependency>
 
+        <dependency>
+            <groupId>com.huaban</groupId>
+            <artifactId>jieba-analysis</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
         <!-- ND4J backend. You need one in every DL4J project. Normally define artifactId as either "nd4j-native-platform" or "nd4j-cuda-7.5-platform" -->
         <dependency>
             <groupId>org.nd4j</groupId>
