@@ -25,9 +25,10 @@ footer {
     margin-right: 5px;
 }
 
-/*h2 {
+h2 {
     text-align: center
-}*/
+}
+
 .amz-toolbar {
     position: fixed;
     right: 10px;
