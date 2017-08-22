@@ -8,16 +8,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.datavec.api.io.filters.BalancedPathFilter;
 import org.datavec.api.io.labels.ParentPathLabelGenerator;
-import org.datavec.api.io.labels.PathLabelGenerator;
-import org.datavec.api.records.reader.RecordReader;
 import org.datavec.api.split.FileSplit;
 import org.datavec.api.split.InputSplit;
 import org.datavec.image.loader.BaseImageLoader;
 import org.datavec.image.recordreader.ImageRecordReader;
 import org.datavec.image.transform.FlipImageTransform;
 import org.datavec.image.transform.ImageTransform;
-import org.datavec.image.transform.PipelineImageTransform;
-import org.datavec.image.transform.RandomCropTransform;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.LearningRatePolicy;
@@ -51,7 +47,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * this util is designed for face beauty prediction based on SCTU-FBP benchmark
@@ -59,14 +58,11 @@ import java.util.*;
  */
 public class FaceBeautyUtil {
 
-    private static final String ATTRACTIVENESS_LABEL_EXCEL_PATH = "E:\\DataSet\\Face\\SCUT-FBP\\Rating_Collection\\AttractivenessLabel.xlsx";
     private static final Logger log = LoggerFactory.getLogger(FaceBeautyUtil.class);
     private static final int IMAGE_WIDTH = 128;
     private static final int IMAGE_HEIGHT = 128;
     private static final long seed = 12345;
     private static final Random randNumGen = new Random(seed);
-    private static final String IMAGE_FACE_DIR = "E:\\DataSet\\Face\\SCUT-FBP\\Faces";
-
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -99,7 +95,7 @@ public class FaceBeautyUtil {
      * @param faceImageDir
      */
     private static void detectAndCropFace(String faceImageDir, String destDir) {
-        CascadeClassifier faceDetector = new CascadeClassifier(ImageUtil.OPENCV_FACE_PRETRAINED_MODEL);
+        CascadeClassifier faceDetector = new CascadeClassifier(Constant.OPENCV_FACE_PRETRAINED_MODEL);
 
         File tempFile = new File(destDir);
         if (!tempFile.exists() || !tempFile.isDirectory())
@@ -125,7 +121,7 @@ public class FaceBeautyUtil {
         // Instantiating RecordReader. Specify height and width of images.
         log.info("==========preparing for training data and test data=================");
         String[] allowedExtensions = BaseImageLoader.ALLOWED_FORMATS;
-        FileSplit filesInDir = new FileSplit(new File(FaceBeautyUtil.IMAGE_FACE_DIR), allowedExtensions, randNumGen);
+        FileSplit filesInDir = new FileSplit(new File(Constant.IMAGE_FACE_DIR), allowedExtensions, randNumGen);
         ParentPathLabelGenerator labelMaker = new ParentPathLabelGenerator();
         BalancedPathFilter pathFilter = new BalancedPathFilter(randNumGen, allowedExtensions, labelMaker);
         InputSplit[] filesInDirSplit = filesInDir.sample(pathFilter, 80, 20);

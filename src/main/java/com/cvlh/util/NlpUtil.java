@@ -20,6 +20,14 @@ public class NlpUtil {
 
     private static final String[] PUNCTUATION = new String[]{"，", "。", "！", "？", "\"", "~", "‘", "’", "、", ",", "."};
 
+    /**
+     * tokenize
+     *
+     * @param text
+     * @param withPosition
+     * @return
+     * @version 1.0
+     */
     public static List<Object> tokenize(String text, boolean withPosition) {
         for (String punctuation : PUNCTUATION)
             text = text.replace(punctuation, "");
@@ -108,7 +116,7 @@ public class NlpUtil {
      * @throws IOException
      * @version 1.0
      */
-    public static void trainWordToVec(String docPath) throws IOException {
+    public static void trainWordToVecWithFile(String docPath) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder builder = new StringBuilder();
         Files.readAllLines(Paths.get(docPath)).forEach(s -> {
@@ -148,6 +156,47 @@ public class NlpUtil {
     }
 
     /**
+     * train word2vec with bulk text
+     *
+     * @throws IOException
+     * @version 1.0
+     */
+    public static void trainWordToVecWithText(String textContent) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<Object> list = NlpUtil.tokenize(textContent, false);
+        list.forEach(o -> {
+            stringBuilder.append(o.toString()).append(" ");
+        });
+
+        Files.write(Paths.get("./corpus.txt"), stringBuilder.toString().getBytes());
+        File file = new File("./corpus.txt");
+        String filePath = file.getAbsolutePath();
+        System.out.println("Load & Vectorize Sentences....");
+        // Strip white space before and after for each line
+        SentenceIterator iter = new BasicLineIterator(filePath);
+        TokenizerFactory t = new DefaultTokenizerFactory();
+
+        t.setTokenPreProcessor(new CommonPreprocessor());
+        System.out.println("Building model....");
+        Word2Vec vec = new Word2Vec.Builder()
+                .minWordFrequency(2)
+                .iterations(1)
+                .layerSize(100)
+                .seed(42)
+                .windowSize(5)
+                .iterate(iter)
+                .tokenizerFactory(t)
+                .build();
+
+        System.out.println("Fitting Word2Vec model....");
+        vec.fit();
+
+        file.delete();
+        // Write word vectors
+        WordVectorSerializer.writeWord2VecModel(vec, Constant.WORD_2_VEC_PATH);
+    }
+
+    /**
      * calculate the cosine similarity between two given words
      * Note: You have to make sure you have trained word2vec model and serialize it before call this method
      *
@@ -156,7 +205,7 @@ public class NlpUtil {
      * @return
      * @version 1.0
      */
-    public static double calcWordsSimilarity(String word1, String word2) {
+    public static double calcWordsSimilarity(String word1, String word2) throws IOException {
         Word2Vec word2Vec = WordVectorSerializer.readWord2VecModel(Constant.WORD_2_VEC_PATH);
 
         return word2Vec.similarity(word1, word2);
@@ -174,9 +223,17 @@ public class NlpUtil {
     public static Collection<String> findWordsNearest(String word, int numOfWords) {
         Word2Vec word2Vec = WordVectorSerializer.readWord2VecModel(Constant.WORD_2_VEC_PATH);
 
-        Collection<String> stringCollection = word2Vec.wordsNearest("人工智能", numOfWords);
+        Collection<String> stringCollection = word2Vec.wordsNearest(word, numOfWords);
 
         return stringCollection;
+    }
+
+    public static void main(String[] args) {
+        try {
+            trainWordToVecWithFile("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

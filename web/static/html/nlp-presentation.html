@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Presentation</title>
+    <link rel="stylesheet" type="text/css" href="http://static.bosonnlp.com/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://static.bosonnlp.com/vendor/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://static.bosonnlp.com/stylesheets/global.css?172e7b7"/>
+    <link rel="stylesheet" type="text/css" href="http://static.bosonnlp.com/vendor/css-toggle-switch/dist/toggle-switch.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/nlp-presentation.css"/>
+    <link rel="icon" href="/static/res/favicon.ico">
+</head>
+<body>
+<div id="page-header" class="nav" role="navigation">
+    <div class="container">
+        <a href="index.html">CVLH</a>
+        <ul class="navbar-right">
+            <li class="txt home"><a href="/"><span class="icon"></span>Index</a></li>
+        </ul>
+    </div>
+</div>
+<div id="content-page">
+    <div id="sub-navbar">
+        <div class="container">
+            <ul>
+                <li><a href="/lab">Vision Lab</a><span></span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="demo-page">
+        <div id="demo-container" class="container">
+            <div class="input-chunk chunk">
+                <textarea id="txt-analysis" class="input"></textarea>
+                <a id="btn-analysis" class="btn btn-arrow btn-radius" href="javascript:void(0)">Submit Text</a>
+                <div class="warn-msg hide">
+                    <span class="icon"></span>
+                    <span class="txt">Only UTF-8 encoding is supported</span>
+                </div>
+            </div>
+            <div class="main-title">
+                <span class="dot-line-gray"></span>
+                <span class="title">Result</span>
+            </div>
+            <div class="demo-content">
+                <div id="sideBar" class="col-xs-3 bs-sidebar" width="100%" role="complementary">
+                    <div class="chunk bs-sidebar-chunk">
+                        <ul class="nav">
+                            <li class=" ner">
+                                <a class="hide" href="#overview-ner"></a>
+                                <div class="arrow"></div>
+                                <div class="title">
+                                    <a href="#overview-ner"><span class="icon"></span>Entity Recognition</a>
+                                </div>
+                                <div class="line"></div>
+                            </li>
+                            <li class=" emotion">
+                                <a class="hide" href="#overview-emotion"></a>
+                                <div class="arrow"></div>
+                                <div class="title">
+                                    <a href="#overview-emotion"><span class="icon"></span>Sentiment Analysis</a>
+                                </div>
+                                <div class="line"></div>
+                            </li>
+                            <li class=" info">
+                                <a class="hide" href="#overview-info"></a>
+                                <div class="arrow"></div>
+                                <div class="title">
+                                    <a href="#overview-info"><span class="icon"></span>Text Classification</a>
+                                </div>
+                                <div class="line"></div>
+                            </li>
+                            <li class=" key">
+                                <a class="hide" href="#overview-key"></a>
+                                <div class="arrow"></div>
+                                <div class="title">
+                                    <a href="#overview-key"><span class="icon"></span>Keyword Extraction</a>
+                                </div>
+                                <div class="line"></div>
+                            </li>
+                            <li class=" semantic">
+                                <a class="hide" href="#overview-semantic"></a>
+                                <div class="arrow"></div>
+                                <div class="title">
+                                    <a href="#overview-semantic"><span class="icon"></span>Semantic Association</a>
+                                </div>
+                                <div class="line"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="page-footer">
+    <div class="container">
+        <dl class="column">
+            <dt>Product</dt>
+        </dl>
+        <dl class="column">
+            <dt>Presentation</dt>
+            <dd><a href="index.html"><span class="icon"></span>Vision Lab</a></dd>
+        </dl>
+        <dl class="column">
+            <dt>About</dt>
+            <dd><a href="/about"><span class="icon"></span>Team</a></dd>
+            <dd><a href="members.html" target="_blank"><span class="icon"></span>Members</a></dd>
+            <dd><a href="#" target="_blank"><span class="icon"></span>Join us</a></dd>
+        </dl>
+    </div>
+</div>
+<input type="hidden" id="hidden-referer" value=""/>
+<input type="hidden" value=" 0 " id="hidden_auth"/>
+<script src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+<script>
+    $(function () {
+        var i = ["继前不久始于中国的召回风波，宝马因为车辆的发动机螺栓故障，在全球范围将召回48.9万辆车，在原有中国召回的基础上数量进一步增加。据悉，召回车辆将包括北美市场的15.6万辆，宝马曾于3月宣布在华召回232,098辆发动机螺栓故障车辆。涉及车型包括搭载六缸发动机的宝马5系、7系、X3、X5，。但具体型号Santer并没有透露。宝马发言人Bernhard Santer表示，目前尚无该故障造成事故或伤亡的报告。但他仍建议相关车主及时检查车辆引擎。Santer说，凭借剩余的动力，车辆仍旧可以坚持到最近的修理厂。", "新浪手机讯 4月17日上午消息，近期关于iPhone 6传闻格外多，最新一则来自法国网站nowhereelse.fr，因为iPhone 6屏幕变大，它的电源键将被放在机身侧面。这种推测来源于几张“iPhone 6硅胶壳”图片，“i6”这种写法似乎是中国南方一些附件厂商喜爱的称呼。假设这种保护壳为真，那下一代iPhone最明显的改善就是机身变得更大，并且电源键从机身顶部被转移到了侧面，相信这是为了唤醒手机更方便，现在很多5寸以上大屏手机都采用这种方式。", "15日，备受关注的电影《黄金时代》在北京举行了电影发布会，导演许鞍华和编剧李樯及汤唯、冯绍峰等众星悉数亮相。据悉，电影确定将于10月1日公映。本片讲述了“民国四大才女”之一的萧红短暂而传奇的一生，通过她与萧军、汪恩甲、端木蕻良、洛宾基四人的情感纠葛，与鲁迅、丁玲等人一起再现上世纪30年代的独特风貌。电影原名《穿过爱情的漫长旅程》，后更名《黄金时代》，这源自萧红写给萧军信中的一句话：“这不正是我的黄金时代吗？”"];
+        $("#txt-analysis").val(i[Math.floor(Math.random() * i.length)]);
+        var S = /{{(.+?):(.+?)}}/g, g = [{
+            name: "时间",
+            key: "time"
+        }, {
+            name: "人名",
+            key: "person_name"
+        }, {
+            name: "地点",
+            key: "location"
+        }, {
+            name: "组织名",
+            key: "org_name"
+        }, {
+            name: "公司名",
+            key: "company_name"
+        }, {
+            name: "产品名",
+            key: "product_name"
+        }, {
+            name: "职位",
+            key: "job_title"
+        }], y = $("#overview-ner .words"), b = $("#overview-ner .loading"), x = $("#overview-ner .word-mean"), S = $("#overview-ner .title");
+        /*, $1 =new c();
+                 $1.push(new d("1","更多")),
+                 $1.push(new d("2","较多")),
+                 $1.push(new d("3","平衡",!0)),
+                 $1.push(new d("4","准确")),
+                 $1.push(new d("5","更准确"))*/
+        ;
+        var l = [{
+            name: "人名",
+            expression: /^nr/i
+        }, {
+            name: "地名",
+            expression: /^ns/i
+        }, {
+            name: "组织",
+            expression: /^nt/i
+        }, {
+            name: "字符串",
+            expression: /^nx/i
+        }, {
+            name: "专有名词",
+            expression: /^nz/i
+        }, {
+            name: "名词",
+            expression: /^n/i
+        }, {
+            name: "电话号码",
+            expression: /^tel/i
+        }, {
+            name: "时间词",
+            expression: /^t/i
+        }, {
+            name: "处所词",
+            expression: /^s/i
+        }, {
+            name: "方位词",
+            expression: /^f/i
+        }, {
+            name: "动词",
+            expression: /^v/i
+        }, {
+            name: "形容词",
+            expression: /^a/i
+        }, {
+            name: "区别词",
+            expression: /^b/i
+        }, {
+            name: "状态词",
+            expression: /^z/i
+        }, {
+            name: "代词",
+            expression: /^r/i
+        }, {
+            name: "数词",
+            expression: /^m/i
+        }, {
+            name: "量词",
+            expression: /^q/i
+        }, {
+            name: "副词",
+            expression: /^d/i
+        }, {
+            name: "介词",
+            expression: /^p/i
+        }, {
+            name: "连词",
+            expression: /^c/i
+        }, {
+            name: "网页链接",
+            expression: /^url/i
+        }, {
+            name: "助词",
+            expression: /^u/i
+        }, {
+            name: "电子邮件",
+            expression: /^email/i
+        }, {
+            name: "叹词",
+            expression: /^e/i
+        }, {
+            name: "语气词",
+            expression: /^y/i
+        }, {
+            name: "拟声词",
+            expression: /^o/i
+        }, {
+            name: "前缀",
+            expression: /^h/i
+        }, {
+            name: "身份证号",
+            expression: /^id/i
+        }, {
+            name: "IP地址",
+            expression: /^ip/i
+        }, {
+            name: "后缀",
+            expression: /^k/i
+        }, {
+            name: "标点符号",
+            expression: /^w/i
+        }];
+        var g1 = {
+            calculate: function (e, t) {
+                var i = n(e, t);
+                return i
+            }
+        };
+        var d = {
+            _cache: {},
+            push: function (e) {
+                for (var t = 0; t < g.length; t++) {
+                    var n = g[t];
+                    if (n.key == e && !this._cache[e]) {
+                        this._cache[e] = !0;
+                        break
+                    }
+                }
+            },
+            get: function (e) {
+                return e ? this._cache[e] : this._cache
+            }
+        }, d1 = {
+            _cache: {},
+            push: function (e) {
+                for (var t = 0; t < l.length; t++) {
+                    var n = l[t]
+                        , i = n.expression.exec(e);
+                    if (i && !this._cache[i[0]]) {
+                        this._cache[i[0]] = !0;
+                        break
+                    }
+                }
+            },
+            get: function (e) {
+                return e ? this._cache[e] : this._cache
+            }
+        }
+
+        function t(e) {
+            for (var t = 0; t < g.length; t++) {
+                var n = g[t];
+                if (n.key == e)
+                    return n.name
+            }
+        }
+
+        function a(e, t, i) {
+            return "<dd title='" + i + "' class='" + t + "'>'" + e + "'</dd>"
+        }
+
+        function o(e) {
+            var html = "<dt>实体类别图示:</dt>";
+            for (var i = 0; i < e.length; i++) {
+                html += "<dd class='" + e[i] + "'>" + t(e[i]) + "</dd>";
+            }
+            return html;
+        }
+
+        function t1(e) {
+            for (var t = 0; t < l.length; t++) {
+                var n = l[t];
+                if (n.expression.test(e))
+                    return n.name
+            }
+        }
+
+        function a1(e, t, i) {
+            if (t != undefined && t != "") {
+                t = t.substr(0, 2);
+            } else {
+                t = 0;
+            }
+            return "<dd title='" + i + "' class='" + t + "'>" + e + "</dd>"
+        }
+
+        function o1(e) {
+            var html = "<dt>实体类别图示:</dt>";
+            for (var i = 0; i < e.length; i++) {
+                html += "<dd class='" + e[i].substr(0, 2) + "'>" + t1(e[i]) + "</dd>";
+            }
+            return html;
+        }
+
+        function n(t, n) {
+            var i = $("<div></div>").text(t).html()
+                , a = document.getElementsByTagName("body")[0]
+                , r = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+                , s = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                , o = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+            a.appendChild(r),
+                r.appendChild(s),
+                s.appendChild(o),
+                o.innerText = i,
+                o.textContent = i,
+            n === !0 && (s.style.fontWeight = "bold");
+            var l = 0 === o.getBoundingClientRect().width ? $(o).width() : o.getBoundingClientRect().width
+                , d = o.getBoundingClientRect().height ? $(o).height() : o.getBoundingClientRect().height;
+            return a.removeChild(r),
+                {
+                    width: l,
+                    height: d
+                }
+        }
+
+        //实体识别:
+        $.get("data.json", function (data, status) {
+            var v = {};
+            var c = data;
+            v.sensitivity = 3,
+                v.category = "";
+            var u = "";
+            for (var p in c)
+                if (c.hasOwnProperty(p)) {
+                    for (var m = c[p].entity, g = c[p].word, k = [], C = 0, S = 0; S < m.length; S++)
+                        if (m.hasOwnProperty(S)) {
+                            var N = m[S];
+                            C < N[0] && k.push([C, N[0], ""]),
+                                C = N[1],
+                                N.isEntity = !0,
+                                k.push(N)
+                        }
+                    g.length >= C && k.push([C, g.length, ""]);
+                    for (var $ = f(), S = 0; S < k.length; S++)
+                        if (k.hasOwnProperty(S)) {
+                            var N = k[S]
+                                , O = N.isEntity
+                                , E = N[2]
+                                , _ = t(E)
+                                , R = g.slice(N[0], N[1])
+                                , q = ""
+                                , D = "";
+                            if (O) {
+                                for (var j in R)
+                                    if (R.hasOwnProperty(j)) {
+                                        var P = R[j];
+                                        $.indexOf(D + P) < 0 && (P = " " + P),
+                                            D += P
+                                    }
+                                q = a(D, E, _)
+                            } else {
+                                D = "";
+                                for (var j in R)
+                                    if (R.hasOwnProperty(j)) {
+                                        var P = R[j];
+                                        q += a(P, E, _)
+                                    }
+                            }
+                            u += q,
+                                d.push(E)
+                        }
+                    //词性分析
+                    y.html(u);
+                }
+
+            var z = d.get()
+                , W = Object.keys(z)
+                , J = o(W);
+            //实体类别图示:
+            x.html(J),
+                b.addClass("hide");
+        });
+        //词性分析:
+        $.get("depend.json", function (data, status) {
+            var r = data, l = "";
+            for (var c in r)
+                if (r.hasOwnProperty(c)) {
+                    for (var u = r[c].tag, p = r[c].word, m = r[c].isConvertError, v = 0; v < u.length; v++)
+                        if (p[v]) {
+                            var g = u[v].toLowerCase()
+                                , w = t1(g);
+                            d1.push(g),
+                                l += a1(p[v], g, w)
+                        }
+                    m === !0 && e(".warn-msg").removeClass("hide")
+                }
+            $("#overview-analysis .words").html(l);
+            var y = d1.get()
+                , b = Object.keys(y)
+                , x = o1(b);
+            $("#overview-analysis .word-mean").html(x),
+                $("#overview-analysis .loading").addClass("hide");
+        });
+
+        function f(t) {
+            var n = $("#txt-analysis").val();//文本域的值
+            if (n = n.replace(S, function () {
+                    return arguments[2]
+                }),
+                t === !0) {
+                var i = n.indexOf("。")
+                    , a = n.indexOf("？")
+                    , r = n.indexOf("！");
+                i = i === -1 ? n.length : i;
+                var s = i > a && a !== -1 ? a > r && r !== -1 ? r : a : i > r && r !== -1 ? r : i;
+                s !== -1 && (n = n.substring(0, s + 1))
+            }
+            return n.replace(/\r\n|\n/gi, "")
+        };
+    })
+</script>
+
+</body>
+</html>

@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.cvlh.util.Constant.OPENCV_EYES_PRETRAINED_MODEL;
+import static com.cvlh.util.Constant.OPENCV_FACE_PRETRAINED_MODEL;
+
 /**
  *
  */
@@ -29,9 +32,6 @@ public class ImageUtil {
 
     private static final int DEFAULT_WIDTH = 64;
     private static final int DEFAULT_HEIGHT = 128;
-    protected static final String OPENCV_EYES_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH\\src\\main\\resources\\haarcascade_eye.xml";
-    protected static final String OPENCV_FACE_PRETRAINED_MODEL = "D:\\Users\\IdeaProjects\\TempProjects\\CVLH\\src\\main\\resources\\haarcascade_frontalface_default.xml";
-    public static final String PRETRAINED_MODEL_VGGFace = "C:\\Users\\29140\\.deeplearning4j\\vgg16_dl4j_vggface_inference.v1.zip";
 
     /**
      * detect all appeared faces given an image file path
@@ -284,11 +284,11 @@ public class ImageUtil {
         if (faceRegionMat.size().height != 224 && faceRegionMat.size().width != 224) {
             Imgproc.resize(faceRegionMat, faceRegionMat, new Size(224, 224));
         }
-        if (!new File(PRETRAINED_MODEL_VGGFace).exists()) {
+        if (!new File(Constant.PRETRAINED_MODEL_VGGFACE).exists()) {
             ZooModel zooModel = new ResNet50();
             zooModel.initPretrained(PretrainedType.VGGFACE);
         }
-        File locationToSave = new File(ImageUtil.PRETRAINED_MODEL_VGGFace);
+        File locationToSave = new File(Constant.PRETRAINED_MODEL_VGGFACE);
         ComputationGraph vgg16 = ModelSerializer.restoreComputationGraph(locationToSave);
         NativeImageLoader loader = new NativeImageLoader(224, 224, 3, true);
 //        INDArray image = loader.asMatrix(faceMat);   // why this not work????

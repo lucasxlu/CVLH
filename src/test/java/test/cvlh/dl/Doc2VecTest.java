@@ -61,19 +61,6 @@ public class Doc2VecTest {
 
         vec.fit();
 
-        /*
-            In training corpus we have few lines that contain pretty close words invloved.
-            These sentences should be pretty close to each other in vector space
-            line 3721: This is my way .
-            line 6348: This is my case .
-            line 9836: This is my house .
-            line 12493: This is my world .
-            line 16393: This is my work .
-            this is special sentence, that has nothing common with previous sentences
-            line 9853: We now have one .
-            Note that docs are indexed from 0
-         */
-
         double similarity1 = vec.similarity("金融", "华尔街");
         log.info("9836/12493 ('This is my house .'/'This is my world .') similarity: " + similarity1);
 
