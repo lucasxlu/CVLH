@@ -18,7 +18,7 @@ import java.util.*;
 
 public class NlpUtil {
 
-    private static final String[] PUNCTUATION = new String[]{"，", "。", "！", "？", "\"", "~", "‘", "’", "、", ",", "."};
+    private static final String[] PUNCTUATION = new String[]{"，", "。", "！", "？", "：", "【", "】", "\"", "~", "‘", "’", "、", ",", "."};
 
     /**
      * tokenize

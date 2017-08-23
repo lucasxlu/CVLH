@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi Thread Web Crawler</title>
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/layer/layer.js"></script>
+    <script src="/static/js/echarts.js"></script>
+    <script src="/static/js/common.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-4.0.0-alpha.5-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="icon" href="/static/res/favicon.ico">
+    <style>
+        textarea {
+            width: 100%;
+            padding: 15px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        h2 {
+            font-family: Times, serif;
+        }
+    </style>
+
+    <script>
+        function changeInputPlaceholder() {
+            $("input.form-control").attr("placeholder", "Input " + $("option:selected").val() + " Page URL");
+//            "https://weibo.cn/comment/EvsBXBh9D?page=1"
+            $("#help").text("sample URL : https://weibo.cn/comment/EvsBXBh9D?page=1");
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2 style="padding-top: 20px;">Multi Thread Web Crawler</h2>
+    <div class="form-group">
+        <label for="Select-Crawler">Select Crawler</label>
+        <select class="form-control" id="Select-Crawler" onchange="changeInputPlaceholder()">
+            <option value="douban">Douban</option>
+            <option value="weibo">Weibo</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">URL</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Web page URL">
+        <small id="help" class="form-text text-muted">paste the web page URL here</small>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="crawl()"><i class="fa fa-cogs" aria-hidden="true"></i>crawl</button>
+    <div id="main" style="width:100%;height:600px;">
+
+    </div>
+</div>
+<div class="amz-toolbar" id="amz-toolbar" style="right: 10px;">
+    <a title="Back to Top" class="am-icon-btn am-active" id="amz-go-top"><i class="fa fa-arrow-up"></i></a>
+    <a href="index.html" title="Back to Home" class="am-icon-btn am-icon-faq am-icon-question-circle"><i class="fa fa-home"></i></a>
+</div>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        tooltip: {
+            formatter: "{a} <br/>{b} : {c}%"
+        },
+        toolbox: {
+            feature: {
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        series: [
+            {
+                min: 0,
+                max: 1,
+                name: 'Positive',
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: [[0.2, '#ff4500'], [0.8, '#1e90ff'], [1, '#91c7ae']]
+                    }
+                },
+                title: {
+                    textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                        fontWeight: 'normal',
+                        fontSize: 15
+                    }
+                },
+                center: ['30%', '55%'],    // 默认全局居中
+                type:
+                    'gauge',
+                radius:
+                    '70%',
+                detail:
+                    {
+                        formatter: '{value}'
+                    }
+                ,
+                data: [{value: 50, name: 'Positive'}]
+            },
+            {
+                min: 0,
+                max: 1,
+                radius: '70%',
+                name: 'Negative',
+                center: ['70%', '55%'],    // 默认全局居中
+                type: 'gauge',
+                detail: {
+                    formatter: '{value}'
+                },
+                title: {
+                    textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                        fontWeight: 'normal',
+                        fontSize: 15
+                    }
+                },
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: [[0.2, '#91c7ae'], [0.8, '#1e90ff'], [1, '#ff4500']]
+                    }
+                },
+                data: [{value: 50, name: 'Negative'}]
+            }
+        ]
+    }
+
+    function crawl() {
+        var index = layer.load(0, {shade: false});
+        $.ajax({
+            url: "/api/hzau/web/crawl",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            data: {
+                "name": $("option:selected").val().trim(),
+                "url": $("input.form-control").val().trim()
+            },
+            type: "POST"   //请求方式
+        }).done(function () {
+            debugger;
+            layer.msg("crawl success!", {icon: 1});
+            $('#tableinfo').bootstrapTable('refresh');
+            layer.close(index);
+        });
+    }
+</script>
+<footer>Copyright &copy; 2016 Computer Vision Lab of HZAU</footer>
+</body>
+</html>
