@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-CVLH-BE.iml
+CVLH.iml
 tessdata
 Image.jpg
 logInfo.log
@@ -8,3 +8,4 @@ src/main/python/__pycache__/
 web/static/res/hzau/
 /target
 fileUpload
+src/main/resources/cookie.txt
