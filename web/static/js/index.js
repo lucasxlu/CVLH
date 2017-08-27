@@ -32,5 +32,11 @@ function countliw(a, b, c) {
     })
 }
 
+function search() {
+    newurl = 'https://www.baidu.com/s?wd=' + $('#searchContent').val().trim();
+    console.log(newurl);
+    window.location.assign(newurl);
+}
+
 /*
 $('.carousel').carousel()*/

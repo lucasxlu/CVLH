@@ -16,7 +16,7 @@
     <title>404</title>
     <script>
         window.setTimeout(function () {
-            window.history.back();
+            window.location = 'index.html';
         }, 5000);
     </script>
 </head>
@@ -24,7 +24,7 @@
 <div align="center">
     <img src="../../../static/image/404.png" alt="404"/>
     Sorry, this page seems to have disappeared,
-    We will be back to previous page in 5 seconds...
+    We will be back to home in 5 seconds...
 </div>
 </body>
 </html>
