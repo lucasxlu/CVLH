@@ -137,32 +137,6 @@ public class ImageUtil {
         return temp;
     }
 
-    /**
-     * calculate the cosine similarity of two feature vectors based on <b>HOG</b> descriptor
-     *
-     * @param featureVector1
-     * @param featureVector2
-     * @return
-     */
-    public static double cosineSimilarity(float[] featureVector1,
-                                          float[] featureVector2) {
-        double numerator = 0.0d;
-        for (int i = 0; i < featureVector2.length; i++) {
-            numerator += featureVector1[i] * featureVector2[i];
-        }
-
-        double temp1 = 0.0d, temp2 = 0.0d;
-        for (int i = 0; i < featureVector1.length; i++) {
-            temp1 += Math.pow(featureVector1[i], 2);
-        }
-        for (int i = 0; i < featureVector2.length; i++) {
-            temp2 += Math.pow(featureVector2[i], 2);
-        }
-        double denominator = Math.sqrt(temp1) * Math.sqrt(temp2);
-
-        return numerator / denominator;
-    }
-
 
     /**
      * sigmoid-like normalization method
