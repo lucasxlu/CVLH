@@ -35,7 +35,7 @@ public class WeiboSpider {
     static {
         StringBuilder stringBuilder = new StringBuilder();
         try {
-            Files.readAllLines(Paths.get("D:\\Users\\IdeaProjects\\TempProjects\\CVLH-BE\\src\\main\\resources\\cookie.txt")).forEach(s -> {
+            Files.readAllLines(Paths.get("D:\\Users\\IdeaProjects\\TempProjects\\CVLH\\src\\main\\resources\\cookie.txt")).forEach(s -> {
                 stringBuilder.append(s);
             });
         } catch (IOException e) {
