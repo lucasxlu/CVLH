@@ -1,13 +1,18 @@
 package com.cvlh.spider;
 
+import com.alibaba.fastjson.JSON;
 import com.cvlh.util.Constant;
 import com.cvlh.util.SpiderUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -19,8 +24,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 /**
  * Created by 29140 on 2017/2/21.
@@ -84,14 +92,57 @@ public class WeiboSpider {
         }
     }
 
+    /**
+     * crawl all weibo belong to the same topic
+     *
+     * @param topic
+     */
+    public static void crawlTopicWeibo(String topic) throws IOException, URISyntaxException {
+        CookieStore cookieStore = SpiderUtil.normalizeCookie(cookieString, "weibo.cn");
+        HttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).setUserAgent(Constant.BROWSER_USER_AGENT).build();
+
+        HashMap<String, String> sinceId = new HashMap<>();
+        sinceId.put("last_since_id", "4180243927739050");
+        sinceId.put("res_type", "1");
+        sinceId.put("next_since_id", "4180162428354000");
+
+        URI uri = new URIBuilder()
+                .setScheme("https")
+                .setHost("m.weibo.cn")
+                .setPath("/api/container/getIndex")
+                .setParameter("containerid", "10080850111ec45d2a9e4140a996ca9f1b7b85")
+                .setParameter("extparam", topic.trim())
+                .setParameter("luicode", "10000011")
+                .setParameter("lfid", "100803")
+                .setParameter("since_id", sinceId.toString())
+                .build();
+        HttpGet httpGet = new HttpGet(uri);
+
+        System.out.println(uri.toString());
+
+        httpGet.setHeader("Content-Type", "application/json, text/plain, */*");
+        httpGet.setHeader("Host", "m.weibo.cn");
+        httpGet.setHeader("Connection", "keep-alive");
+        httpGet.setHeader("X-Requested-With", "XMLHttpRequest");
+        httpGet.setHeader("Referer", "https://m.weibo.cn");
+
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+        HttpEntity httpEntity = httpResponse.getEntity();
+
+        JSONObject jsonObject = JSON.parseObject(EntityUtils.toString(httpEntity));
+        JSONObject pageInfo = (JSONObject) jsonObject.get("pageInfo");
+        System.out.println(pageInfo.get("desc"));
+    }
+
     public static void main(String[] args) {
-//        String weiboUrl = "https://weibo.cn/comment/EvsBXBh9D?page=";
         try {
-            new WeiboSpider().crawlWeiboComments("https://weibo.cn/comment/EvsBXBh9D?page=1");
-        } catch (InterruptedException e) {
-            logger.error("craw this page fails!!");
+            crawlTopicWeibo("双12");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
     }
 
     protected static void extractInfoFromHtml(String html) {

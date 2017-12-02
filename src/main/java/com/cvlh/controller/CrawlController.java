@@ -8,17 +8,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 @Controller
 public class CrawlController extends BaseController {
 
     @RequestMapping(value = "/hzau/web/crawl", method = RequestMethod.POST)
     @ResponseBody
-    public Object calcWordsSimilarity(String name, String url) throws IOException, InterruptedException {
+    public Object calcWordsSimilarity(String name, String topic) throws IOException, InterruptedException {
         if ("douban".equalsIgnoreCase(name)) {
             System.out.println("douban crawler...");
         } else if ("weibo".equalsIgnoreCase(name)) {
-            new WeiboSpider().crawlWeiboComments(url);
+            try {
+                WeiboSpider.crawlTopicWeibo(topic);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
 
         return null;

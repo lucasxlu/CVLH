@@ -26,9 +26,9 @@
 
     <script>
         function changeInputPlaceholder() {
-            $("input.form-control").attr("placeholder", "Input " + $("option:selected").val() + " Page URL");
+            $("input.form-control").attr("placeholder", $("option:selected").val() + " topic");
 //            "https://weibo.cn/comment/EvsBXBh9D?page=1"
-            $("#help").text("sample URL : https://weibo.cn/comment/EvsBXBh9D?page=1");
+            $("#help").text("sample Keyword : 双11");
         }
     </script>
 </head>
@@ -129,7 +129,7 @@
             dataType: "json",   //返回格式为json
             data: {
                 "name": $("option:selected").val().trim(),
-                "url": $("input.form-control").val().trim()
+                "topic": $("input.form-control").val().trim()
             },
             type: "POST"   //请求方式
         }).done(function () {
