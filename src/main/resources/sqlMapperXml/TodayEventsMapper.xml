@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cvlh.mapper.TodayEventsMapper">
+    <resultMap id="BaseResultMap" type="com.cvlh.model.TodayEvents">
+        <result column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="Year" property="year" jdbcType="INTEGER"/>
+        <result column="Month" property="month" jdbcType="INTEGER"/>
+        <result column="Day" property="day" jdbcType="INTEGER"/>
+        <result column="Title" property="title" jdbcType="VARCHAR"/>
+        <result column="Description" property="description" jdbcType="VARCHAR"/>
+        <result column="Thumb" property="thumb" jdbcType="VARCHAR"/>
+        <result column="URL" property="url" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.cvlh.model.TodayEvents" extends="BaseResultMap">
+        <!--<result column="Article" property="article" jdbcType="LONGVARCHAR"/>-->
+        <result column="Article" property="article" jdbcType="TEXT"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.cvlh.model.TodayEvents">
+        insert into today_events (ID, Year, Month,
+                                  Day, Title, Description,
+                                  Thumb, URL, Article
+        )
+        values (#{id,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, #{month,jdbcType=INTEGER},
+                #{day,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+                #{thumb,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{article,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.cvlh.model.TodayEvents">
+        insert into today_events
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="year != null">
+                Year,
+            </if>
+            <if test="month != null">
+                Month,
+            </if>
+            <if test="day != null">
+                Day,
+            </if>
+            <if test="title != null">
+                Title,
+            </if>
+            <if test="description != null">
+                Description,
+            </if>
+            <if test="thumb != null">
+                Thumb,
+            </if>
+            <if test="url != null">
+                URL,
+            </if>
+            <if test="article != null">
+                Article,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="year != null">
+                #{year,jdbcType=INTEGER},
+            </if>
+            <if test="month != null">
+                #{month,jdbcType=INTEGER},
+            </if>
+            <if test="day != null">
+                #{day,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="thumb != null">
+                #{thumb,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="article != null">
+                #{article,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectTodayEvents" resultType="com.cvlh.model.TodayEvents">
+        SELECT * FROM today_events
+        WHERE 1=1
+        <if test="month != null and '' != month">
+            and month=#{month}
+        </if>
+        <if test="day != null and '' != day">
+            and day=#{day}
+        </if>
+    </select>
+</mapper>
