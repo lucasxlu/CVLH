@@ -1,9 +1,8 @@
-# Computer Vision Lab of HZAU
+# XCloud in Java
 
 ## Introduction 
 
-   This repository is designed for later research in Computer Vision, Machine Learning, Data Mining and NLP. It includes web spider, computer vision algorithm, RESTful back-end 
-   API and so on.
+   This repository is a Java implementation of [XCloud](https://arxiv.org/pdf/1912.10344.pdf) which provides common AI services (computer vision, NLP, data mining and etc.) with RESTful APIs. It allows you to serve your machine learning models with few lines of code. The platform is developed and maintained by [@LucasX](https://github.com/lucasxlu) based on SSM (SpringMVC, Spring and MyBatis) and [DeepLearning4J](https://deeplearning4j.org/).
    
    ![1](Intro/1.png)
    ![2](Intro/2.png)
@@ -33,5 +32,4 @@
    
 ## Note 
 
-   For later research, [TensorFlow](https://www.tensorflow.org/) is required, so you'd better have [CUDA](https://developer.nvidia.com/cuda-downloads), 
-   [cuDNN](https://developer.nvidia.com/cudnn) and [TensorFlow](https://www.tensorflow.org/) installed on your machine.
+   **XCloud in Java is no longer maintained, please refer to [XCloud in Python](https://github.com/lucasxlu/XCloud) to keep up with state-of-the-art models.**
